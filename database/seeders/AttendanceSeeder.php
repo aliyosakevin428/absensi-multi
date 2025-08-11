@@ -15,18 +15,16 @@ class AttendanceSeeder extends Seeder
      */
     public function run(): void
     {
-         $users = User::all();
+        $users = User::all();
+        $events = Event::all();
 
-         Attendance::factory()->count(10)->create()->each(function($attendance)use($users){
-             $userIds = $users->random(rand(1,3))->pluck('id')->toArray();
-             $attendance->users()->attach($userIds);
-         });
-
-         $events = Event::all();
-
-         Attendance::factory()->count(10)->create()->each(function($attendance)use($events){
-             $eventIds = $events->pluck('id')->toArray();
-             $attendance->events()->attach($eventIds);
-         });
+        // Buat 10 attendance dengan relasi ke Event (one-to-many) dan User (many-to-many)
+        Attendance::factory()->count(10)->create([
+            'events_id' => $events->random()->id, // Set random event_id
+        ])->each(function ($attendance) use ($users) {
+            // Attach 1-3 user random ke attendance (many-to-many)
+            $userIds = $users->random(rand(1, 3))->pluck('id')->toArray();
+            $attendance->users()->attach($userIds);
+        });
     }
 }

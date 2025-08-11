@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             // $table->foreignId('users_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->foreignId('events_id')->nullable()->constrained('events')->nullOnDelete();
+            $table->foreignId('events_id')->nullable()->constrained('events')->cascadeOnDelete();
             $table->string('status');
             $table->foreignId('absent_reasons_id')->constrained('absent_reasons')->cascadeOnDelete();
             $table->timestamps();

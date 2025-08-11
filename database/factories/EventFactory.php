@@ -18,7 +18,13 @@ class EventFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word(),
+            'name' => $this->faker->randomElement([
+            'Tech Conference '.$this->faker->year(),
+            $this->faker->city().' Music Festival',
+            'International '.$this->faker->word().' Summit',
+            $this->faker->firstName()."'s ".$this->faker->word().' Workshop',
+            'Digital '.$this->faker->word().' Expo'
+            ]),
             'tanggal_kegiatan' => $this->faker->date($format = 'Y-m-d', $max= 'now'),
             'waktu_kegiatan' => $this->faker->time($format ='H:i:s', $max = 'now'),
             'lokasi_kegiatan' => $this->faker->address(),

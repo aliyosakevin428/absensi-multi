@@ -19,9 +19,9 @@ class AttendanceFactory extends Factory
     public function definition(): array
     {
         return [
-            // 'events_id' => Event::pluck('id')->random(),
-            'Status' => $this->faker->word(),
-            'absent_reasons_id' => AbsentReason::pluck('id')->random()
+            'events_id' => Event::pluck('id')->random(),
+            'Status' => $this->faker->randomElement(['terlaksana', 'tidak terlaksana']),
+            'absent_reasons_id' => AbsentReason::pluck('id')->random(),
         ];
     }
 }

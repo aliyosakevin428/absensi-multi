@@ -35,6 +35,7 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                         <TableHead>No</TableHead>
                         <TableHead>Name</TableHead>
                         <TableHead>Email</TableHead>
+                        <TableHead>Kontak</TableHead>
                         <TableHead>Team</TableHead>
                         <TableHead>Position</TableHead>
                         <TableHead>action</TableHead>
@@ -48,6 +49,7 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                                 <TableHead>{index + 1}</TableHead>
                                 <TableHead>{user.name || 'N/A'}</TableHead>
                                 <TableHead>{user.email || 'N/A'}</TableHead>
+                                <TableHead>{user.kontak || 'N/A'}</TableHead>
                                 <TableHead>{user.team?.name || 'N/A'}</TableHead>
                                 <TableHead>{user.positions?.map((position) => position.name).join(', ') || 'N/A'}</TableHead>
                                 <TableHead>

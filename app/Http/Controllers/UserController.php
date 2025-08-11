@@ -41,6 +41,7 @@ class UserController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
+            'kontak'=> 'nullable|string',
             'password' => 'required|min:6',
             // 'role' => 'required',
             'team_id' => 'nullable',

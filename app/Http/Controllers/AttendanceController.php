@@ -6,7 +6,7 @@ use App\Models\AbsentReason;
 use App\Models\Attendance;
 use App\Http\Requests\StoreAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
-use App\Models\EventType;
+use App\Models\Event;
 use App\Models\User;
 use Inertia\Inertia;
 
@@ -21,7 +21,7 @@ class AttendanceController extends Controller
         return Inertia::render('attendance/index', [
             'attendances' => Attendance::with('users', 'event', 'absent_reason')->get(),
             'user' => User::get(),
-            'event' => EventType::get(),
+            'event' => Event::get(),
             'absent_reason' => AbsentReason::get(),
         ]);
     }

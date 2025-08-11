@@ -6,6 +6,7 @@ import { Event, EventType } from '@/types';
 import { Link } from '@inertiajs/react';
 import { Folder, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import EventFormDialog from './components/event-form-sheet';
 
 const ListEvent = ({ eventses }: { eventses: Event[]; event_type: EventType[] }) => {
     const [cari, setCari] = useState('');
@@ -20,9 +21,9 @@ const ListEvent = ({ eventses }: { eventses: Event[]; event_type: EventType[] })
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari Kegiatan" className="w-full" />
-                {/* <UserFormSheet purpose="create">
+                <EventFormDialog purpose="create">
                     <Button>Create new user</Button>
-                </UserFormSheet> */}
+                </EventFormDialog>
             </div>
             <Table>
                 <TableHeader>

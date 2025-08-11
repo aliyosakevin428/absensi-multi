@@ -35,6 +35,7 @@ export interface User {
     id: number;
     name: string;
     email: string;
+    kontak: string;
     team: Team;
     positions: Position[];
     avatar?: string;
