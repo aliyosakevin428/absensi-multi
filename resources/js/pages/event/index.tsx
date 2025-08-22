@@ -4,11 +4,12 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components
 import AppLayout from '@/layouts/app-layout';
 import { Event, EventType } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Folder, Trash2 } from 'lucide-react';
+import dayjs from 'dayjs';
+import { Edit, Folder, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import EventFormDialog from './components/event-form-sheet';
+import EventFormSheet from './components/event-form-sheet';
 
-const ListEvent = ({ eventses }: { eventses: Event[]; event_type: EventType[] }) => {
+const ListEvent = ({ eventses }: { eventses: Event[]; event_types: EventType[] }) => {
     const [cari, setCari] = useState('');
     return (
         <AppLayout
@@ -21,9 +22,9 @@ const ListEvent = ({ eventses }: { eventses: Event[]; event_type: EventType[] })
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari Kegiatan" className="w-full" />
-                <EventFormDialog purpose="create">
-                    <Button>Create new user</Button>
-                </EventFormDialog>
+                <EventFormSheet purpose="create">
+                    <Button>Buat Acara Baru</Button>
+                </EventFormSheet>
             </div>
             <Table>
                 <TableHeader>
@@ -31,20 +32,19 @@ const ListEvent = ({ eventses }: { eventses: Event[]; event_type: EventType[] })
                         <TableHead>No</TableHead>
                         <TableHead>Nama Kegiatan</TableHead>
                         <TableHead>Tanggal Kegiatan</TableHead>
-                        <TableHead>Waktu Kegiatan</TableHead>
                         <TableHead>Lokasi Kegiatan</TableHead>
                         <TableHead>Jenis Kegiatan</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
+                    {/* {(console.log('Events data:', eventses), '')} */}
                     {eventses
                         .filter((events) => events.name.includes(cari))
                         .map((events, index) => (
                             <TableRow key={events.id}>
                                 <TableHead>{index + 1}</TableHead>
                                 <TableHead>{events.name}</TableHead>
-                                <TableHead>{events.tanggal_kegiatan}</TableHead>
-                                <TableHead>{events.waktu_kegiatan} WITA</TableHead>
+                                <TableHead>{dayjs(events.waktu_kegiatan).format('DD MMMM YYYY HH:mm')} WITA</TableHead>
                                 <TableHead>{events.lokasi_kegiatan}</TableHead>
                                 <TableHead>{events.event_types?.name}</TableHead>
                                 <TableHead>
@@ -53,11 +53,11 @@ const ListEvent = ({ eventses }: { eventses: Event[]; event_type: EventType[] })
                                             <Folder />
                                         </Link>
                                     </Button>
-                                    {/* <UserFormSheet purpose="edit" user={user}>
+                                    <EventFormSheet purpose="edit" event={events}>
                                         <Button variant={'ghost'} size={'icon'}>
                                             <Edit />
                                         </Button>
-                                    </UserFormSheet> */}
+                                    </EventFormSheet>
                                     <Button variant={'ghost'} size={'icon'} asChild>
                                         <Link href={route('event.destroy', events.id)} method="delete">
                                             <Trash2 />

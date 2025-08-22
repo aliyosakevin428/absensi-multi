@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreEventRequest extends FormRequest
@@ -23,9 +24,18 @@ class StoreEventRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'tanggal_kegiatan' => 'required',
-            'waktu_kegiatan' => 'required',
-            'lokasi_kegiatan' => 'required'
+            'waktu_kegiatan' => 'required|date',
+            'lokasi_kegiatan' => 'required',
+            'event_types_id' => 'nullable|exists:event_types,id'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Nama Kegiatan harus diisi.',
+            'waktu_kegiatan.required' => 'Waktu Kegiatan harus diisi.',
+            'lokasi_kegiatan.required' => 'Lokasi Kegiatan harus diisi.',
         ];
     }
 }

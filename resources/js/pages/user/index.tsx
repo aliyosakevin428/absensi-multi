@@ -10,6 +10,14 @@ import UserFormSheet from './components/user-form-sheet';
 
 const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; positions: Position[] }) => {
     const [cari, setCari] = useState('');
+    const formatPhone = (phone: string) => {
+        const digits = phone.replace(/\D/g, ''); // hapus karakter non-digit
+        if (digits.length === 12) return digits.replace(/(\d{4})(\d{4})(\d{4})/, '$1-$2-$3');
+        if (digits.length === 11) return digits.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+        return phone; // fallback jika panjang berbeda
+    };
+
+    console.log(users);
     return (
         <AppLayout
             breadcrumbs={[
@@ -49,16 +57,18 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                                 <TableHead>{index + 1}</TableHead>
                                 <TableHead>{user.name || 'N/A'}</TableHead>
                                 <TableHead>{user.email || 'N/A'}</TableHead>
-                                <TableHead>{user.kontak || 'N/A'}</TableHead>
+                                <TableHead>{user.kontak ? formatPhone(user.kontak) : 'N/A'}</TableHead>
                                 <TableHead>{user.team?.name || 'N/A'}</TableHead>
-                                <TableHead>{user.positions?.map((position) => position.name).join(', ') || 'N/A'}</TableHead>
+                                <TableHead>
+                                    {user.positions && user.positions.length > 0 ? user.positions.map((p) => p.name).join(', ') : 'N/A'}
+                                </TableHead>
                                 <TableHead>
                                     <Button variant={'ghost'} size={'icon'} asChild>
                                         <Link href={route('user.show', user.id)}>
                                             <Folder />
                                         </Link>
                                     </Button>
-                                    <UserFormSheet purpose="edit" user={user}>
+                                    <UserFormSheet purpose="edit" user={user} positions={positions} teams={teams}>
                                         <Button variant={'ghost'} size={'icon'}>
                                             <Edit />
                                         </Button>

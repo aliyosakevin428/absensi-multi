@@ -18,6 +18,7 @@ class UserController extends Controller
     {
 
         // return User::with('team', 'positions')->get()->toArray();
+        // dd(User::with('team', 'positions')->get()->toArray());
         return Inertia::render('user/index', [
             'users' => User::with('team', 'positions')->get(),
             'teams' => Team::get(),
@@ -38,18 +39,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
+            $data = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'kontak'=> 'nullable|string',
-            'password' => 'required|min:6',
-            // 'role' => 'required',
+            'password' => 'required|min:3',
             'team_id' => 'nullable',
-            'position_id' => 'nullable|array',
-        ]);
+            'position_ids' => 'nullable|array',
+            'position_ids.*' => 'exists:positions,id',
+            ]);
 
-        $user = User::create($data);
-        $user->positions()->sync($request->position_id);
+            $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'kontak' => $data['kontak'] ?? null,
+            'password' => bcrypt($data['password']),
+            'team_id' => $data['team_id'] ?? null,
+            ]);
+
+        if (!empty($data['position_ids'])) {
+            $user->positions()->sync($data['position_ids']);
+        }
+
+        return redirect()->route('user.index');
     }
 
     /**
@@ -77,16 +89,35 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $data = $request->validate([
+            $data = $request->validate([
             'name' => 'required',
-            // 'role' => 'required',
-            'email' => 'required|email|unique:users,email,'.$user->id,
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'kontak'=> 'nullable|string',
             'password' => 'nullable|min:6',
-            'team_id' => 'nullable',
-            'position_id' => 'nullable',
+            'team_id' => 'nullable|exists:teams,id',
+            'position_ids' => 'nullable|array',
+            'position_ids.*' => 'exists:positions,id',
         ]);
 
-        $user->update($data);
+        // Jika password dikirim, hash dulu
+        if (isset($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
+
+        // Update user
+            $user->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'kontak' => $data['kontak'] ?? $user->kontak,
+            'password' => isset($data['password']) ? bcrypt($data['password']) : $user->password,
+            'team_id' => $data['team_id'] ?? $user->team_id,
+        ]);
+
+        // Update posisi di pivot table
+        $user->positions()->sync($data['position_ids'] ?? []);
+
+        return redirect()->route('user.index');
+
     }
 
     /**

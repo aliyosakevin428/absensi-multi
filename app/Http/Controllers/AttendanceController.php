@@ -20,9 +20,9 @@ class AttendanceController extends Controller
         // dd(Attendance::with('users', 'events', 'absent_reasons')->get()->toArray());
         return Inertia::render('attendance/index', [
             'attendances' => Attendance::with('users', 'event', 'absent_reason')->get(),
-            'user' => User::get(),
-            'event' => Event::get(),
-            'absent_reason' => AbsentReason::get(),
+            'users' => User::get(),
+            'events' => Event::get(),
+            'absent' => AbsentReason::get(),
         ]);
     }
 
@@ -39,16 +39,17 @@ class AttendanceController extends Controller
      */
     public function store(StoreAttendanceRequest $request)
     {
-        $data = $request->validate(
-            [
-                'user_id' => 'required',
-                'event_id' => 'required',
-                'status' => 'required|string:255',
-                'absent_reason_id' => 'required'
-            ]
-        );
+        $validated = $request->validated();
 
-         Attendance::create($data);
+        $attendance = Attendance::create([
+            'events_id'         => $validated['events_id'],
+            'status'            => $validated['status'],
+            'absent_reasons_id' => $validated['absent_reasons_id'] ?? null,
+        ]);
+
+        $attendance->users()->sync($validated['users_id']);
+
+        return redirect()->route('attendance.index')->with('success', 'Attendance berhasil dibuat');
     }
 
     /**
@@ -72,14 +73,17 @@ class AttendanceController extends Controller
      */
     public function update(UpdateAttendanceRequest $request, Attendance $attendance)
     {
-        $data = $request->validate([
-            'user_id' => 'required',
-            'event_id' => 'required',
-            'status' => 'required|string:255',
-            'absent_reason_id' => 'required'
+        $validated = $request->validated();
+
+        $attendance->update([
+            'events_id'         => $validated['events_id'],
+            'status'            => $validated['status'],
+            'absent_reasons_id' => $validated['absent_reasons_id'] ?? null,
         ]);
 
-         $attendance->update($data);
+        $attendance->users()->sync($validated['users_id']);
+
+        return redirect()->route('attendance.index')->with('success', 'Attendance berhasil diperbarui');
     }
 
     /**

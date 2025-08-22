@@ -39,7 +39,7 @@ const mainNavItems: NavItem[] = [
         icon: Folder,
     },
     {
-        title: 'Acara',
+        title: 'Acara / Kegiatan',
         href: route('event.index'),
         icon: CalendarCheck2,
     },

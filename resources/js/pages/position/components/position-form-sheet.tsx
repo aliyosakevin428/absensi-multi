@@ -30,7 +30,7 @@ const PositionFormSheet: FC<Props> = ({ children, purpose, position }) => {
                 <SheetHeader>
                     <SheetTitle className="capitalize">{purpose} Your Position</SheetTitle>
                 </SheetHeader>
-                <Input value={data.name} onChange={(e) => setData('name', e.target.value)} placeholder="Name" />
+                <Input value={data.name} onChange={(e) => setData('name', e.target.value)} placeholder="Nama Posisi" />
                 <p className="text-sm text-neutral-400">isi bagian ini untuk membuat posisi</p>
 
                 <SheetFooter>

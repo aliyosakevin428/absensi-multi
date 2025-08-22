@@ -4,10 +4,21 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components
 import AppLayout from '@/layouts/app-layout';
 import { AbsentReason, Attendance, Event, User } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Folder, Trash2 } from 'lucide-react';
+import { Edit, Folder, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import AttendanceFormSheet from './components/attendance-form-sheet';
 
-const ListAttendance = ({ attendances }: { attendances: Attendance[]; users: User[]; event: Event[]; absent: AbsentReason[] }) => {
+const ListAttendance = ({
+    attendances,
+    users,
+    events,
+    absent,
+}: {
+    attendances: Attendance[];
+    users: User[];
+    events: Event[];
+    absent: AbsentReason[];
+}) => {
     const [cari, setCari] = useState('');
 
     return (
@@ -21,19 +32,19 @@ const ListAttendance = ({ attendances }: { attendances: Attendance[]; users: Use
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari Kegiatan" className="w-full" />
-                {/* <UserFormSheet purpose="create">
-                    <Button>Create new user</Button>
-                </UserFormSheet> */}
+                <AttendanceFormSheet purpose="create" users={users} events={events} absent={absent}>
+                    <Button>Create new Attendance</Button>
+                </AttendanceFormSheet>
             </div>
 
             <Table>
                 <TableHeader>
                     <TableRow>
                         <TableHead>No</TableHead>
-                        <TableHead>Nama Anggota</TableHead>
+                        <TableHead>Jumlah Anggota</TableHead>
                         <TableHead>Acara/Kegiatan</TableHead>
-                        <TableHead>Status Kegiatan</TableHead>
                         <TableHead>Jenis Kehadiran</TableHead>
+                        <TableHead>Status Kegiatan</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -42,22 +53,22 @@ const ListAttendance = ({ attendances }: { attendances: Attendance[]; users: Use
                         .map((attendance, index) => (
                             <TableRow key={attendance.id}>
                                 <TableHead>{index + 1}</TableHead>
-                                {/* <TableHead>{attendance.users.length} hadir</TableHead> */}
-                                <TableHead>{attendance.users?.map((user) => user.name).join(', ') || 'N/A'}</TableHead>
+                                <TableHead>{attendance.users.length} Anggota</TableHead>
+                                {/* <TableHead>{attendance.users?.map((user) => user.name).join(', ') || 'N/A'}</TableHead> */}
                                 <TableHead>{attendance.event?.name || 'N/A'}</TableHead>
-                                <TableHead>{attendance.status || 'N/A'}</TableHead>
                                 <TableHead>{attendance.absent_reason?.name || 'N/A'}</TableHead>
+                                <TableHead>{attendance.status || 'N/A'}</TableHead>
                                 <TableHead>
                                     <Button variant={'ghost'} size={'icon'} asChild>
                                         <Link href={route('attendance.show', attendance.id)}>
                                             <Folder />
                                         </Link>
                                     </Button>
-                                    {/* <UserFormSheet purpose="edit" user={user}>
+                                    <AttendanceFormSheet purpose="edit" attendance={attendance} users={users} events={events} absent={absent}>
                                         <Button variant={'ghost'} size={'icon'}>
                                             <Edit />
                                         </Button>
-                                    </UserFormSheet> */}
+                                    </AttendanceFormSheet>
                                     <Button variant={'ghost'} size={'icon'} asChild>
                                         <Link href={route('attendance.destroy', attendance.id)} method="delete">
                                             <Trash2 />

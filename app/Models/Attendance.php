@@ -12,9 +12,9 @@ class Attendance extends Model
 
     protected $fillable = [
         'user_id',
-        'event_id',
+        'events_id',
         'status',
-        'absent_reason_id',
+        'absent_reasons_id',
     ];
 
     public function users()

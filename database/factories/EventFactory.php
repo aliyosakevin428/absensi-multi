@@ -25,8 +25,10 @@ class EventFactory extends Factory
             $this->faker->firstName()."'s ".$this->faker->word().' Workshop',
             'Digital '.$this->faker->word().' Expo'
             ]),
-            'tanggal_kegiatan' => $this->faker->date($format = 'Y-m-d', $max= 'now'),
-            'waktu_kegiatan' => $this->faker->time($format ='H:i:s', $max = 'now'),
+            'waktu_kegiatan' => function () {
+            $date = $this->faker->dateTimeBetween('now', '+1 year');
+            return $date->format('Y-m-d H:i');
+            },
             'lokasi_kegiatan' => $this->faker->address(),
             'event_types_id' => EventType::pluck('id')->random(),
         ];

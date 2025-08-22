@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->date('tanggal_kegiatan');
-            $table->time('waktu_kegiatan');
+            $table->dateTime('waktu_kegiatan');
             $table->string('lokasi_kegiatan');
             $table->foreignId('event_types_id')->nullable()->constrained('event_types')->nullOnDelete();
             $table->timestamps();

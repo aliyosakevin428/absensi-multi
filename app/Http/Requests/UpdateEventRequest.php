@@ -11,7 +11,7 @@ class UpdateEventRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,18 @@ class UpdateEventRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'waktu_kegiatan' => 'required|date',
+            'lokasi_kegiatan' => 'required|string',
+            'event_types_id' => 'nullable|exists:event_types,id',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'name.required' => 'Nama Kegiatan harus diisi.',
+            'waktu_kegiatan.required' => 'Waktu Kegiatan harus diisi.',
+            'lokasi_kegiatan.required' => 'Lokasi Kegiatan harus diisi.',
         ];
     }
 }

@@ -76,7 +76,6 @@ export type EventType = {
 export type Event = {
     id: number;
     name: string;
-    tanggal_kegiatan: string;
     waktu_kegiatan: string;
     lokasi_kegiatan: string;
     event_types: EventType;

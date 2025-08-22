@@ -45,7 +45,7 @@ class AttendancePolicy
      */
     public function delete(User $user, Attendance $attendance): bool
     {
-        return false;
+        return true;
     }
 
     /**

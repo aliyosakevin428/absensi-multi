@@ -4,7 +4,7 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components
 import AppLayout from '@/layouts/app-layout';
 import { EventType } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Edit2, Folder, Trash2 } from 'lucide-react';
+import { Edit, Folder, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import EventTypeFormSheet from './components/eventType-form-sheet';
 
@@ -38,7 +38,7 @@ const ListEventType = ({ events = [] }: { events?: EventType[] }) => {
                 </TableHeader>
                 <TableBody>
                     {/* {(console.log('Events data:', events), '')} */}
-                    {(events ?? [])
+                    {events
                         .filter((event) => event.name.includes(cari))
                         .map((event, index) => (
                             <TableRow key={event.id}>
@@ -52,7 +52,7 @@ const ListEventType = ({ events = [] }: { events?: EventType[] }) => {
                                     </Button>
                                     <EventTypeFormSheet purpose="edit" eventType={event}>
                                         <Button variant={'ghost'} size={'icon'}>
-                                            <Edit2 />
+                                            <Edit />
                                         </Button>
                                     </EventTypeFormSheet>
                                     <Button variant={'ghost'} size={'icon'} asChild>

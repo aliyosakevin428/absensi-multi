@@ -11,7 +11,7 @@ type Props = PropsWithChildren & {
 };
 
 const EventTypeFormSheet: FC<Props> = ({ children, purpose, eventType }) => {
-    const { data, setData, post, put } = useForm({
+    const { data, setData, post, put, processing } = useForm({
         name: eventType?.name ?? '',
     });
 
@@ -34,7 +34,9 @@ const EventTypeFormSheet: FC<Props> = ({ children, purpose, eventType }) => {
                 <p className="text-sm text-neutral-400">isi bagian ini untuk membuat jenis acara </p>
 
                 <SheetFooter>
-                    <Button onClick={handleSubmit}>Simpan</Button>
+                    <Button onClick={handleSubmit} type="submit" disabled={processing}>
+                        {processing ? 'Menyimpan...' : 'Simpan'}
+                    </Button>
                     <SheetClose asChild>
                         <Button>Close</Button>
                     </SheetClose>

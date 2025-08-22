@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,10 +13,13 @@ class Event extends Model
 
     protected $fillable = [
         'name',
-        'tanggal_kegiatan',
         'waktu_kegiatan',
         'lokasi_kegiatan',
         'event_types_id',
+    ];
+
+    protected $casts = [
+        'waktu_kegiatan' => 'datetime:Y-m-d H:i:s'
     ];
 
     public function event_types()
@@ -27,4 +31,9 @@ class Event extends Model
     {
         return $this->hasMany(Attendance::class, 'attendance_id');
     }
+
+    // public function setWaktuKegiatanAttribute($value)
+    // {
+    //     $this->attributes['waktu_kegiatan'] = Carbon::parse($value)->format('Y-m-d H:i:s');
+    // }
 }
