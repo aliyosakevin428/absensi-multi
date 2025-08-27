@@ -7,6 +7,7 @@ import { Link } from '@inertiajs/react';
 import { Edit, Folder, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import EventTypeFormSheet from './components/eventType-form-sheet';
+import EventTypeDeleteDialog from './components/eventType-delete-dialog';
 
 const ListEventType = ({ events = [] }: { events?: EventType[] }) => {
     const [cari, setCari] = useState('');
@@ -22,6 +23,8 @@ const ListEventType = ({ events = [] }: { events?: EventType[] }) => {
                     href: route('event-type.index'),
                 },
             ]}
+            title="Tipe Acara"
+            description="Daftar tipe acara"
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari acara" className="w-full" />
@@ -55,11 +58,11 @@ const ListEventType = ({ events = [] }: { events?: EventType[] }) => {
                                             <Edit />
                                         </Button>
                                     </EventTypeFormSheet>
-                                    <Button variant={'ghost'} size={'icon'} asChild>
-                                        <Link href={route('event-type.destroy', event.id)} method="delete">
+                                    <EventTypeDeleteDialog event_type={event}>
+                                        <Button variant={'ghost'} size={'icon'}>
                                             <Trash2 />
-                                        </Link>
-                                    </Button>
+                                        </Button>
+                                    </EventTypeDeleteDialog>
                                 </TableHead>
                             </TableRow>
                         ))}

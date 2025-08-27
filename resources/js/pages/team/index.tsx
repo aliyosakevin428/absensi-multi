@@ -6,6 +6,7 @@ import { Team } from '@/types';
 import { Link } from '@inertiajs/react';
 import { Edit, Folder, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import TeamDeleteDialog from './components/team-delete-dialog';
 import TeamFormSheet from './components/team-form-sheet';
 
 const ListTeam = ({ teams }: { teams: Team[] }) => {
@@ -22,6 +23,8 @@ const ListTeam = ({ teams }: { teams: Team[] }) => {
                     href: route('team.index'),
                 },
             ]}
+            title="Team Settings"
+            description="Daftar tim yang terdaftar dalam sistem"
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari user" className="w-full" />
@@ -54,11 +57,11 @@ const ListTeam = ({ teams }: { teams: Team[] }) => {
                                             <Edit />
                                         </Button>
                                     </TeamFormSheet>
-                                    <Button variant={'ghost'} size={'icon'} asChild>
-                                        <Link href={route('team.destroy', team.id)} method="delete">
+                                    <TeamDeleteDialog team={team}>
+                                        <Button variant={'ghost'} size={'icon'}>
                                             <Trash2 />
-                                        </Link>
-                                    </Button>
+                                        </Button>
+                                    </TeamDeleteDialog>
                                 </TableHead>
                             </TableRow>
                         ))}

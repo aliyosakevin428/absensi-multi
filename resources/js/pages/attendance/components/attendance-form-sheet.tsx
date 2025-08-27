@@ -9,6 +9,7 @@ import { AbsentReason, Attendance, Event, User } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { FC, PropsWithChildren, useState } from 'react';
+import { toast } from 'sonner';
 
 type Props = PropsWithChildren & {
     attendance?: Attendance;
@@ -45,11 +46,13 @@ const AttendanceFormSheet: FC<Props> = ({ children, purpose, attendance, users =
     const handleSubmit = () => {
         if (purpose === 'create') {
             post(route('attendance.store'), {
-                onSuccess: () => setSheetOpen(false),
+                onSuccess: () => toast.success('Absensi Berhasil Ditambahkan'),
+                onFinish: () => setSheetOpen(false),
             });
         } else {
             put(route('attendance.update', attendance?.id), {
-                onSuccess: () => setSheetOpen(false),
+                onSuccess: () => toast.success('Absensi Berhasil Diubah'),
+                onFinish: () => setSheetOpen(false),
             });
         }
     };

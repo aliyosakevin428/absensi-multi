@@ -4,8 +4,9 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components
 import AppLayout from '@/layouts/app-layout';
 import { Position } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Edit2, Folder, Trash2 } from 'lucide-react';
+import { Edit, Folder, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import PositionDeleteDialog from './components/position-delete-dialog';
 import PositionFormSheet from './components/position-form-sheet';
 
 const ListPosition = ({ positions }: { positions: Position[] }) => {
@@ -18,10 +19,12 @@ const ListPosition = ({ positions }: { positions: Position[] }) => {
                     href: '/',
                 },
                 {
-                    title: 'User',
-                    href: route('user.index'),
+                    title: 'Position',
+                    href: route('position.index'),
                 },
             ]}
+            title="Position Settings"
+            description="Daftar Posisi yang terdaftar dalam sistem"
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari posisi" className="w-full" />
@@ -51,14 +54,14 @@ const ListPosition = ({ positions }: { positions: Position[] }) => {
                                     </Button>
                                     <PositionFormSheet purpose="edit" position={position}>
                                         <Button variant={'ghost'} size={'icon'}>
-                                            <Edit2 />
+                                            <Edit />
                                         </Button>
                                     </PositionFormSheet>
-                                    <Button variant={'ghost'} size={'icon'} asChild>
-                                        <Link href={route('position.destroy', position.id)} method="delete">
+                                    <PositionDeleteDialog position={position}>
+                                        <Button variant={'ghost'} size={'icon'}>
                                             <Trash2 />
-                                        </Link>
-                                    </Button>
+                                        </Button>
+                                    </PositionDeleteDialog>
                                 </TableHead>
                             </TableRow>
                         ))}

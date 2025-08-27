@@ -10,6 +10,7 @@ import { useForm, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { ChevronDownIcon } from 'lucide-react';
 import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 type Props = PropsWithChildren & {
     event?: Event;
@@ -71,11 +72,13 @@ const EventFormSheet: FC<Props> = ({ children, purpose, event }) => {
 
         if (purpose === 'create') {
             post(route('event.store'), {
-                onSuccess: () => setSheetOpen(false),
+                onSuccess: () => toast.success('Acara Berhasil Ditambahkan'),
+                onFinish: () => setSheetOpen(false),
             });
         } else {
             put(route('event.update', event?.id), {
-                onSuccess: () => setSheetOpen(false),
+                onSuccess: () => toast.success('Acara Berhasil Diubah'),
+                onFinish: () => setSheetOpen(false),
             });
         }
     };

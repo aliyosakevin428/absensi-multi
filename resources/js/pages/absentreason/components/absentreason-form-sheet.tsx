@@ -3,7 +3,8 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { AbsentReason } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, useState } from 'react';
+import { toast } from 'sonner';
 
 type Props = PropsWithChildren & {
     absent?: AbsentReason;
@@ -13,6 +14,8 @@ type Props = PropsWithChildren & {
 const UserFormSheet: FC<Props> = ({ children, purpose, absent }) => {
     // const { permissions } = usePage<SharedData>().props;
     // const permits = permissions as string[];
+
+    const [open, setOpen] = useState(false);
 
     const { data, setData, post, put } = useForm({
         name: absent?.name ?? '',
@@ -24,14 +27,24 @@ const UserFormSheet: FC<Props> = ({ children, purpose, absent }) => {
 
     const handleSubmit = () => {
         if (purpose === 'create') {
-            post(route('absent-reason.store'));
+            post(route('absent-reason.store'), {
+                onSuccess: () => {
+                    toast.success('Absent reason created successfully');
+                    setOpen(false);
+                },
+            });
         } else {
-            put(route('absent-reason.update', absent?.id));
+            put(route('absent-reason.update', absent?.id), {
+                onSuccess: () => {
+                    toast.success('Absent reason updated successfully');
+                    setOpen(false);
+                },
+            });
         }
     };
 
     return (
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger>{children}</SheetTrigger>
             <SheetContent>
                 <SheetHeader>

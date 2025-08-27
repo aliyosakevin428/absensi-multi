@@ -7,6 +7,7 @@ import { Link } from '@inertiajs/react';
 import { Edit, Folder, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import UserFormSheet from './components/user-form-sheet';
+import UserDeleteDialog from './components/user-delete-dialog';
 
 const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; positions: Position[] }) => {
     const [cari, setCari] = useState('');
@@ -30,6 +31,8 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                     href: route('user.index'),
                 },
             ]}
+            title="User Settings"
+            description="Daftar user yang terdaftar dalam sistem"
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari user" className="w-full" />
@@ -73,11 +76,11 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                                             <Edit />
                                         </Button>
                                     </UserFormSheet>
-                                    <Button variant={'ghost'} size={'icon'} asChild>
-                                        <Link href={route('user.destroy', user.id)} method="delete">
+                                    <UserDeleteDialog user={user}>
+                                        <Button variant={'ghost'} size={'icon'}>
                                             <Trash2 />
-                                        </Link>
-                                    </Button>
+                                        </Button>
+                                    </UserDeleteDialog>
                                 </TableHead>
                             </TableRow>
                         ))}

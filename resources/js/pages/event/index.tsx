@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { Edit, Folder, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import EventFormSheet from './components/event-form-sheet';
+import EventDeleteDialog from './components/event-delete-dialog';
 
 const ListEvent = ({ eventses }: { eventses: Event[]; event_types: EventType[] }) => {
     const [cari, setCari] = useState('');
@@ -19,6 +20,8 @@ const ListEvent = ({ eventses }: { eventses: Event[]; event_types: EventType[] }
                     href: route('event.index'),
                 },
             ]}
+            title="Acara"
+            description="Daftar acara yang terdaftar dalam sistem"
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari Kegiatan" className="w-full" />
@@ -58,11 +61,11 @@ const ListEvent = ({ eventses }: { eventses: Event[]; event_types: EventType[] }
                                             <Edit />
                                         </Button>
                                     </EventFormSheet>
-                                    <Button variant={'ghost'} size={'icon'} asChild>
-                                        <Link href={route('event.destroy', events.id)} method="delete">
+                                    <EventDeleteDialog event={events}>
+                                        <Button variant={'ghost'} size={'icon'}>
                                             <Trash2 />
-                                        </Link>
-                                    </Button>
+                                        </Button>
+                                    </EventDeleteDialog>
                                 </TableHead>
                             </TableRow>
                         ))}

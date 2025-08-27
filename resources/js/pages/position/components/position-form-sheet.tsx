@@ -3,7 +3,8 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Position } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, useState } from 'react';
+import { toast } from 'sonner';
 
 type Props = PropsWithChildren & {
     position?: Position;
@@ -11,20 +12,31 @@ type Props = PropsWithChildren & {
 };
 
 const PositionFormSheet: FC<Props> = ({ children, purpose, position }) => {
+    const [open, setOpen] = useState(false);
     const { data, setData, post, put } = useForm({
         name: position?.name ?? '',
     });
 
     const handleSubmit = () => {
         if (purpose === 'create') {
-            post(route('position.store'));
+            post(route('position.store'), {
+                onSuccess: () => {
+                    toast.success('Posisi berhasil dibuat');
+                    setOpen(false);
+                }
+            });
         } else {
-            put(route('position.update', position?.id));
+            put(route('position.update', position?.id), {
+                onSuccess: () => {
+                    toast.success('Posisi berhasil diubah');
+                    setOpen(false);
+                }
+            });
         }
     };
 
     return (
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger>{children}</SheetTrigger>
             <SheetContent>
                 <SheetHeader>

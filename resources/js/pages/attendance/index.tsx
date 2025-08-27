@@ -6,6 +6,7 @@ import { AbsentReason, Attendance, Event, User } from '@/types';
 import { Link } from '@inertiajs/react';
 import { Edit, Folder, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import AttendanceDeleteDialog from './components/attendance-delete-dialog';
 import AttendanceFormSheet from './components/attendance-form-sheet';
 
 const ListAttendance = ({
@@ -29,6 +30,8 @@ const ListAttendance = ({
                     href: route('attendance.index'),
                 },
             ]}
+            title="Kehadiran Anggota"
+            description="Daftar kehadiran anggota"
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari Kegiatan" className="w-full" />
@@ -69,11 +72,11 @@ const ListAttendance = ({
                                             <Edit />
                                         </Button>
                                     </AttendanceFormSheet>
-                                    <Button variant={'ghost'} size={'icon'} asChild>
-                                        <Link href={route('attendance.destroy', attendance.id)} method="delete">
+                                    <AttendanceDeleteDialog attendance={attendance}>
+                                        <Button variant={'ghost'} size={'icon'}>
                                             <Trash2 />
-                                        </Link>
-                                    </Button>
+                                        </Button>
+                                    </AttendanceDeleteDialog>
                                 </TableHead>
                             </TableRow>
                         ))}

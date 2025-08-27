@@ -6,6 +6,7 @@ import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, 
 import { Position, Team, User } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FC, PropsWithChildren, useState } from 'react';
+import { toast } from 'sonner';
 
 type Props = PropsWithChildren & {
     user?: User;
@@ -58,7 +59,8 @@ const UserFormSheet: FC<Props> = ({ children, purpose, user, teams, positions })
     const handleSubmit = () => {
         if (purpose === 'create') {
             post(route('user.store'), {
-                onSuccess: () => setSheetOpen(false),
+                onSuccess: () => toast.success('Anggota Berhasil Ditambahkan'),
+                onFinish: () => setSheetOpen(false),
             });
         } else {
             put(route('user.update', user?.id), {

@@ -3,7 +3,8 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { EventType } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, useState } from 'react';
+import { toast } from 'sonner';
 
 type Props = PropsWithChildren & {
     eventType?: EventType;
@@ -11,20 +12,26 @@ type Props = PropsWithChildren & {
 };
 
 const EventTypeFormSheet: FC<Props> = ({ children, purpose, eventType }) => {
+    const [open, setSheetOpen] = useState(false);
     const { data, setData, post, put, processing } = useForm({
         name: eventType?.name ?? '',
     });
 
     const handleSubmit = () => {
         if (purpose === 'create') {
-            post(route('event-type.store'));
+            post(route('event-type.store'), {
+                onSuccess: () => toast.success('Jenis Acara Berhasil Ditambahkan'),
+                onFinish: () => setSheetOpen(false),});
         } else {
-            put(route('event-type.update', eventType?.id));
+            put(route('event-type.update', eventType?.id), {
+                onSuccess: () => toast.success('Jenis Acara Berhasil Diubah'),
+                onFinish: () => setSheetOpen(false),
+            });
         }
     };
 
     return (
-        <Sheet>
+        <Sheet open={open} onOpenChange={setSheetOpen}>
             <SheetTrigger>{children}</SheetTrigger>
             <SheetContent>
                 <SheetHeader>

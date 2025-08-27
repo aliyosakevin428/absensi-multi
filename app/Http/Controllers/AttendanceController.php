@@ -57,7 +57,11 @@ class AttendanceController extends Controller
      */
     public function show(Attendance $attendance)
     {
-        //
+        $attendance->load(['users', 'event', 'absent_reason']);
+
+        return Inertia::render('attendance/show', [
+            'attendance' => $attendance,
+        ]);
     }
 
     /**
