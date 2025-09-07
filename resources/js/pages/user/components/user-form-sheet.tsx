@@ -64,7 +64,8 @@ const UserFormSheet: FC<Props> = ({ children, purpose, user, teams, positions })
             });
         } else {
             put(route('user.update', user?.id), {
-                onSuccess: () => setSheetOpen(false),
+                onSuccess: () => toast.success('Anggota Berhasil Diubah'),
+                onFinish: () => setSheetOpen(false),
             });
         }
     };

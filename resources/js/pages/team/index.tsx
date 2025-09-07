@@ -29,7 +29,7 @@ const ListTeam = ({ teams }: { teams: Team[] }) => {
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari user" className="w-full" />
                 <TeamFormSheet purpose="create">
-                    <Button>Buat Tim Baru</Button>
+                    <Button className="bg-blue-600 text-white hover:bg-blue-900">Buat Tim Baru</Button>
                 </TeamFormSheet>
             </div>
             <Table>
@@ -37,6 +37,7 @@ const ListTeam = ({ teams }: { teams: Team[] }) => {
                     <TableRow>
                         <TableHead>No</TableHead>
                         <TableHead>Name</TableHead>
+                        <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

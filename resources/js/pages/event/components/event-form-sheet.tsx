@@ -20,10 +20,8 @@ type Props = PropsWithChildren & {
 const EventFormSheet: FC<Props> = ({ children, purpose, event }) => {
     const [sheetOpen, setSheetOpen] = useState(false);
     const [calendarOpen, setCalendarOpen] = useState(false);
-    const [date, setDate] = useState<Date | undefined>(event?.waktu_kegiatan ? new Date(event.waktu_kegiatan) : new Date());
-    const [time, setTime] = useState<string>(
-        event?.waktu_kegiatan ? new Date(event.waktu_kegiatan).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '09:00',
-    );
+    const [date, setDate] = useState<Date>(event?.waktu_kegiatan ? new Date(event.waktu_kegiatan) : new Date());
+    const [time, setTime] = useState<string>(event?.waktu_kegiatan ? dayjs(event.waktu_kegiatan).format('HH:mm') : '09:00');
 
     const { event_types } = usePage<{ event_types: EventType[] }>().props;
 
@@ -42,6 +40,8 @@ const EventFormSheet: FC<Props> = ({ children, purpose, event }) => {
                 lokasi_kegiatan: '',
                 event_types_id: '',
             });
+            setDate(new Date());
+            setTime('09:00');
         } else if (event) {
             setData({
                 name: event.name,
@@ -49,6 +49,8 @@ const EventFormSheet: FC<Props> = ({ children, purpose, event }) => {
                 lokasi_kegiatan: event.lokasi_kegiatan,
                 event_types_id: event.event_types.id?.toString() ?? '',
             });
+            setDate(new Date(event.waktu_kegiatan));
+            setTime(dayjs(event.waktu_kegiatan).format('HH:mm'));
         }
     };
 
@@ -61,7 +63,7 @@ const EventFormSheet: FC<Props> = ({ children, purpose, event }) => {
             setData('waktu_kegiatan', dayjs(combinedDate).format('YYYY-MM-DD HH:mm:ss'));
         }
     }, [date, time, setData]);
-    console.log(data);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 

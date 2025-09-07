@@ -29,7 +29,7 @@ const ListPosition = ({ positions }: { positions: Position[] }) => {
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari posisi" className="w-full" />
                 <PositionFormSheet purpose="create">
-                    <Button>Buat Posisi Baru</Button>
+                    <Button className="bg-blue-600 text-white hover:bg-blue-900">Buat Posisi Baru</Button>
                 </PositionFormSheet>
             </div>
             <Table>
@@ -37,6 +37,7 @@ const ListPosition = ({ positions }: { positions: Position[] }) => {
                     <TableRow>
                         <TableHead>No</TableHead>
                         <TableHead>Name</TableHead>
+                        <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

@@ -29,7 +29,7 @@ const ListAbsentReason = ({ absentreasons }: { absentreasons: AbsentReason[] }) 
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari absent" className="w-full" />
                 <AbsentReasonFormSheet purpose="create">
-                    <Button>Create new Absent</Button>
+                    <Button className="bg-blue-600 text-white hover:bg-blue-900">Create new Absent</Button>
                 </AbsentReasonFormSheet>
             </div>
             <Table>
@@ -37,6 +37,7 @@ const ListAbsentReason = ({ absentreasons }: { absentreasons: AbsentReason[] }) 
                     <TableRow>
                         <TableHead>No</TableHead>
                         <TableHead>Name</TableHead>
+                        <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

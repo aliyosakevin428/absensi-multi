@@ -15,13 +15,23 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
         <AppLayout title="Detail Absensi" description="Detail absensi acara dihadiri oleh anggota">
             <Card>
                 <CardHeader>
-                    <CardTitle>{attendance.event?.name}</CardTitle>
-                    <CardDescription>
+                    <CardTitle className="flex py-2">{attendance.event?.name}</CardTitle>
+                    <CardDescription className="flex flex-col gap-2">
+                        <p>
+                            <strong>Tanggal Acara: </strong>
+                            {attendance.event?.waktu_kegiatan
+                                ? new Date(attendance.event.waktu_kegiatan).toLocaleString('id-ID', {
+                                      dateStyle: 'full',
+                                      timeStyle: 'short',
+                                  })
+                                : '-'}
+                        </p>
+
                         <p>
                             <strong>Status:</strong> {attendance.status}
                         </p>
                         <p>
-                            <strong>Alasan Absen:</strong> {attendance.absent_reason?.name ?? '-'}
+                            <strong>Keterangan Absen: </strong> {attendance.absent_reason?.name ?? '-'}
                         </p>
 
                         <div className="mt-4">
@@ -36,7 +46,7 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                 </CardHeader>
             </Card>
             <div className="flex justify-end">
-                <Button className="mt-4 rounded-md bg-white px-3 py-1.5 text-sm text-black transition-colors hover:bg-gray-400" asChild>
+                <Button className="mt-4 rounded-md bg-blue-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-blue-700" asChild>
                     <Link href={route('attendance.index')} method="get">
                         Kembali
                     </Link>

@@ -36,7 +36,7 @@ const ListAttendance = ({
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari Kegiatan" className="w-full" />
                 <AttendanceFormSheet purpose="create" users={users} events={events} absent={absent}>
-                    <Button>Create new Attendance</Button>
+                    <Button className="bg-blue-600 text-white hover:bg-blue-900">Buat Kehadiran Baru</Button>
                 </AttendanceFormSheet>
             </div>
 
@@ -48,6 +48,7 @@ const ListAttendance = ({
                         <TableHead>Acara/Kegiatan</TableHead>
                         <TableHead>Jenis Kehadiran</TableHead>
                         <TableHead>Status Kegiatan</TableHead>
+                        <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

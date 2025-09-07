@@ -78,7 +78,7 @@ const AttendanceFormSheet: FC<Props> = ({ children, purpose, attendance, users =
 
                 <Select value={data.events_id} onValueChange={(value) => setData('events_id', value)}>
                     <SelectTrigger>
-                        <SelectValue placeholder="Pilih Jenis Acara" />
+                        <SelectValue placeholder="Pilih Acara ..." />
                     </SelectTrigger>
                     <SelectContent>
                         {events?.map((event) => (

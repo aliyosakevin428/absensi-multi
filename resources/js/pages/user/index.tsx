@@ -6,8 +6,8 @@ import { Position, Team, User } from '@/types';
 import { Link } from '@inertiajs/react';
 import { Edit, Folder, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import UserFormSheet from './components/user-form-sheet';
 import UserDeleteDialog from './components/user-delete-dialog';
+import UserFormSheet from './components/user-form-sheet';
 
 const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; positions: Position[] }) => {
     const [cari, setCari] = useState('');
@@ -31,13 +31,13 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                     href: route('user.index'),
                 },
             ]}
-            title="User Settings"
-            description="Daftar user yang terdaftar dalam sistem"
+            title="Daftar Anggota"
+            description="Daftar anggota yang terdaftar dalam sistem"
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari user" className="w-full" />
                 <UserFormSheet purpose="create" positions={positions} teams={teams}>
-                    <Button>Create new user</Button>
+                    <Button className="bg-blue-600 text-white hover:bg-blue-900">Create new user</Button>
                 </UserFormSheet>
             </div>
             <Table>
@@ -49,7 +49,7 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                         <TableHead>Kontak</TableHead>
                         <TableHead>Team</TableHead>
                         <TableHead>Position</TableHead>
-                        <TableHead>action</TableHead>
+                        <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

@@ -7,8 +7,8 @@ import { Link } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { Edit, Folder, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import EventFormSheet from './components/event-form-sheet';
 import EventDeleteDialog from './components/event-delete-dialog';
+import EventFormSheet from './components/event-form-sheet';
 
 const ListEvent = ({ eventses }: { eventses: Event[]; event_types: EventType[] }) => {
     const [cari, setCari] = useState('');
@@ -26,7 +26,7 @@ const ListEvent = ({ eventses }: { eventses: Event[]; event_types: EventType[] }
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari Kegiatan" className="w-full" />
                 <EventFormSheet purpose="create">
-                    <Button>Buat Acara Baru</Button>
+                    <Button className="bg-blue-600 text-white hover:bg-blue-900">Buat Acara Baru</Button>
                 </EventFormSheet>
             </div>
             <Table>
@@ -37,6 +37,7 @@ const ListEvent = ({ eventses }: { eventses: Event[]; event_types: EventType[] }
                         <TableHead>Tanggal Kegiatan</TableHead>
                         <TableHead>Lokasi Kegiatan</TableHead>
                         <TableHead>Jenis Kegiatan</TableHead>
+                        <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

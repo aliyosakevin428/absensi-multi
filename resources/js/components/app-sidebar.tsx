@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, CalendarCheck2, Folder, LayoutGrid, PersonStanding, User2 } from 'lucide-react';
+import { BookCheck, BookOpen, CalendarArrowUp, Folder, Layers, LayoutGrid, LocateFixed, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -14,15 +14,28 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'User Settings',
+        title: 'Daftar Anggota',
         href: route('user.index'),
-        icon: PersonStanding,
+        icon: Users,
     },
     {
-        title: 'Team Settings',
+        title: 'Daftar Tim',
         href: route('team.index'),
-        icon: Folder,
+        icon: Layers,
     },
+    {
+        title: 'Acara / Kegiatan',
+        href: route('event.index'),
+        icon: LocateFixed,
+    },
+    {
+        title: 'Kehadiran Anggota',
+        href: route('attendance.index'),
+        icon: CalendarArrowUp,
+    },
+];
+
+const settingsNavItems: NavItem[] = [
     {
         title: 'Position Settings',
         href: route('position.index'),
@@ -31,22 +44,12 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Absent Reason Settings',
         href: route('absent-reason.index'),
-        icon: Folder,
+        icon: BookCheck,
     },
     {
         title: 'Event Type Settings',
         href: route('event-type.index'),
         icon: Folder,
-    },
-    {
-        title: 'Acara / Kegiatan',
-        href: route('event.index'),
-        icon: CalendarCheck2,
-    },
-    {
-        title: 'Kehadiran Anggota',
-        href: route('attendance.index'),
-        icon: User2,
     },
 ];
 
@@ -79,7 +82,17 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                {/* Bagian Menu Utama */}
+                <div className="mt-1 px-2">
+                    <p className="mb-2 px-2 text-xs font-semibold text-gray-500">Menu Utama</p>
+                    <NavMain items={mainNavItems} />
+                </div>
+
+                {/* Bagian Master Data / Settings */}
+                <div className="mt-6 px-2">
+                    <p className="mb-2 px-2 text-xs font-semibold text-gray-500">Settings</p>
+                    <NavMain items={settingsNavItems} />
+                </div>
             </SidebarContent>
 
             <SidebarFooter>
