@@ -10,10 +10,8 @@ type Props = {
 };
 
 const ShowEvent: FC<Props> = ({ event }) => {
-    // ambil status attendance pertama (atau null kalau kosong)
     const status = event.attendances?.[0]?.status || null;
 
-    // mapping status ke teks & warna
     let statusText = 'Belum ada data';
     let statusColor = 'text-gray-500';
 

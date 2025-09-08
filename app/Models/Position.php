@@ -19,4 +19,9 @@ class Position extends Model
     {
         return $this->belongsToMany(User::class, 'position_user');
     }
+
+    public function attendanceUsers()
+    {
+        return $this->hasMany(AttendanceUserPosition::class);
+    }
 }

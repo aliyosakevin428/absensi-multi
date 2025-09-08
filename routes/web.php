@@ -24,6 +24,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('position', PositionController::class);
     Route::put('/users/{user}/positions-team', [UserController::class, 'updatePositionsAndTeam'])
     ->name('users.updatePositionsAndTeam');
+    Route::post('/attendances/{attendance}/positions/all', [AttendanceController::class, 'updatePositionsAll'])
+    ->name('attendances.updatePositionsAll');
     Route::resource('absent-reason', AbsentReasonController::class);
     Route::resource('event-type', EventTypeController::class);
     Route::resource('event', EventController::class);

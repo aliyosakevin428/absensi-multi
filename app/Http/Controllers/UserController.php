@@ -97,23 +97,25 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'kontak'=> 'nullable|string',
-            'password' => 'nullable|min:6',
+            'password' => 'nullable|min:3',
             'team_id' => 'nullable|exists:teams,id',
             'position_ids' => 'nullable|array',
             'position_ids.*' => 'exists:positions,id',
         ]);
 
-        // Jika password dikirim, hash dulu
-        if (isset($data['password'])) {
+        // Kalau password dikirim, hash sekali saja
+        if (!empty($data['password'])) {
             $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']); // biar tidak overwrite dengan null
         }
 
         // Update user
-            $user->update([
+        $user->update([
             'name' => $data['name'],
             'email' => $data['email'],
             'kontak' => $data['kontak'] ?? $user->kontak,
-            'password' => isset($data['password']) ? bcrypt($data['password']) : $user->password,
+            'password' => $data['password'] ?? $user->password,
             'team_id' => $data['team_id'] ?? $user->team_id,
         ]);
 
@@ -121,7 +123,6 @@ class UserController extends Controller
         $user->positions()->sync($data['position_ids'] ?? []);
 
         return redirect()->route('users.index');
-
     }
 
     public function updatePositionsAndTeam(Request $request, User $user)
@@ -142,7 +143,7 @@ class UserController extends Controller
 
         return redirect()
             ->route('users.index')
-            ->with('success', 'Tim & posisi berhasil diperbarui');
+            ->with('success', 'Data Anggota berhasil diperbarui');
     }
 
 

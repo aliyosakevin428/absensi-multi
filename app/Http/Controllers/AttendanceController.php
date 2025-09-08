@@ -6,8 +6,10 @@ use App\Models\AbsentReason;
 use App\Models\Attendance;
 use App\Http\Requests\StoreAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
+use App\Models\AttendanceUserPosition;
 use App\Models\Event;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class AttendanceController extends Controller
@@ -57,7 +59,7 @@ class AttendanceController extends Controller
      */
     public function show(Attendance $attendance)
     {
-        $attendance->load(['users.positions', 'event', 'absent_reason']);
+        $attendance->load(['users.positions', 'event', 'absent_reason', 'users.attendance_user_positions']);
 
         return Inertia::render('attendance/show', [
             'attendance' => $attendance,
@@ -88,6 +90,39 @@ class AttendanceController extends Controller
         $attendance->users()->sync($validated['users_id']);
 
         return redirect()->route('attendance.index')->with('success', 'Attendance berhasil diperbarui');
+    }
+
+    public function updatePositionsAll(Request $request, Attendance $attendance)
+    {
+        $data = $request->validate([
+            'positions' => 'required|array',
+            'positions.*.*' => 'exists:positions,id',
+        ]);
+
+        foreach ($data['positions'] as $userId => $posIds) {
+            AttendanceUserPosition::where('attendance_id', $attendance->id)
+                ->where('user_id', $userId)
+                ->delete();
+
+            if (!empty($posIds)) {
+                $insertData = array_map(fn($posId) => [
+                    'attendance_id' => $attendance->id,
+                    'user_id' => $userId,
+                    'position_id' => $posId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ], $posIds);
+
+                AttendanceUserPosition::insert($insertData);
+            }
+        }
+
+        // Reload users + pivot terbaru
+        $attendance->load('users.positions', 'users.attendance_user_positions', 'event', 'absent_reason');
+
+        return inertia('attendance/show', [
+            'attendance' => $attendance,
+        ])->with('success', 'Absensi berhasil diperbarui');
     }
 
     /**

@@ -32,6 +32,11 @@ class Attendance extends Model
         return $this->belongsTo(AbsentReason::class, 'absent_reasons_id');
     }
 
+    public function userPositions()
+    {
+        return $this->hasMany(AttendanceUserPosition::class);
+    }
+
     // public function absent()
     // {
     //     return $this->belongsTo(AbsentReason::class, 'absent_reasons_id');

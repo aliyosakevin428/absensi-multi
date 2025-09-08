@@ -1,20 +1,27 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { Attendance } from '@/types';
-import { Link } from '@inertiajs/react';
-import { FC } from 'react';
+import { Attendance, User } from '@/types';
+import { Link, useForm } from '@inertiajs/react';
+import { FC, useState } from 'react';
+import { toast } from 'sonner';
+
+// Interface baru untuk user yang punya pivot attendance_user_positions
+interface UserWithAttendancePositions extends User {
+    attendance_user_positions?: { position_id: number }[];
+}
 
 type Props = {
-    attendance: Attendance;
+    attendance: Attendance & {
+        users: UserWithAttendancePositions[];
+    };
 };
 
 const ShowAttendance: FC<Props> = ({ attendance }) => {
+    // Status
     const status = attendance.status;
-
     let statusText = status;
     let statusColor = 'text-gray-500';
-
     switch (status) {
         case 'Rencana':
             statusText = 'Rencana';
@@ -33,6 +40,39 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
             statusColor = 'text-red-600';
             break;
     }
+
+    const [checkedPositions, setCheckedPositions] = useState<Record<number, number[]>>(() => {
+        const initial: Record<number, number[]> = {};
+        (attendance.users as UserWithAttendancePositions[]).forEach((user) => {
+            initial[user.id] = user.attendance_user_positions?.map((p) => p.position_id) ?? [];
+        });
+        return initial;
+    });
+
+    const handleCheckboxChange = (userId: number, positionId: number) => {
+        const current = checkedPositions[userId] || [];
+        const newPositions = current.includes(positionId) ? current.filter((id) => id !== positionId) : [...current, positionId];
+
+        setCheckedPositions((prev) => {
+            const updated = { ...prev, [userId]: newPositions };
+            form.setData('positions', updated); // update langsung ke form
+            return updated;
+        });
+    };
+
+    const form = useForm({
+        positions: {} as Record<number, number[]>,
+    });
+
+    const handleSaveAll = () => {
+        form.post(route('attendances.updatePositionsAll', attendance.id), {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success('Absensi berhasil diubah');
+                window.location.href = route('attendance.index');
+            },
+        });
+    };
 
     return (
         <AppLayout title="Detail Absensi" description="Detail absensi acara dihadiri oleh anggota">
@@ -55,11 +95,13 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                         </p>
 
                         <p>
-                            <strong>Status: </strong> <span className={`font-semibold ${statusColor}`}>{statusText}</span>
+                            <strong>Status: </strong>
+                            <span className={`font-semibold ${statusColor}`}>{statusText}</span>
                         </p>
 
                         <p>
-                            <strong>Keterangan Absen: </strong> {attendance.absent_reason?.name ?? '-'}
+                            <strong>Keterangan Absen: </strong>
+                            {attendance.absent_reason?.name ?? '-'}
                         </p>
                     </CardDescription>
                 </CardHeader>
@@ -80,7 +122,11 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                                         {user.positions?.length ? (
                                             user.positions.map((pos) => (
                                                 <label key={pos.id} className="flex items-center gap-2 rounded-md border p-2 hover:bg-gray-500">
-                                                    <input type="checkbox" className="h-4 w-4 accent-blue-500" />
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={checkedPositions[user.id]?.includes(pos.id) || false}
+                                                        onChange={() => handleCheckboxChange(user.id, pos.id)}
+                                                    />
                                                     <span className="text-sm">{pos.name}</span>
                                                 </label>
                                             ))
@@ -95,8 +141,12 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                 </div>
             </div>
 
-            <div className="flex justify-end">
-                <Button className="mt-4 rounded-md bg-blue-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-blue-700" asChild>
+            {/* Tombol Simpan Semua */}
+            <div className="mt-4 flex justify-end gap-2">
+                <Button className="rounded-md bg-blue-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-blue-700" onClick={handleSaveAll}>
+                    Simpan Semua
+                </Button>
+                <Button className="rounded-md bg-red-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-red-700" asChild>
                     <Link href={route('attendance.index')} method="get">
                         Kembali
                     </Link>
