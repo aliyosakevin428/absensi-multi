@@ -48,6 +48,7 @@ export interface User {
 export type Team = {
     id: number;
     name: string;
+    users: User[];
     created_at: string;
     updated_at: string;
 };
@@ -55,6 +56,7 @@ export type Team = {
 export type Position = {
     id: number;
     name: string;
+    users: User[];
     created_at: string;
     updated_at: string;
 };
@@ -69,6 +71,7 @@ export type AbsentReason = {
 export type EventType = {
     id: number;
     name: string;
+    events?: Event[];
     created_at: string;
     updated_at: string;
 };
@@ -79,6 +82,7 @@ export type Event = {
     waktu_kegiatan: string;
     lokasi_kegiatan: string;
     event_types: EventType;
+    attendances: Attendance[];
 };
 
 export type Attendance = {

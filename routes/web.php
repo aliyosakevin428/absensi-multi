@@ -18,10 +18,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
-    Route::resource('user', UserController::class);
+    Route::resource('users', UserController::class);
     // Route::post('user', [UserController::class, 'store'])->name('user.store');
     Route::resource('team', TeamController::class);
     Route::resource('position', PositionController::class);
+    Route::put('/users/{user}/positions-team', [UserController::class, 'updatePositionsAndTeam'])
+    ->name('users.updatePositionsAndTeam');
     Route::resource('absent-reason', AbsentReasonController::class);
     Route::resource('event-type', EventTypeController::class);
     Route::resource('event', EventController::class);

@@ -42,7 +42,11 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
-        //
+        $team->load(['users.positions']);
+
+        return Inertia::render('team/show', [
+            'team' => $team
+        ]);
     }
 
     /**

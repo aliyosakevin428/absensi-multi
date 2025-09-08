@@ -42,7 +42,11 @@ class PositionController extends Controller
      */
     public function show(Position $position)
     {
-        //
+         $position->load(['users.team']); // load users beserta tim mereka
+
+            return Inertia::render('position/show', [
+            'position' => $position,
+    ]);
     }
 
     /**

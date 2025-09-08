@@ -24,12 +24,12 @@ class Event extends Model
 
     public function event_types()
     {
-        return $this->belongsTo(EventType::class, 'event_types_id');
+        return $this->belongsTo(EventType::class, 'event_types_id', 'id');
     }
 
     public function attendances()
     {
-        return $this->hasMany(Attendance::class, 'attendance_id');
+        return $this->hasMany(Attendance::class, 'events_id', 'id');
     }
 
     // public function setWaktuKegiatanAttribute($value)

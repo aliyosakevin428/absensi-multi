@@ -24,7 +24,7 @@ const UserDeleteDialog: FC<Props> = ({ children, user }) => {
     const [open, setOpen] = useState(false);
 
     const handleDelete = () => {
-        router.delete(route('user.destroy', user.id), {
+        router.delete(route('users.destroy', user.id), {
             preserveScroll: true,
             onSuccess: () => {
                 toast.success('User deleted successfully');

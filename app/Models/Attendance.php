@@ -24,7 +24,7 @@ class Attendance extends Model
 
     public function event()
     {
-        return $this->belongsTo(Event::class, 'events_id');
+        return $this->belongsTo(Event::class, 'events_id', 'id');
     }
 
     public function absent_reason()

@@ -3,14 +3,27 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { Position, Team, User } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { Edit, Folder, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import UserDeleteDialog from './components/user-delete-dialog';
 import UserFormSheet from './components/user-form-sheet';
 
 const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; positions: Position[] }) => {
     const [cari, setCari] = useState('');
+
+    const { flash } = usePage().props as { flash?: { success?: string; error?: string } };
+
+    useEffect(() => {
+        if (flash?.success) {
+            toast.success(flash.success);
+        }
+        if (flash?.error) {
+            toast.error(flash.error);
+        }
+    }, [flash]);
+
     const formatPhone = (phone: string) => {
         const digits = phone.replace(/\D/g, ''); // hapus karakter non-digit
         if (digits.length === 12) return digits.replace(/(\d{4})(\d{4})(\d{4})/, '$1-$2-$3');
@@ -28,7 +41,7 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                 },
                 {
                     title: 'User',
-                    href: route('user.index'),
+                    href: route('users.index'),
                 },
             ]}
             title="Daftar Anggota"
@@ -67,7 +80,7 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                                 </TableHead>
                                 <TableHead>
                                     <Button variant={'ghost'} size={'icon'} asChild>
-                                        <Link href={route('user.show', user.id)}>
+                                        <Link href={route('users.show', user.id)}>
                                             <Folder />
                                         </Link>
                                     </Button>

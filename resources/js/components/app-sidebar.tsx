@@ -15,7 +15,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Daftar Anggota',
-        href: route('user.index'),
+        href: route('users.index'),
         icon: Users,
     },
     {
@@ -27,6 +27,11 @@ const mainNavItems: NavItem[] = [
         title: 'Acara / Kegiatan',
         href: route('event.index'),
         icon: LocateFixed,
+    },
+    {
+        title: 'Jenis Acara',
+        href: route('event-type.index'),
+        icon: Folder,
     },
     {
         title: 'Kehadiran Anggota',
@@ -45,11 +50,6 @@ const settingsNavItems: NavItem[] = [
         title: 'Absent Reason Settings',
         href: route('absent-reason.index'),
         icon: BookCheck,
-    },
-    {
-        title: 'Event Type Settings',
-        href: route('event-type.index'),
-        icon: Folder,
     },
 ];
 

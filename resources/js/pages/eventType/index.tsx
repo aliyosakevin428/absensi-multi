@@ -23,8 +23,8 @@ const ListEventType = ({ events = [] }: { events?: EventType[] }) => {
                     href: route('event-type.index'),
                 },
             ]}
-            title="Tipe Acara"
-            description="Daftar tipe acara"
+            title="Jenis Acara"
+            description="Daftar jenis acara yang tersedia dalam sistem"
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari acara" className="w-full" />

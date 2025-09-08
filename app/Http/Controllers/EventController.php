@@ -49,7 +49,11 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        //
+        $event->load(['attendances']);
+
+            return Inertia::render('event/show', [
+            'event' => $event,
+    ]);
     }
 
     /**

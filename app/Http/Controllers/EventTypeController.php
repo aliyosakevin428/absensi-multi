@@ -44,7 +44,11 @@ class EventTypeController extends Controller
      */
     public function show(EventType $eventType)
     {
-        //
+        $eventType->load(['events']); // eager load daftar event
+
+            return Inertia::render('eventType/show', [
+            'eventType' => $eventType,
+    ]);
     }
 
     /**

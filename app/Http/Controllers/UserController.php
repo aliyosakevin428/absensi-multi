@@ -61,7 +61,7 @@ class UserController extends Controller
             $user->positions()->sync($data['position_ids']);
         }
 
-        return redirect()->route('user.index');
+        return redirect()->route('users.index');
     }
 
     /**
@@ -69,9 +69,13 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        // return Inertia::render('user/show', [
-        //     'user' => $user
-        // ]);
+        $user->load(['team', 'positions']);
+
+        return Inertia::render('user/show', [
+            'user' => $user,
+            'teams' => Team::get(),
+            'positions' => Position::get(),
+        ]);
     }
 
     /**
@@ -116,9 +120,31 @@ class UserController extends Controller
         // Update posisi di pivot table
         $user->positions()->sync($data['position_ids'] ?? []);
 
-        return redirect()->route('user.index');
+        return redirect()->route('users.index');
 
     }
+
+    public function updatePositionsAndTeam(Request $request, User $user)
+    {
+        $data = $request->validate([
+            'team_id' => 'nullable|exists:teams,id',
+            'position_ids' => 'nullable|array',
+            'position_ids.*' => 'exists:positions,id',
+        ]);
+
+        // Update tim
+        $user->update([
+            'team_id' => $data['team_id'] ?? $user->team_id,
+        ]);
+
+        // Update posisi di pivot
+        $user->positions()->sync($data['position_ids'] ?? []);
+
+        return redirect()
+            ->route('users.index')
+            ->with('success', 'Tim & posisi berhasil diperbarui');
+    }
+
 
     /**
      * Remove the specified resource from storage.

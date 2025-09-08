@@ -49,7 +49,7 @@ const ListTeam = ({ teams }: { teams: Team[] }) => {
                                 <TableHead>{team.name}</TableHead>
                                 <TableHead>
                                     <Button variant={'ghost'} size={'icon'} asChild>
-                                        <Link href={route('user.show', team.id)}>
+                                        <Link href={route('team.show', team.id)}>
                                             <Folder />
                                         </Link>
                                     </Button>

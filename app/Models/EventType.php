@@ -17,6 +17,6 @@ class EventType extends Model
 
     public function events()
     {
-        return $this->hasMany(Event::class, 'event_id');
+        return $this->hasMany(Event::class, 'event_types_id', 'id');
     }
 }

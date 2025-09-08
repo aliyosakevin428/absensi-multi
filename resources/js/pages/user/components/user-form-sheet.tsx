@@ -58,12 +58,12 @@ const UserFormSheet: FC<Props> = ({ children, purpose, user, teams, positions })
 
     const handleSubmit = () => {
         if (purpose === 'create') {
-            post(route('user.store'), {
+            post(route('users.store'), {
                 onSuccess: () => toast.success('Anggota Berhasil Ditambahkan'),
                 onFinish: () => setSheetOpen(false),
             });
         } else {
-            put(route('user.update', user?.id), {
+            put(route('users.update', user?.id), {
                 onSuccess: () => toast.success('Anggota Berhasil Diubah'),
                 onFinish: () => setSheetOpen(false),
             });
