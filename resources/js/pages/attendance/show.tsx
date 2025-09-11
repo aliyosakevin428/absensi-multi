@@ -133,7 +133,7 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                                                 </label>
                                             ))
                                         ) : (
-                                            <p className="text-sm text-gray-400">Belum ada posisi</p>
+                                            <p className="text-sm text-gray-600">Belum ada posisi</p>
                                         )}
                                     </div>
                                 </div>
