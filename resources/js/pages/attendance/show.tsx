@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 
 // Interface baru untuk user yang punya pivot attendance_user_positions
 interface UserWithAttendancePositions extends User {
-    attendance_user_positions?: { position_id: number }[];
+    attendancePositions: { position_id: number }[];
 }
 
 type Props = {
@@ -43,8 +43,8 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
 
     const [checkedPositions, setCheckedPositions] = useState<Record<number, number[]>>(() => {
         const initial: Record<number, number[]> = {};
-        (attendance.users as UserWithAttendancePositions[]).forEach((user) => {
-            initial[user.id] = user.attendance_user_positions?.map((p) => p.position_id) ?? [];
+        attendance.users.forEach((user) => {
+            initial[user.id] = Array.isArray(user.attendancePositions) ? user.attendancePositions.map((p) => p.position_id) : [];
         });
         return initial;
     });
@@ -61,7 +61,7 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
     };
 
     const form = useForm({
-        positions: {} as Record<number, number[]>,
+        positions: checkedPositions,
     });
 
     const handleSaveAll = () => {
@@ -73,6 +73,8 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
             },
         });
     };
+
+    console.log(checkedPositions);
 
     return (
         <AppLayout title="Detail Absensi" description="Detail absensi acara dihadiri oleh anggota">
@@ -144,7 +146,7 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
             {/* Tombol Simpan Semua */}
             <div className="mt-4 flex justify-end gap-2">
                 <Button className="rounded-md bg-blue-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-blue-700" onClick={handleSaveAll}>
-                    Simpan Semua
+                    Simpan
                 </Button>
                 <Button className="rounded-md bg-red-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-red-700" asChild>
                     <Link href={route('attendance.index')} method="get">

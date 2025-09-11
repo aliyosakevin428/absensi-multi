@@ -37,10 +37,10 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
             breadcrumbs={[
                 {
                     title: 'Settings',
-                    href: '/',
+                    href: '/dashboard',
                 },
                 {
-                    title: 'User',
+                    title: 'Daftar Anggota',
                     href: route('users.index'),
                 },
             ]}

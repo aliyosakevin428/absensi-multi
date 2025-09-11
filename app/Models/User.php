@@ -61,12 +61,15 @@ class User extends Authenticatable
 
     public function attendances()
     {
-        return $this->belongsToMany(Attendance::class, 'attendance_user', 'user_id', 'attendance_id');
+    return $this->belongsToMany(Attendance::class, 'attendance_user', 'user_id', 'attendance_id')
+        ->withTimestamps();
     }
 
-    public function attendance_user_positions()
+    public function attendancePositions()
     {
-        return $this->hasMany(AttendanceUserPosition::class);
+        return $this->belongsToMany(Attendance::class, 'attendance_user_position', 'user_id', 'attendance_id')
+        ->withPivot('position_id')
+        ->withTimestamps();
     }
 }
 

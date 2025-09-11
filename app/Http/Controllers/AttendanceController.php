@@ -59,7 +59,24 @@ class AttendanceController extends Controller
      */
     public function show(Attendance $attendance)
     {
-        $attendance->load(['users.positions', 'event', 'absent_reason', 'users.attendance_user_positions']);
+            $attendance->load([
+            'event',
+            'absent_reason',
+            'users.positions', // daftar semua posisi yang dimiliki user
+            'users.attendancePositions' => function ($q) use ($attendance) {
+                // ambil hanya posisi dari absensi ini
+                $q->where('attendance_id', $attendance->id);
+            },
+        ]);
+
+        // pastikan attendancePositions selalu array (bukan collection kosong/null)
+        $attendance->users->each(function ($user) {
+            $user->attendancePositions = $user->attendancePositions->map(function ($pivot) {
+                return [
+                    'position_id' => $pivot->pivot->position_id,
+                ];
+            })->values(); // selalu array []
+        });
 
         return Inertia::render('attendance/show', [
             'attendance' => $attendance,
@@ -94,8 +111,9 @@ class AttendanceController extends Controller
 
     public function updatePositionsAll(Request $request, Attendance $attendance)
     {
-        $data = $request->validate([
+            $data = $request->validate([
             'positions' => 'required|array',
+            'positions.*' => 'array',
             'positions.*.*' => 'exists:positions,id',
         ]);
 
@@ -117,8 +135,18 @@ class AttendanceController extends Controller
             }
         }
 
-        // Reload users + pivot terbaru
-        $attendance->load('users.positions', 'users.attendance_user_positions', 'event', 'absent_reason');
+        $attendance->load([
+            'event',
+            'absent_reason',
+            'users' => function ($q) use ($attendance) {
+                $q->with([
+                    'positions',
+                    'attendancePositions' => function ($q2) use ($attendance) {
+                        $q2->where('attendance_id', $attendance->id);
+                    },
+                ]);
+            },
+        ]);
 
         return inertia('attendance/show', [
             'attendance' => $attendance,

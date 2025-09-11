@@ -33,14 +33,14 @@ const mainNavItems: NavItem[] = [
         href: route('event-type.index'),
         icon: Folder,
     },
+];
+
+const settingsNavItems: NavItem[] = [
     {
         title: 'Kehadiran Anggota',
         href: route('attendance.index'),
         icon: CalendarArrowUp,
     },
-];
-
-const settingsNavItems: NavItem[] = [
     {
         title: 'Position Settings',
         href: route('position.index'),

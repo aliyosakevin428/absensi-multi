@@ -19,7 +19,8 @@ class Attendance extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'attendance_user','attendance_id', 'user_id' );
+    return $this->belongsToMany(User::class, 'attendance_user', 'attendance_id', 'user_id')
+                ->withTimestamps();
     }
 
     public function event()
@@ -35,6 +36,13 @@ class Attendance extends Model
     public function userPositions()
     {
         return $this->hasMany(AttendanceUserPosition::class);
+    }
+
+    public function usersWithPositions()
+    {
+        return $this->belongsToMany(User::class, 'attendance_user_position', 'attendance_id', 'user_id')
+            ->withPivot('position_id')
+            ->withTimestamps();
     }
 
     // public function absent()
