@@ -202,7 +202,6 @@
   --shadow-2xl: 0 1px 3px 0px hsl(220 50% 5% / 0.8);
 }
 
-
 @layer base {
     * {
         @apply border-border;
