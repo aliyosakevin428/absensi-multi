@@ -31,10 +31,10 @@ const ListAttendance = ({
             actions={
                 <>
                     {permissions?.canAdd && (
-                        <AttendanceFormSheet purpose="create">
+                        <AttendanceFormSheet purpose="create" users={users} events={events} absent={absent}>
                             <Button>
                                 <PlusCircle />
-                                Create new Team
+                                Create new Attendance
                             </Button>
                         </AttendanceFormSheet>
                     )}

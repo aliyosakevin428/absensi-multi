@@ -46,7 +46,7 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
             actions={
                 <>
                     {permissions?.canAdd && (
-                        <UserFormSheet purpose="create">
+                        <UserFormSheet purpose="create" teams={teams} positions={positions}>
                             <Button>
                                 <PlusCircle />
                                 Create new Team
@@ -88,30 +88,30 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                                 </TableHead>
                                 <TableHead>
                                     {permissions?.canShow && (
-                                        <Button variant={'ghost'} size={'icon'} asChild>
+                                        <Button variant={'ghost'} size={'icon'}>
                                             <Link href={route('users.show', user.id)}>
                                                 <Folder />
                                             </Link>
                                         </Button>
                                     )}
-                                        {permissions?.canUpdate && (
-                                            <>
+                                    {permissions?.canUpdate && (
+                                        <>
                                             <UserFormSheet purpose="edit" user={user} positions={positions} teams={teams}>
                                                 <Button variant={'ghost'} size={'icon'}>
                                                     <Edit />
                                                 </Button>
                                             </UserFormSheet>
-                                            </>
-                                        )}
-                                        {permissions?.canDelete && (
-                                            <>
+                                        </>
+                                    )}
+                                    {permissions?.canDelete && (
+                                        <>
                                             <UserDeleteDialog user={user}>
                                                 <Button variant={'ghost'} size={'icon'}>
                                                     <Trash2 />
                                                 </Button>
                                             </UserDeleteDialog>
-                                            </>
-                                        )}
+                                        </>
+                                    )}
                                 </TableHead>
                             </TableRow>
                         ))}

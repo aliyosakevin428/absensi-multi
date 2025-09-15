@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import MultipleSelector from '@/components/ui/multiple-selector';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Position, Team, User } from '@/types';
+import { Position, Role, Team, User } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
 import { FC, PropsWithChildren, useState } from 'react';
 import { toast } from 'sonner';
@@ -19,7 +19,7 @@ type Props = PropsWithChildren & {
 };
 
 const UserFormSheet: FC<Props> = ({ children, purpose, user, teams, positions }) => {
-    const { roles } = usePage<{ roles: string[] }>().props;
+    const { roles } = usePage<{ roles: Role[] }>().props;
     // const permits = roles as string[];
     const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -124,15 +124,17 @@ const UserFormSheet: FC<Props> = ({ children, purpose, user, teams, positions })
                     }
                     placeholder="Pilih Posisi"
                 />
-                <FormControl label="Select role">
+                <FormControl label="Select role: ">
                     <div className="grid">
-                        {roles.map((r) => (
-                            <Label className="flex h-8 items-center gap-2">
+                        {roles.map((roleObj) => (
+                            <Label key={roleObj.id} className="flex h-8 items-center gap-2">
                                 <Checkbox
-                                    checked={data.roles?.includes(r)}
-                                    onCheckedChange={(c) => setData('roles', c ? [...data.roles, r] : data.roles.filter((role) => role !== r))}
+                                    checked={data.roles?.includes(roleObj.name)}
+                                    onCheckedChange={(c) =>
+                                        setData('roles', c ? [...data.roles, roleObj.name] : data.roles.filter((role) => role !== roleObj.name))
+                                    }
                                 />
-                                {r}
+                                {roleObj.name}
                             </Label>
                         ))}
                     </div>

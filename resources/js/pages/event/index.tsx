@@ -22,7 +22,7 @@ const ListEvent = ({ eventses }: { eventses: Event[]; event_types: EventType[] }
             actions={
                 <>
                     {permissions?.canAdd && (
-                        <EventFormSheet purpose="create">
+                        <EventFormSheet purpose="create" >
                             <Button>
                                 <PlusCircle />
                                 Create new Event

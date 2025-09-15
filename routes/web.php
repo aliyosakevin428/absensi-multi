@@ -31,6 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('absent-reason', AbsentReasonController::class);
     Route::resource('event-type', EventTypeController::class);
     Route::resource('event', EventController::class);
+    Route::get('/charts/events-bar', [EventController::class, 'chartBar'])->name('charts.events.bar');
     Route::resource('attendance', AttendanceController::class);
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);

@@ -159,17 +159,15 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
             </div>
 
             {/* Tombol Simpan Semua */}
-            {isSuperOrAdmin && (
-                <div className="mt-4 flex justify-end gap-2">
+            <div className="mt-4 flex justify-end gap-2">
+                {isSuperOrAdmin && (
                     <Button
                         className="rounded-md bg-blue-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-blue-700"
                         onClick={handleSaveAll}
                     >
                         Simpan
                     </Button>
-                </div>
-            )}
-            <div className="mt-4 flex justify-end gap-2">
+                )}
                 <Button className="rounded-md bg-red-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-red-700" asChild>
                     <Link href={route('attendance.index')} method="get">
                         Kembali
