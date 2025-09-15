@@ -16,9 +16,16 @@ class EventController extends Controller
     public function index()
     {
         // dd(Event::get()->toArray());
+        $this->pass('index event');
         return Inertia::render('event/index', [
             'eventses' => Event::with('event_types')->get(),
-            'event_types' => EventType::get()
+            'event_types' => EventType::get(),
+            'permissions' => [
+                'canAdd' => $this->user->can('create event'),
+                'canShow' => $this->user->can('show event'),
+                'canUpdate' => $this->user->can('update event'),
+                'canDelete' => $this->user->can('delete event'),
+            ]
         ]);
     }
 
@@ -36,6 +43,7 @@ class EventController extends Controller
     public function store(StoreEventRequest $request)
     {
         // dd($request->all());
+        $this->pass('create event');
         $data = $request->validated();
 
         Event::create($data);
@@ -49,6 +57,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
+        $this->pass('show event');
         $event->load(['attendances']);
 
             return Inertia::render('event/show', [
@@ -69,6 +78,8 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
+       $this->pass('update event');
+
        $event->update($request->validated());
 
     }
@@ -78,6 +89,8 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
+        $this->pass('delete event');
+        
         $event->delete();
     }
 }

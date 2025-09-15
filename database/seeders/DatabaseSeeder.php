@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TeamSeeder::class,
             PositionSeeder::class,
+            RoleSeeder::class,
             UserSeeder::class,
             AbsentReasonSeeder::class,
             EventTypeSeeder::class,

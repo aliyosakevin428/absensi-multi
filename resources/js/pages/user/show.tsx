@@ -10,13 +10,15 @@ type Props = {
     user: User;
     teams: Team[];
     positions: Position[];
+    roles: string[];
 };
 
-const ShowUser: FC<Props> = ({ user, teams, positions }) => {
+const ShowUser: FC<Props> = ({ user, teams, positions, roles }) => {
     // State form pakai inertia useForm
     const { data, setData, put, processing, errors } = useForm({
         position_ids: user.positions?.map((p) => p.id) || [],
         team_id: user.team?.id || null,
+        roles: user.roles || [],
     });
 
     // Toggle posisi pakai checkbox
@@ -41,6 +43,9 @@ const ShowUser: FC<Props> = ({ user, teams, positions }) => {
             preserveScroll: true,
             onError: () => {
                 toast.error('Gagal menyimpan perubahan');
+            },
+            onSuccess: () => {
+                toast.success('Perubahan berhasil disimpan');
             },
         });
     };
@@ -111,6 +116,32 @@ const ShowUser: FC<Props> = ({ user, teams, positions }) => {
                     <p className="text-sm text-gray-500">Belum ada tim</p>
                 )}
                 {errors.team_id && <p className="text-sm text-red-500">{errors.team_id}</p>}
+            </div>
+
+            {/* Card List Roles */}
+            <div className="mt-6">
+                <h2 className="mb-3 text-lg font-semibold">Roles</h2>
+                {roles?.length ? (
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        {roles.map((role) => (
+                            <Card key={role} className="flex items-center">
+                                <CardContent className="flex w-full items-center gap-3 p-4">
+                                    <input
+                                        type="checkbox"
+                                        checked={data.roles.includes(role)}
+                                        onChange={(e) =>
+                                            setData('roles', e.target.checked ? [...data.roles, role] : data.roles.filter((r) => r !== role))
+                                        }
+                                        className="h-4 w-4 accent-blue-500"
+                                    />
+                                    <span className="text-sm font-medium">{role}</span>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-sm text-gray-500">Belum ada role</p>
+                )}
             </div>
 
             {/* Tombol Aksi */}

@@ -2,9 +2,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { AbsentReason, Attendance, Event, User } from '@/types';
-import { Link } from '@inertiajs/react';
-import { Edit, Folder, Trash2 } from 'lucide-react';
+import { AbsentReason, Attendance, Event, SharedData, User } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
+import { Edit, Folder, PlusCircle, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import AttendanceDeleteDialog from './components/attendance-delete-dialog';
 import AttendanceFormSheet from './components/attendance-form-sheet';
@@ -22,22 +22,27 @@ const ListAttendance = ({
 }) => {
     const [cari, setCari] = useState('');
 
+    const { permissions } = usePage<SharedData>().props;
+
     return (
         <AppLayout
-            breadcrumbs={[
-                {
-                    title: 'Kehadiran Anggota',
-                    href: route('attendance.index'),
-                },
-            ]}
             title="Kehadiran Anggota"
             description="Daftar kehadiran anggota"
+            actions={
+                <>
+                    {permissions?.canAdd && (
+                        <AttendanceFormSheet purpose="create">
+                            <Button>
+                                <PlusCircle />
+                                Create new Team
+                            </Button>
+                        </AttendanceFormSheet>
+                    )}
+                </>
+            }
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari Kegiatan" className="w-full" />
-                <AttendanceFormSheet purpose="create" users={users} events={events} absent={absent}>
-                    <Button className="bg-blue-600 text-white hover:bg-blue-900">Buat Kehadiran Baru</Button>
-                </AttendanceFormSheet>
             </div>
 
             <Table>
@@ -63,21 +68,31 @@ const ListAttendance = ({
                                 <TableHead>{attendance.absent_reason?.name || 'N/A'}</TableHead>
                                 <TableHead>{attendance.status || 'N/A'}</TableHead>
                                 <TableHead>
-                                    <Button variant={'ghost'} size={'icon'} asChild>
-                                        <Link href={route('attendance.show', attendance.id)}>
-                                            <Folder />
-                                        </Link>
-                                    </Button>
-                                    <AttendanceFormSheet purpose="edit" attendance={attendance} users={users} events={events} absent={absent}>
-                                        <Button variant={'ghost'} size={'icon'}>
-                                            <Edit />
+                                    {permissions?.canShow && (
+                                        <Button variant={'ghost'} size={'icon'} asChild>
+                                            <Link href={route('attendance.show', attendance.id)}>
+                                                <Folder />
+                                            </Link>
                                         </Button>
-                                    </AttendanceFormSheet>
-                                    <AttendanceDeleteDialog attendance={attendance}>
-                                        <Button variant={'ghost'} size={'icon'}>
-                                            <Trash2 />
-                                        </Button>
-                                    </AttendanceDeleteDialog>
+                                    )}
+                                    {permissions?.canUpdate && (
+                                        <>
+                                            <AttendanceFormSheet purpose="edit" attendance={attendance} users={users} events={events} absent={absent}>
+                                                <Button variant={'ghost'} size={'icon'}>
+                                                    <Edit />
+                                                </Button>
+                                            </AttendanceFormSheet>
+                                        </>
+                                    )}
+                                    {permissions?.canDelete && (
+                                        <>
+                                            <AttendanceDeleteDialog attendance={attendance}>
+                                                <Button variant={'ghost'} size={'icon'}>
+                                                    <Trash2 />
+                                                </Button>
+                                            </AttendanceDeleteDialog>
+                                        </>
+                                    )}
                                 </TableHead>
                             </TableRow>
                         ))}

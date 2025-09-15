@@ -38,6 +38,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
+        $user = $request->user();
 
         return [
             ...parent::share($request),
@@ -45,7 +46,21 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
+                'roles' => $request->user()?->getRoleNames(),
             ],
+            'menus' => [
+                //settings menu
+                "user" => $user?->can('menu user'),
+                "role" => $user?->can('menu role'),
+                //dashboard menu
+                "team" => $user?->can('menu team'),
+                "position" => $user?->can('menu position'),
+                "event" => $user?->can('menu event'),
+                "eventType" => $user?->can('menu event type'),
+                "attendance" => $user?->can('menu attendance'),
+                'absentReason' => $user?->can('menu absent reason'),
+            ],
+
             'ziggy' => fn (): array => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

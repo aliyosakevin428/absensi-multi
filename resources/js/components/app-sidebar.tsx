@@ -3,72 +3,30 @@ import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { BookCheck, BookOpen, CalendarArrowUp, Folder, Layers, LayoutGrid, LocateFixed, Users } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import { BookCopy, BookOpen, Grid2X2, KeySquare, LayoutGrid, SwitchCamera, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: route('dashboard'),
         icon: LayoutGrid,
     },
-    {
-        title: 'Daftar Anggota',
-        href: route('users.index'),
-        icon: Users,
-    },
-    {
-        title: 'Daftar Tim',
-        href: route('team.index'),
-        icon: Layers,
-    },
-    {
-        title: 'Acara / Kegiatan',
-        href: route('event.index'),
-        icon: LocateFixed,
-    },
-    {
-        title: 'Jenis Acara',
-        href: route('event-type.index'),
-        icon: Folder,
-    },
+    // {
+    //     title: 'Documentation',
+    //     href: route('documentation'),
+    //     icon: BookOpen,
+    // },
 ];
 
-const settingsNavItems: NavItem[] = [
-    {
-        title: 'Kehadiran Anggota',
-        href: route('attendance.index'),
-        icon: CalendarArrowUp,
-    },
-    {
-        title: 'Position Settings',
-        href: route('position.index'),
-        icon: BookOpen,
-    },
-    {
-        title: 'Absent Reason Settings',
-        href: route('absent-reason.index'),
-        icon: BookCheck,
-    },
-];
-
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
+const footerNavItems: NavItem[] = [];
 
 export function AppSidebar() {
+    const { menus } = usePage<{ menus: Record<string, boolean> }>().props;
+
     return (
-        <Sidebar collapsible="icon" variant="inset">
+        <Sidebar collapsible="icon" variant="sidebar">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
@@ -81,18 +39,71 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
-                {/* Bagian Menu Utama */}
-                <div className="mt-1 px-2">
-                    <p className="mb-2 px-2 text-xs font-semibold text-gray-500">Menu Utama</p>
-                    <NavMain items={mainNavItems} />
-                </div>
-
-                {/* Bagian Master Data / Settings */}
-                <div className="mt-6 px-2">
-                    <p className="mb-2 px-2 text-xs font-semibold text-gray-500">Settings</p>
-                    <NavMain items={settingsNavItems} />
-                </div>
+            <SidebarContent className="space-y-4">
+                <NavMain
+                    items={[
+                        ...mainNavItems,
+                        {
+                            title: 'Acara/Kegiatan',
+                            href: route('event.index'),
+                            icon: BookOpen,
+                            available: menus.event,
+                        },
+                        {
+                            title: 'Daftar Anggota',
+                            href: route('users.index'),
+                            icon: Users,
+                            available: menus.user,
+                        },
+                    ]}
+                    label="Dashboard"
+                />
+                <NavMain
+                    items={[
+                        {
+                            title: 'Jenis Acara',
+                            href: route('event-type.index'),
+                            icon: Grid2X2,
+                            available: menus.eventType,
+                        },
+                        {
+                            title: 'Kehadiran',
+                            href: route('attendance.index'),
+                            icon: BookOpen,
+                            available: menus.attendance,
+                        },
+                        {
+                            title: 'Keterangan Kehadiran',
+                            href: route('absent-reason.index'),
+                            icon: BookCopy,
+                            available: menus.absentReason,
+                        },
+                    ]}
+                    label="Acara"
+                />
+                <NavMain
+                    items={[
+                        {
+                            title: 'Role & permission',
+                            href: route('role.index'),
+                            icon: KeySquare,
+                            available: menus.role,
+                        },
+                        {
+                            title: 'Position',
+                            href: route('position.index'),
+                            icon: SwitchCamera,
+                            available: menus.position,
+                        },
+                        {
+                            title: 'Teams & Members',
+                            href: route('team.index'),
+                            icon: SwitchCamera,
+                            available: menus.team,
+                        },
+                    ]}
+                    label="Settings"
+                />
             </SidebarContent>
 
             <SidebarFooter>

@@ -2,35 +2,37 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { Position } from '@/types';
-import { Link } from '@inertiajs/react';
-import { Edit, Folder, Trash2 } from 'lucide-react';
+import { Position, SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
+import { Edit, Folder, PlusCircle, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import PositionDeleteDialog from './components/position-delete-dialog';
 import PositionFormSheet from './components/position-form-sheet';
 
 const ListPosition = ({ positions }: { positions: Position[] }) => {
     const [cari, setCari] = useState('');
+
+    const { permissions } = usePage<SharedData>().props;
+
     return (
         <AppLayout
-            breadcrumbs={[
-                {
-                    title: 'Settings',
-                    href: '/',
-                },
-                {
-                    title: 'Position',
-                    href: route('position.index'),
-                },
-            ]}
             title="Position Settings"
             description="Daftar Posisi yang terdaftar dalam sistem"
+            actions={
+                <>
+                    {permissions?.canAdd && (
+                        <PositionFormSheet purpose="create">
+                            <Button>
+                                <PlusCircle />
+                                Create new Position
+                            </Button>
+                        </PositionFormSheet>
+                    )}
+                </>
+            }
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari posisi" className="w-full" />
-                <PositionFormSheet purpose="create">
-                    <Button className="bg-blue-600 text-white hover:bg-blue-900">Buat Posisi Baru</Button>
-                </PositionFormSheet>
             </div>
             <Table>
                 <TableHeader>
@@ -48,21 +50,31 @@ const ListPosition = ({ positions }: { positions: Position[] }) => {
                                 <TableHead>{index + 1}</TableHead>
                                 <TableHead>{position.name}</TableHead>
                                 <TableHead>
-                                    <Button variant={'ghost'} size={'icon'} asChild>
-                                        <Link href={route('position.show', position.id)}>
-                                            <Folder />
-                                        </Link>
-                                    </Button>
-                                    <PositionFormSheet purpose="edit" position={position}>
-                                        <Button variant={'ghost'} size={'icon'}>
-                                            <Edit />
+                                    {permissions?.canShow && (
+                                        <Button variant={'ghost'} size={'icon'} asChild>
+                                            <Link href={route('position.show', position.id)}>
+                                                <Folder />
+                                            </Link>
                                         </Button>
-                                    </PositionFormSheet>
-                                    <PositionDeleteDialog position={position}>
-                                        <Button variant={'ghost'} size={'icon'}>
-                                            <Trash2 />
-                                        </Button>
-                                    </PositionDeleteDialog>
+                                    )}
+                                    {permissions?.canUpdate && (
+                                        <>
+                                            <PositionFormSheet purpose="edit" position={position}>
+                                                <Button variant={'ghost'} size={'icon'}>
+                                                    <Edit />
+                                                </Button>
+                                            </PositionFormSheet>
+                                        </>
+                                    )}
+                                    {permissions?.canDelete && (
+                                        <>
+                                            <PositionDeleteDialog position={position}>
+                                                <Button variant={'ghost'} size={'icon'}>
+                                                    <Trash2 />
+                                                </Button>
+                                            </PositionDeleteDialog>
+                                        </>
+                                    )}
                                 </TableHead>
                             </TableRow>
                         ))}

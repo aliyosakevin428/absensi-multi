@@ -1,0 +1,120 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+
+class PermissionSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $permissionGroups = [
+            "settings" => [
+                "open adminer" => ['Superadmin'],
+            ],
+            "dashboard" => [
+                "dashboard" => ["*"],
+                "profile" => ["*"],
+                "documentation" => ["*"]
+            ],
+            "user" => [
+                "menu user" => ["*"],
+                "index user" => ["*"],
+                "show user" => ["*"],
+                "create user" => ["Admin", "Superadmin"],
+                "edit user" => ["Admin", "Superadmin"],
+                "update user" => ["Admin", "Superadmin"],
+                "delete user" => ["Admin", "Superadmin"],
+            ],
+            "team" => [
+                "menu team" => ["*"],
+                "index team" => ["*"],
+                "show team" => ["*"],
+                "create team" => ["Admin", "Superadmin"],
+                "edit team" => ["Admin", "Superadmin"],
+                "update team" => ["Admin", "Superadmin"],
+                "delete team" => ["Admin", "Superadmin"],
+            ],
+            "position" => [
+                "menu position" => ["*"],
+                "index position" => ["*"],
+                "show position" => ["*"],
+                "create position" => ["Admin", "Superadmin"],
+                "edit position" => ["Admin", "Superadmin"],
+                "update position" => ["Admin", "Superadmin"],
+                "delete position" => ["Admin", "Superadmin"],
+            ],
+            "role" => [
+                "menu role" => [ "Superadmin"],
+                "index role" => [ "Superadmin"],
+                "show role" => [ "Superadmin"],
+                "create role" => [ "Superadmin"],
+                "edit role" => ["Superadmin"],
+                "update role" => ["Superadmin"],
+                "delete role" => [ "Superadmin"],
+            ],
+            "event" => [
+                "menu event" => ["*"],
+                "index event" => ["*"],
+                "show event" => ["*"],
+                "create event" => ["Admin", "Superadmin"],
+                "edit event" => ["Admin", "Superadmin"],
+                "update event" => ["Admin", "Superadmin"],
+                "delete event" => ["Admin", "Superadmin"],
+            ],
+            "event type" => [
+                "menu event type" => ["*"],
+                "index event type" => ["*"],
+                "show event type" => ["*"],
+                "create event type" => ["Admin", "Superadmin"],
+                "edit event type" => ["Admin", "Superadmin"],
+                "update event type" => ["Admin", "Superadmin"],
+                "delete event type" => ["Admin", "Superadmin"],
+            ],
+            "attendance" => [
+                "menu attendance" => ["*"],
+                "index attendance" => ["*"],
+                "show attendance" => ["*"],
+                "create attendance" => ["Admin", "Superadmin"],
+                "edit attendance" => ["Admin", "Superadmin"],
+                "update attendance" => ["Admin", "Superadmin"],
+                "delete attendance" => ["Admin", "Superadmin"],
+            ],
+            "absent_reason" => [
+                "menu absent reason" => ["*"],
+                "index absent reason" => ["*"],
+                "show absent reason" => ["*"],
+                "create absent reason" => ["Admin", "Superadmin"],
+                "edit absent reason" => ["Admin", "Superadmin"],
+                "update absent reason" => ["Admin", "Superadmin"],
+                "delete absent reason" => ["Admin", "Superadmin"],
+            ]
+        ];
+
+        foreach ($permissionGroups as $group => $permissions) {
+            foreach ($permissions as $permissionName => $roles) {
+                $permission = Permission::updateOrCreate([
+                    'name'  => $permissionName,
+                    'group' => $group,
+                ], []);
+
+                if ($roles === ["*"]) {
+                    $roles = Role::all()->pluck('name')->toArray();
+                }
+
+                foreach ($roles as $roleName) {
+                    $role = Role::where('name', $roleName)->first();
+                    if ($role) {
+                        $role->givePermissionTo($permission);
+                    }
+                }
+            }
+        }
+    }
+}

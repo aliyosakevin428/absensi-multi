@@ -14,8 +14,16 @@ class AbsentReasonController extends Controller
      */
     public function index()
     {
+        $this->pass('index absentreason');
+
         return Inertia::render('absentreason/index', [
             'absentreasons' => AbsentReason::get(),
+            'permissions' => [
+                'canAdd' => $this->user->can('create absentreason'),
+                'canShow' => $this->user->can('show absentreason'),
+                'canUpdate' => $this->user->can('update absentreason'),
+                'canDelete' => $this->user->can('delete absentreason'),
+            ]
         ]);
     }
 
@@ -32,6 +40,8 @@ class AbsentReasonController extends Controller
      */
     public function store(StoreAbsentReasonRequest $request)
     {
+        $this->pass('create absentreason');
+
         $data = $request->validated();
 
         AbsentReason::create($data);
@@ -42,7 +52,11 @@ class AbsentReasonController extends Controller
      */
     public function show(AbsentReason $absentReason)
     {
-        //
+        $this->pass('show absentreason');
+
+        return Inertia::render('absentreason/show', [
+            'absentreason' => $absentReason,
+        ]);
     }
 
     /**
@@ -58,6 +72,8 @@ class AbsentReasonController extends Controller
      */
     public function update(UpdateAbsentReasonRequest $request, AbsentReason $absentReason)
     {
+        $this->pass('update absentreason');
+
         $data = $request->validated();
 
         $absentReason->update($data);
@@ -68,6 +84,8 @@ class AbsentReasonController extends Controller
      */
     public function destroy(AbsentReason $absentReason)
     {
+        $this->pass('delete absentreason');
+        
         $absentReason->delete();
     }
 }

@@ -20,11 +20,19 @@ class AttendanceController extends Controller
     public function index()
     {
         // dd(Attendance::with('users', 'events', 'absent_reasons')->get()->toArray());
+        $this->pass('index attendance');
+
         return Inertia::render('attendance/index', [
             'attendances' => Attendance::with('users', 'event', 'absent_reason')->get(),
             'users' => User::get(),
             'events' => Event::get(),
             'absent' => AbsentReason::get(),
+            'permissions' => [
+                'canAdd' => $this->user->can('create attendance'),
+                'canShow' => $this->user->can('show attendance'),
+                'canUpdate' => $this->user->can('update attendance'),
+                'canDelete' => $this->user->can('delete attendance'),
+            ]
         ]);
     }
 
@@ -41,6 +49,8 @@ class AttendanceController extends Controller
      */
     public function store(StoreAttendanceRequest $request)
     {
+        $this->pass('create attendance');
+
         $validated = $request->validated();
 
         $attendance = Attendance::create([
@@ -59,6 +69,8 @@ class AttendanceController extends Controller
      */
     public function show(Attendance $attendance)
     {
+        $this->pass('show attendance');
+
             $attendance->load([
             'event',
             'absent_reason',
@@ -96,6 +108,8 @@ class AttendanceController extends Controller
      */
     public function update(UpdateAttendanceRequest $request, Attendance $attendance)
     {
+        $this->pass('update attendance');
+
         $validated = $request->validated();
 
         $attendance->update([
@@ -158,6 +172,8 @@ class AttendanceController extends Controller
      */
     public function destroy(Attendance $attendance)
     {
+        $this->pass('delete attendance');
+        
         $attendance->delete();
     }
 }

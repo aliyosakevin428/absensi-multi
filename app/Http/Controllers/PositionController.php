@@ -14,8 +14,16 @@ class PositionController extends Controller
      */
     public function index()
     {
+        $this->pass('index position');
+
         return Inertia::render('position/index', [
             'positions' => Position::get(),
+            'permissions' => [
+                'canAdd' => $this->user->can('create position'),
+                'canShow' => $this->user->can('show position'),
+                'canUpdate' => $this->user->can('update position'),
+                'canDelete' => $this->user->can('delete position'),
+            ]
         ]);
     }
 
@@ -32,6 +40,8 @@ class PositionController extends Controller
      */
     public function store(StorePositionRequest $request)
     {
+        $this->pass('create position');
+
         $data = $request->validated();
 
         Position::create($data);
@@ -42,7 +52,9 @@ class PositionController extends Controller
      */
     public function show(Position $position)
     {
-         $position->load(['users.team']); // load users beserta tim mereka
+        $this->pass('show position');
+
+        $position->load(['users.team']); // load users beserta tim mereka
 
             return Inertia::render('position/show', [
             'position' => $position,
@@ -62,6 +74,8 @@ class PositionController extends Controller
      */
     public function update(UpdatePositionRequest $request, Position $position)
     {
+        $this->pass('update position');
+
         $data = $request->validated();
 
         $position->update($data);
@@ -72,6 +86,8 @@ class PositionController extends Controller
      */
     public function destroy(Position $position)
     {
+        $this->pass('delete position');
+        
         $position->delete();
     }
 }

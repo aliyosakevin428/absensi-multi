@@ -2,16 +2,23 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { Position, Team, User } from '@/types';
+import { Position, SharedData, Team, User } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Edit, Folder, Trash2 } from 'lucide-react';
+import { Edit, Folder, PlusCircle, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import UserDeleteDialog from './components/user-delete-dialog';
 import UserFormSheet from './components/user-form-sheet';
 
+// type Props = {
+//     users: User[];
+//     teams: Team[];
+//     positions: Position[];
+// }
 const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; positions: Position[] }) => {
     const [cari, setCari] = useState('');
+
+    const { permissions } = usePage<SharedData>().props;
 
     const { flash } = usePage().props as { flash?: { success?: string; error?: string } };
 
@@ -34,24 +41,23 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
     console.log(users);
     return (
         <AppLayout
-            breadcrumbs={[
-                {
-                    title: 'Settings',
-                    href: '/dashboard',
-                },
-                {
-                    title: 'Daftar Anggota',
-                    href: route('users.index'),
-                },
-            ]}
             title="Daftar Anggota"
             description="Daftar anggota yang terdaftar dalam sistem"
+            actions={
+                <>
+                    {permissions?.canAdd && (
+                        <UserFormSheet purpose="create">
+                            <Button>
+                                <PlusCircle />
+                                Create new Team
+                            </Button>
+                        </UserFormSheet>
+                    )}
+                </>
+            }
         >
             <div className="flex gap-4">
                 <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari user" className="w-full" />
-                <UserFormSheet purpose="create" positions={positions} teams={teams}>
-                    <Button className="bg-blue-600 text-white hover:bg-blue-900">Create new user</Button>
-                </UserFormSheet>
             </div>
             <Table>
                 <TableHeader>
@@ -61,6 +67,7 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                         <TableHead>Email</TableHead>
                         <TableHead>Kontak</TableHead>
                         <TableHead>Team</TableHead>
+                        <TableHead>Roles</TableHead>
                         <TableHead>Position</TableHead>
                         <TableHead>Actions</TableHead>
                     </TableRow>
@@ -75,25 +82,36 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                                 <TableHead>{user.email || 'N/A'}</TableHead>
                                 <TableHead>{user.kontak ? formatPhone(user.kontak) : 'N/A'}</TableHead>
                                 <TableHead>{user.team?.name || 'N/A'}</TableHead>
+                                <TableHead>{user.roles?.join(', ') || 'N/A'}</TableHead>
                                 <TableHead>
                                     {user.positions && user.positions.length > 0 ? user.positions.map((p) => p.name).join(', ') : 'N/A'}
                                 </TableHead>
                                 <TableHead>
-                                    <Button variant={'ghost'} size={'icon'} asChild>
-                                        <Link href={route('users.show', user.id)}>
-                                            <Folder />
-                                        </Link>
-                                    </Button>
-                                    <UserFormSheet purpose="edit" user={user} positions={positions} teams={teams}>
-                                        <Button variant={'ghost'} size={'icon'}>
-                                            <Edit />
+                                    {permissions?.canShow && (
+                                        <Button variant={'ghost'} size={'icon'} asChild>
+                                            <Link href={route('users.show', user.id)}>
+                                                <Folder />
+                                            </Link>
                                         </Button>
-                                    </UserFormSheet>
-                                    <UserDeleteDialog user={user}>
-                                        <Button variant={'ghost'} size={'icon'}>
-                                            <Trash2 />
-                                        </Button>
-                                    </UserDeleteDialog>
+                                    )}
+                                        {permissions?.canUpdate && (
+                                            <>
+                                            <UserFormSheet purpose="edit" user={user} positions={positions} teams={teams}>
+                                                <Button variant={'ghost'} size={'icon'}>
+                                                    <Edit />
+                                                </Button>
+                                            </UserFormSheet>
+                                            </>
+                                        )}
+                                        {permissions?.canDelete && (
+                                            <>
+                                            <UserDeleteDialog user={user}>
+                                                <Button variant={'ghost'} size={'icon'}>
+                                                    <Trash2 />
+                                                </Button>
+                                            </UserDeleteDialog>
+                                            </>
+                                        )}
                                 </TableHead>
                             </TableRow>
                         ))}

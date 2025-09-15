@@ -5,17 +5,35 @@ namespace App\Http\Controllers;
 use App\Models\Team;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 
 class TeamController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $this->pass('index team');
+
+        $data = Team::query()
+                    // ->with(['roles'])
+                    ->when($request->name, function($q, $v){
+                        $q->where('name', $v);
+                    });
         return Inertia::render('team/index', [
-            'teams' => Team::get(),
+            'teams' => $data->get(),
+            'query' => $request->input(),
+            'permissions' => [
+                // 'canView' => $this->user->can('index team'),
+                'canAdd' => $this->user->can('create team'),
+                'canShow' => $this->user->can('show team'),
+                'canUpdate' => $this->user->can('update team'),
+                'canDelete' => $this->user->can('delete team'),
+            ]
         ]);
     }
 
@@ -32,8 +50,9 @@ class TeamController extends Controller
      */
     public function store(StoreTeamRequest $request)
     {
-        $data = $request->validated();
+        $this->pass('create team');
 
+        $data = $request->validated();
         Team::create($data);
     }
 
@@ -42,10 +61,12 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
+        $this->pass('show team');
+
         $team->load(['users.positions']);
 
         return Inertia::render('team/show', [
-            'team' => $team
+            'team' => $team,
         ]);
     }
 
@@ -54,7 +75,7 @@ class TeamController extends Controller
      */
     public function edit(Team $team)
     {
-        //
+        // Auth::user()->can('update', $team);
     }
 
     /**
@@ -62,8 +83,9 @@ class TeamController extends Controller
      */
     public function update(UpdateTeamRequest $request, Team $team)
     {
-        $data = $request->validated();
+        $this->pass('update team');
 
+        $data = $request->validated();
         $team->update($data);
     }
 
@@ -72,6 +94,8 @@ class TeamController extends Controller
      */
     public function destroy(Team $team)
     {
+        $this->pass('delete team');
+
         $team->delete();
     }
 }

@@ -6,32 +6,53 @@ use App\Models\Position;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // dd(auth()->user()->getRoleNames(), auth()->user()->getAllPermissions()->pluck('name'));
+        $this->pass('index user');
 
-        // return User::with('team', 'positions')->get()->toArray();
-        // dd(User::with('team', 'positions')->get()->toArray());
+            $users = User::query()
+            ->with(['team', 'positions', 'roles'])
+            ->withoutRole('superadmin') // exclude superadmin
+            ->when($request->role, fn($q, $v) =>
+                $q->role($v) // filter role
+            )
+            ->when($request->name, fn($q, $v) =>
+                $q->where('name', 'like', "%$v%") // filter by name
+            )
+            ->get()
+            ->map(fn($user) => [
+                'id'        => $user->id,
+                'name'      => $user->name,
+                'email'     => $user->email,
+                'kontak'    => $user->kontak,
+                'team'      => $user->team,
+                'positions' => $user->positions,
+                'roles'     => $user->getRoleNames()->toArray(),
+            ]);
+
         return Inertia::render('user/index', [
-            'users' => User::with('team', 'positions')->get(),
-            'teams' => Team::get(),
+            'users'     => $users,
+            'query'     => $request->input(),
+            'roles'     => Role::whereNot('name', "superadmin")->get(),
+            'teams'     => Team::get(),
             'positions' => Position::get(),
+            'permissions' => [
+                // 'canView' => $this->user->can('index user'),
+                'canAdd' => $this->user->can('create user'),
+                'canShow' => $this->user->can('show user'),
+                'canUpdate' => $this->user->can('update user'),
+                'canDelete' => $this->user->can('delete user'),
+            ]
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        // return Inertia::render('user/create');
     }
 
     /**
@@ -39,27 +60,72 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-            $data = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'kontak'=> 'nullable|string',
-            'password' => 'required|min:3',
-            'team_id' => 'nullable',
+        $this->pass('create user');
+        $data = $request->validate([
+            'name'         => 'required',
+            'email'        => 'required|email|unique:users,email',
+            'kontak'       => 'nullable|string',
+            'password'     => 'required|min:3',
+            'team_id'      => 'nullable|exists:teams,id',
             'position_ids' => 'nullable|array',
             'position_ids.*' => 'exists:positions,id',
-            ]);
+            'roles'        => 'array',
+            'roles.*'      => 'exists:roles,name',
+        ]);
 
-            $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'kontak' => $data['kontak'] ?? null,
+        $user = User::create([
+            'name'     => $data['name'],
+            'email'    => $data['email'],
+            'kontak'   => $data['kontak'] ?? null,
             'password' => bcrypt($data['password']),
-            'team_id' => $data['team_id'] ?? null,
-            ]);
+            'team_id'  => $data['team_id'] ?? null,
+        ]);
 
         if (!empty($data['position_ids'])) {
             $user->positions()->sync($data['position_ids']);
         }
+
+        if (!empty($data['roles'])) {
+            $user->syncRoles($data['roles']);
+        }
+
+        return redirect()->route('users.index');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, User $user)
+    {
+        $this->pass('update user');
+        $data = $request->validate([
+            'name'         => 'required',
+            'email'        => 'required|email|unique:users,email,' . $user->id,
+            'kontak'       => 'nullable|string',
+            'password'     => 'nullable|min:3',
+            'team_id'      => 'nullable|exists:teams,id',
+            'position_ids' => 'nullable|array',
+            'position_ids.*' => 'exists:positions,id',
+            'roles'        => 'array',
+        ]);
+
+        // Hash password hanya kalau dikirim
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        $user->update([
+            'name'     => $data['name'],
+            'email'    => $data['email'],
+            'kontak'   => $data['kontak'] ?? $user->kontak,
+            'password' => $data['password'] ?? $user->password,
+            'team_id'  => $data['team_id'] ?? $user->team_id,
+        ]);
+
+        $user->positions()->sync($data['position_ids'] ?? []);
+        $user->syncRoles($data['roles'] ?? []);
 
         return redirect()->route('users.index');
     }
@@ -69,89 +135,34 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $user->load(['team', 'positions']);
+        $this->pass('show user');
+        $user->load(['team', 'positions', 'roles']);
 
         return Inertia::render('user/show', [
-            'user' => $user,
-            'teams' => Team::get(),
+            'user' => [
+                'id'        => $user->id,
+                'name'      => $user->name,
+                'email'     => $user->email,
+                'kontak'    => $user->kontak,
+                'team'      => $user->team,
+                'positions' => $user->positions,
+                'roles'     => $user->getRoleNames()->toArray(),
+            ],
+            'teams'     => Team::get(),
             'positions' => Position::get(),
+            'roles'     => Role::whereNot('name', 'superadmin')->pluck('name'),
         ]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        // return Inertia::render('user/edit', [
-        //     'user' => $user
-        // ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $user)
-    {
-            $data = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'kontak'=> 'nullable|string',
-            'password' => 'nullable|min:3',
-            'team_id' => 'nullable|exists:teams,id',
-            'position_ids' => 'nullable|array',
-            'position_ids.*' => 'exists:positions,id',
-        ]);
-
-        // Kalau password dikirim, hash sekali saja
-        if (!empty($data['password'])) {
-            $data['password'] = bcrypt($data['password']);
-        } else {
-            unset($data['password']); // biar tidak overwrite dengan null
-        }
-
-        // Update user
-        $user->update([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'kontak' => $data['kontak'] ?? $user->kontak,
-            'password' => $data['password'] ?? $user->password,
-            'team_id' => $data['team_id'] ?? $user->team_id,
-        ]);
-
-        // Update posisi di pivot table
-        $user->positions()->sync($data['position_ids'] ?? []);
-
-        return redirect()->route('users.index');
-    }
-
-    public function updatePositionsAndTeam(Request $request, User $user)
-    {
-        $data = $request->validate([
-            'team_id' => 'nullable|exists:teams,id',
-            'position_ids' => 'nullable|array',
-            'position_ids.*' => 'exists:positions,id',
-        ]);
-
-        // Update tim
-        $user->update([
-            'team_id' => $data['team_id'] ?? $user->team_id,
-        ]);
-
-        // Update posisi di pivot
-        $user->positions()->sync($data['position_ids'] ?? []);
-
-        return redirect()
-            ->route('users.index')
-            ->with('success', 'Data Anggota berhasil diperbarui');
-    }
-
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
     {
+        $this->pass('delete user');
+
         $user->delete();
+
+        return redirect()->route('users.index');
     }
 }

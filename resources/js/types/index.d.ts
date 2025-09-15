@@ -3,6 +3,7 @@ import type { Config } from 'ziggy-js';
 
 export interface Auth {
     user: User;
+    roles: string[];
 }
 
 export interface BreadcrumbItem {
@@ -20,7 +21,10 @@ export interface NavItem {
     href: string;
     icon?: LucideIcon | null;
     isActive?: boolean;
+    available?: boolean;
 }
+
+export type FormPurpose = 'create' | 'edit' | 'duplicate';
 
 export interface SharedData {
     name: string;
@@ -28,6 +32,8 @@ export interface SharedData {
     auth: Auth;
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
+    permissions?: Record<string, boolean>;
+    settings?: Record<string, string>;
     [key: string]: unknown;
 }
 
@@ -39,6 +45,7 @@ export interface User {
     team: Team;
     positions: Position[];
     avatar?: string;
+    roles?: string[];
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
@@ -91,4 +98,20 @@ export type Attendance = {
     event: Event;
     status: string;
     absent_reason: AbsentReason;
+};
+
+export type Permission = {
+    id: number;
+    name: string;
+    group: string;
+    created_at: string;
+    updated_at: string;
+};
+
+export type Role = {
+    id: number;
+    name: string;
+    permissions: Permission[];
+    created_at: string;
+    updated_at: string;
 };

@@ -18,11 +18,15 @@ class UserSeeder extends Seeder
         User::factory(10)->create()->each(function($user){
             $positionId = Position::pluck('id')->random();
             $user->positions()->attach($positionId);
+
+            $user->assignRole('User');
         });
         // User::factory()->create([
-        User::factory()->create([
+        $admin = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $admin->assignRole('Admin');
     }
 }

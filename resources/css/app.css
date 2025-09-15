@@ -7,6 +7,149 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+:root {
+    --background: oklch(0.98 0.01 240); /* putih kebiruan */
+    --foreground: oklch(0.2 0.03 250); /* teks gelap kebiruan */
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.2 0.03 250);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.2 0.03 250);
+
+    --primary: oklch(0.6 0.2 250); /* biru terang utama */
+    --primary-foreground: oklch(0.98 0.01 240); /* teks kontras di atas biru */
+    --secondary: oklch(0.92 0.05 250); /* biru pucat */
+    --secondary-foreground: oklch(0.25 0.05 250);
+
+    --muted: oklch(0.95 0.01 240);
+    --muted-foreground: oklch(0.5 0.05 250);
+    --accent: oklch(0.9 0.1 250); /* aksen biru muda */
+    --accent-foreground: oklch(0.25 0.05 250);
+
+    --destructive: oklch(0.6 0.25 27.325);
+    --destructive-foreground: oklch(1 0 0);
+
+    --border: oklch(0.9 0.01 240);
+    --input: oklch(0.9 0.01 240);
+    --ring: oklch(0.65 0.15 250);
+
+    /* Chart palette (gradasi biru terang) */
+    --chart-1: oklch(0.75 0.2 250);
+    --chart-2: oklch(0.65 0.22 252);
+    --chart-3: oklch(0.55 0.22 255);
+    --chart-4: oklch(0.5 0.18 260);
+    --chart-5: oklch(0.45 0.15 265);
+
+    --sidebar: oklch(0.98 0.01 240);
+    --sidebar-foreground: oklch(0.25 0.05 250);
+    --sidebar-primary: oklch(0.6 0.2 250);
+    --sidebar-primary-foreground: oklch(0.98 0.01 240);
+    --sidebar-accent: oklch(0.92 0.05 250);
+    --sidebar-accent-foreground: oklch(0.25 0.05 250);
+    --sidebar-border: oklch(0.9 0.01 240);
+    --sidebar-ring: oklch(0.65 0.15 250);
+
+    --font-sans:
+        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+    --radius: 0.625rem;
+
+    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+
+    --tracking-normal: 0em;
+    --spacing: 0.25rem;
+}
+
+.dark {
+    --background: oklch(18% 0.05 260); /* biru gelap dasar */
+    --foreground: oklch(96% 0.01 260); /* teks terang putih kebiruan */
+
+    --card: oklch(22% 0.05 260); /* kartu sedikit lebih terang dari bg */
+    --card-foreground: oklch(96% 0.01 260);
+
+    --popover: oklch(20% 0.05 260);
+    --popover-foreground: oklch(96% 0.01 260);
+
+    --primary: oklch(65% 0.18 260); /* biru terang */
+    --primary-foreground: oklch(98% 0.01 260);
+
+    --secondary: oklch(28% 0.06 260); /* biru tua */
+    --secondary-foreground: oklch(90% 0.02 260);
+
+    --muted: oklch(25% 0.05 260);
+    --muted-foreground: oklch(70% 0.02 260);
+
+    --accent: oklch(40% 0.1 260); /* aksen biru medium */
+    --accent-foreground: oklch(96% 0.01 260);
+
+    --destructive: oklch(55% 0.2 25); /* merah untuk delete */
+    --destructive-foreground: oklch(98% 0.01 260);
+
+    --border: oklch(24% 0.04 260);
+    --input: oklch(26% 0.04 260);
+    --ring: oklch(55% 0.12 260);
+
+    /* Chart palette biru (gradasi) */
+    --chart-1: oklch(70% 0.15 260);
+    --chart-2: oklch(60% 0.14 265);
+    --chart-3: oklch(50% 0.12 270);
+    --chart-4: oklch(40% 0.1 275);
+    --chart-5: oklch(32% 0.08 280);
+
+    --sidebar: oklch(20% 0.05 260);
+    --sidebar-foreground: oklch(92% 0.02 260);
+    --sidebar-primary: oklch(55% 0.16 260);
+    --sidebar-primary-foreground: oklch(98% 0.01 260);
+    --sidebar-accent: oklch(30% 0.08 265);
+    --sidebar-accent-foreground: oklch(92% 0.02 260);
+    --sidebar-border: oklch(24% 0.04 260);
+    --sidebar-ring: oklch(55% 0.12 260);
+
+    --font-sans:
+        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+    --radius: 0.625rem;
+
+    --shadow-2xs: 0 1px 3px 0px hsl(220 50% 5% / 0.2);
+    --shadow-xs: 0 1px 3px 0px hsl(220 50% 5% / 0.3);
+    --shadow-sm: 0 1px 3px 0px hsl(220 50% 5% / 0.4), 0 1px 2px -1px hsl(220 50% 5% / 0.4);
+    --shadow: 0 1px 3px 0px hsl(220 50% 5% / 0.5), 0 1px 2px -1px hsl(220 50% 5% / 0.5);
+    --shadow-md: 0 1px 3px 0px hsl(220 50% 5% / 0.5), 0 2px 4px -1px hsl(220 50% 5% / 0.5);
+    --shadow-lg: 0 1px 3px 0px hsl(220 50% 5% / 0.6), 0 4px 6px -1px hsl(220 50% 5% / 0.6);
+    --shadow-xl: 0 1px 3px 0px hsl(220 50% 5% / 0.7), 0 8px 10px -1px hsl(220 50% 5% / 0.7);
+    --shadow-2xl: 0 1px 3px 0px hsl(220 50% 5% / 0.8);
+}
+
 @theme {
     --font-sans:
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -57,149 +200,6 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
-}
-
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-    *,
-    ::after,
-    ::before,
-    ::backdrop,
-    ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
-    }
-}
-
-:root {
-  --background: oklch(0.98 0.01 240); /* putih kebiruan */
-  --foreground: oklch(0.2 0.03 250); /* teks gelap kebiruan */
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.03 250);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.03 250);
-
-  --primary: oklch(0.6 0.2 250); /* biru terang utama */
-  --primary-foreground: oklch(0.98 0.01 240); /* teks kontras di atas biru */
-  --secondary: oklch(0.92 0.05 250); /* biru pucat */
-  --secondary-foreground: oklch(0.25 0.05 250);
-
-  --muted: oklch(0.95 0.01 240);
-  --muted-foreground: oklch(0.5 0.05 250);
-  --accent: oklch(0.9 0.1 250); /* aksen biru muda */
-  --accent-foreground: oklch(0.25 0.05 250);
-
-  --destructive: oklch(0.6 0.25 27.325);
-  --destructive-foreground: oklch(1 0 0);
-
-  --border: oklch(0.9 0.01 240);
-  --input: oklch(0.9 0.01 240);
-  --ring: oklch(0.65 0.15 250);
-
-  /* Chart palette (gradasi biru terang) */
-  --chart-1: oklch(0.75 0.2 250);
-  --chart-2: oklch(0.65 0.22 252);
-  --chart-3: oklch(0.55 0.22 255);
-  --chart-4: oklch(0.5 0.18 260);
-  --chart-5: oklch(0.45 0.15 265);
-
-  --sidebar: oklch(0.98 0.01 240);
-  --sidebar-foreground: oklch(0.25 0.05 250);
-  --sidebar-primary: oklch(0.6 0.2 250);
-  --sidebar-primary-foreground: oklch(0.98 0.01 240);
-  --sidebar-accent: oklch(0.92 0.05 250);
-  --sidebar-accent-foreground: oklch(0.25 0.05 250);
-  --sidebar-border: oklch(0.9 0.01 240);
-  --sidebar-ring: oklch(0.65 0.15 250);
-
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-
-  --radius: 0.625rem;
-
-  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
-  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
-  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
-  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-
-  --tracking-normal: 0em;
-  --spacing: 0.25rem;
-}
-
-
-.dark {
-  --background: oklch(18% 0.05 260); /* biru gelap dasar */
-  --foreground: oklch(96% 0.01 260); /* teks terang putih kebiruan */
-
-  --card: oklch(22% 0.05 260); /* kartu sedikit lebih terang dari bg */
-  --card-foreground: oklch(96% 0.01 260);
-
-  --popover: oklch(20% 0.05 260);
-  --popover-foreground: oklch(96% 0.01 260);
-
-  --primary: oklch(65% 0.18 260); /* biru terang */
-  --primary-foreground: oklch(98% 0.01 260);
-
-  --secondary: oklch(28% 0.06 260); /* biru tua */
-  --secondary-foreground: oklch(90% 0.02 260);
-
-  --muted: oklch(25% 0.05 260);
-  --muted-foreground: oklch(70% 0.02 260);
-
-  --accent: oklch(40% 0.1 260); /* aksen biru medium */
-  --accent-foreground: oklch(96% 0.01 260);
-
-  --destructive: oklch(55% 0.2 25); /* merah untuk delete */
-  --destructive-foreground: oklch(98% 0.01 260);
-
-  --border: oklch(24% 0.04 260);
-  --input: oklch(26% 0.04 260);
-  --ring: oklch(55% 0.12 260);
-
-  /* Chart palette biru (gradasi) */
-  --chart-1: oklch(70% 0.15 260);
-  --chart-2: oklch(60% 0.14 265);
-  --chart-3: oklch(50% 0.12 270);
-  --chart-4: oklch(40% 0.1 275);
-  --chart-5: oklch(32% 0.08 280);
-
-  --sidebar: oklch(20% 0.05 260);
-  --sidebar-foreground: oklch(92% 0.02 260);
-  --sidebar-primary: oklch(55% 0.16 260);
-  --sidebar-primary-foreground: oklch(98% 0.01 260);
-  --sidebar-accent: oklch(30% 0.08 265);
-  --sidebar-accent-foreground: oklch(92% 0.02 260);
-  --sidebar-border: oklch(24% 0.04 260);
-  --sidebar-ring: oklch(55% 0.12 260);
-
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-
-  --radius: 0.625rem;
-
-  --shadow-2xs: 0 1px 3px 0px hsl(220 50% 5% / 0.2);
-  --shadow-xs: 0 1px 3px 0px hsl(220 50% 5% / 0.3);
-  --shadow-sm: 0 1px 3px 0px hsl(220 50% 5% / 0.4), 0 1px 2px -1px hsl(220 50% 5% / 0.4);
-  --shadow: 0 1px 3px 0px hsl(220 50% 5% / 0.5), 0 1px 2px -1px hsl(220 50% 5% / 0.5);
-  --shadow-md: 0 1px 3px 0px hsl(220 50% 5% / 0.5), 0 2px 4px -1px hsl(220 50% 5% / 0.5);
-  --shadow-lg: 0 1px 3px 0px hsl(220 50% 5% / 0.6), 0 4px 6px -1px hsl(220 50% 5% / 0.6);
-  --shadow-xl: 0 1px 3px 0px hsl(220 50% 5% / 0.7), 0 8px 10px -1px hsl(220 50% 5% / 0.7);
-  --shadow-2xl: 0 1px 3px 0px hsl(220 50% 5% / 0.8);
 }
 
 @layer base {

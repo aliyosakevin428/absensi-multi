@@ -1,8 +1,19 @@
-export default function HeadingSmall({ title, description }: { title: string; description?: string }) {
+import { ReactNode } from 'react';
+
+type HeadingSmallProps = {
+    title: string;
+    description?: string;
+    actions?: ReactNode; // 👈 ini ditambah
+};
+
+export function HeadingSmall({ title, description, actions }: HeadingSmallProps) {
     return (
-        <header>
-            <h3 className="mb-0.5 text-base font-medium">{title}</h3>
-            {description && <p className="text-sm text-muted-foreground">{description}</p>}
-        </header>
+        <div className="flex items-center justify-between">
+            <div>
+                <h2>{title}</h2>
+                {description && <p>{description}</p>}
+            </div>
+            <div>{actions}</div> {/* 👈 render di sini */}
+        </div>
     );
 }

@@ -1,10 +1,13 @@
+import FormControl from '@/components/form-control';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import MultipleSelector from '@/components/ui/multiple-selector';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Position, Team, User } from '@/types';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { FC, PropsWithChildren, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -16,8 +19,8 @@ type Props = PropsWithChildren & {
 };
 
 const UserFormSheet: FC<Props> = ({ children, purpose, user, teams, positions }) => {
-    // const { permissions } = usePage<SharedData>().props;
-    // const permits = permissions as string[];
+    const { roles } = usePage<{ roles: string[] }>().props;
+    // const permits = roles as string[];
     const [sheetOpen, setSheetOpen] = useState(false);
 
     const { data, setData, post, put, processing } = useForm({
@@ -27,7 +30,7 @@ const UserFormSheet: FC<Props> = ({ children, purpose, user, teams, positions })
         kontak: user?.kontak ?? '',
         team_id: user?.team?.id ?? '',
         position_ids: user?.positions?.map((p) => p.id) ?? [], // array of numbers
-        // role: user?.role ?? '',
+        roles: user?.roles ?? [],
     });
 
     // if (!can(permits, 'user.create') || !can(permits, 'user.edit')) {
@@ -43,6 +46,7 @@ const UserFormSheet: FC<Props> = ({ children, purpose, user, teams, positions })
                 kontak: '',
                 team_id: '',
                 position_ids: [],
+                roles: [],
             });
         } else if (user) {
             setData({
@@ -52,9 +56,11 @@ const UserFormSheet: FC<Props> = ({ children, purpose, user, teams, positions })
                 kontak: user.kontak,
                 team_id: user.team?.id ?? '',
                 position_ids: user.positions?.map((p) => p.id) ?? [],
+                roles: user.roles ?? [],
             });
         }
     };
+    console.log(data);
 
     const handleSubmit = () => {
         if (purpose === 'create') {
@@ -118,15 +124,19 @@ const UserFormSheet: FC<Props> = ({ children, purpose, user, teams, positions })
                     }
                     placeholder="Pilih Posisi"
                 />
-                {/* <Select value={data.role} onValueChange={(value) => setData('role', value)}>
-                    <SelectTrigger>
-                        <SelectValue placeholder="Pilih role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="admin">Admin</SelectItem>
-                        <SelectItem value="user">User</SelectItem>
-                    </SelectContent>
-                </Select> */}
+                <FormControl label="Select role">
+                    <div className="grid">
+                        {roles.map((r) => (
+                            <Label className="flex h-8 items-center gap-2">
+                                <Checkbox
+                                    checked={data.roles?.includes(r)}
+                                    onCheckedChange={(c) => setData('roles', c ? [...data.roles, r] : data.roles.filter((role) => role !== r))}
+                                />
+                                {r}
+                            </Label>
+                        ))}
+                    </div>
+                </FormControl>
                 <SheetFooter>
                     <Button onClick={handleSubmit} type="submit" disabled={processing}>
                         {processing ? 'Menyimpan...' : 'Simpan'}

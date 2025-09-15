@@ -15,9 +15,17 @@ class EventTypeController extends Controller
     public function index()
     {
         // dd(EventType::get()->toArray());
+        $this->pass('index eventType');
 
         return Inertia::render('eventType/index', [
             'events' => EventType::get(),
+            'permissions' => [
+                'canAdd' => $this->user->can('create eventType'),
+                'canShow' => $this->user->can('show eventType'),
+                'canUpdate' => $this->user->can('update eventType'),
+                'canDelete' => $this->user->can('delete eventType'),
+                'canMenu' => $this->user->can('menu eventType'),
+            ]
         ]);
     }
 
@@ -34,6 +42,8 @@ class EventTypeController extends Controller
      */
     public function store(StoreEventTypeRequest $request)
     {
+        $this->pass('create eventType');
+
         $data = $request->validated();
 
         EventType::create($data);
@@ -44,6 +54,8 @@ class EventTypeController extends Controller
      */
     public function show(EventType $eventType)
     {
+        $this->pass('show eventType');
+
         $eventType->load(['events']); // eager load daftar event
 
             return Inertia::render('eventType/show', [
@@ -64,6 +76,8 @@ class EventTypeController extends Controller
      */
     public function update(UpdateEventTypeRequest $request, EventType $eventType)
     {
+        $this->pass('update eventType');
+
         $data = $request->validated();
 
         $eventType->update($data);
@@ -74,6 +88,8 @@ class EventTypeController extends Controller
      */
     public function destroy(EventType $eventType)
     {
+        $this->pass('delete eventType');
+
         $eventType->delete();
     }
 }

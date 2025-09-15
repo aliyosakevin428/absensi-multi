@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { Attendance, User } from '@/types';
-import { Link, useForm } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import { FC, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -17,7 +17,22 @@ type Props = {
     };
 };
 
+type AuthProps = {
+    auth: {
+        user: {
+            id: number;
+            name: string;
+            email: string;
+        } | null;
+        roles: string[];
+    };
+};
+
 const ShowAttendance: FC<Props> = ({ attendance }) => {
+    const { props } = usePage<AuthProps>();
+    const roles = props.auth?.roles || [];
+    const isSuperOrAdmin = roles.includes('Superadmin') || roles.includes('admin');
+
     // Status
     const status = attendance.status;
     let statusText = status;
@@ -144,10 +159,17 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
             </div>
 
             {/* Tombol Simpan Semua */}
+            {isSuperOrAdmin && (
+                <div className="mt-4 flex justify-end gap-2">
+                    <Button
+                        className="rounded-md bg-blue-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-blue-700"
+                        onClick={handleSaveAll}
+                    >
+                        Simpan
+                    </Button>
+                </div>
+            )}
             <div className="mt-4 flex justify-end gap-2">
-                <Button className="rounded-md bg-blue-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-blue-700" onClick={handleSaveAll}>
-                    Simpan
-                </Button>
                 <Button className="rounded-md bg-red-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-red-700" asChild>
                     <Link href={route('attendance.index')} method="get">
                         Kembali
