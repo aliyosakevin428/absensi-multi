@@ -37,6 +37,15 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+
+    public $appends = ['avatar'];
+
+    public function getAvatarAttribute()
+    {
+        return "https://api.dicebear.com/9.x/dylan/png?seed={$this->email}";
+    }
+    
+
     /**
      * Get the attributes that should be cast.
      *

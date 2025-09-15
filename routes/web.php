@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AbsentReasonController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventTypeController;
 use App\Http\Controllers\PermissionController;
@@ -17,9 +18,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('users', UserController::class);
     // Route::put('/users/{user}/details', [UserController::class, 'updateDetails'])->name('users.updateDetails');
     // Route::post('user', [UserController::class, 'store'])->name('user.store');
