@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookCopy, BookOpen, Grid2X2, KeySquare, LayoutGrid, SwitchCamera, Users } from 'lucide-react';
+import { BookCheckIcon, BookCopy, BookOpen, BookOpenCheck, Grid2X2, KeySquare, LayoutGrid, SwitchCamera, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -44,12 +44,6 @@ export function AppSidebar() {
                     items={[
                         ...mainNavItems,
                         {
-                            title: 'Acara/Kegiatan',
-                            href: route('event.index'),
-                            icon: BookOpen,
-                            available: menus.event,
-                        },
-                        {
                             title: 'Daftar Anggota',
                             href: route('users.index'),
                             icon: Users,
@@ -61,6 +55,12 @@ export function AppSidebar() {
                 <NavMain
                     items={[
                         {
+                            title: 'Acara/Kegiatan',
+                            href: route('event.index'),
+                            icon: BookOpen,
+                            available: menus.event,
+                        },
+                        {
                             title: 'Jenis Acara',
                             href: route('event-type.index'),
                             icon: Grid2X2,
@@ -69,7 +69,7 @@ export function AppSidebar() {
                         {
                             title: 'Kehadiran',
                             href: route('attendance.index'),
-                            icon: BookOpen,
+                            icon: BookOpenCheck,
                             available: menus.attendance,
                         },
                         {
@@ -98,7 +98,7 @@ export function AppSidebar() {
                         {
                             title: 'Teams & Members',
                             href: route('team.index'),
-                            icon: SwitchCamera,
+                            icon: BookCheckIcon,
                             available: menus.team,
                         },
                     ]}

@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { Position, Team, User } from '@/types';
-import { Link, useForm } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import { FC } from 'react';
 import { toast } from 'sonner';
 
@@ -13,6 +13,17 @@ type Props = {
     roles: string[];
 };
 
+type AuthProps = {
+    auth: {
+        user: {
+            id: number;
+            name: string;
+            email: string;
+        } | null;
+        roles: string[];
+    };
+};
+
 const ShowUser: FC<Props> = ({ user, teams, positions, roles }) => {
     // State form pakai inertia useForm
     const { data, setData, put, processing, errors } = useForm({
@@ -20,6 +31,10 @@ const ShowUser: FC<Props> = ({ user, teams, positions, roles }) => {
         team_id: user.team?.id || null,
         roles: user.roles || [],
     });
+
+    const { props } = usePage<AuthProps>();
+    const authRoles = props.auth?.roles || [];
+    const isSuperOrAdmin = authRoles.includes('Superadmin') || authRoles.includes('admin');
 
     // Toggle posisi pakai checkbox
     const togglePosition = (posId: number) => {
@@ -145,16 +160,22 @@ const ShowUser: FC<Props> = ({ user, teams, positions, roles }) => {
             </div>
 
             {/* Tombol Aksi */}
-            <div className="mt-6 flex justify-end gap-3">
-                <Button onClick={handleSave} disabled={processing} className="rounded-md bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-700">
-                    {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
-                </Button>
-                <Button className="rounded-md bg-red-500 px-4 py-2 text-sm text-white transition-colors hover:bg-red-700" asChild>
-                    <Link href={route('users.index')} method="get">
-                        Kembali
-                    </Link>
-                </Button>
-            </div>
+            {isSuperOrAdmin && (
+                <div className="mt-6 flex justify-end gap-3">
+                    <Button
+                        onClick={handleSave}
+                        disabled={processing}
+                        className="rounded-md bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-700"
+                    >
+                        {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
+                    </Button>
+                    <Button className="rounded-md bg-red-500 px-4 py-2 text-sm text-white transition-colors hover:bg-red-700" asChild>
+                        <Link href={route('users.index')} method="get">
+                            Kembali
+                        </Link>
+                    </Button>
+                </div>
+            )}
         </AppLayout>
     );
 };
