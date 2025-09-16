@@ -98,6 +98,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $this->pass('update user');
+
         $data = $request->validate([
             'name'         => 'required',
             'email'        => 'required|email|unique:users,email,' . $user->id,
@@ -129,6 +130,31 @@ class UserController extends Controller
 
         return redirect()->route('users.index');
     }
+
+    public function updatePositionsAndTeam(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $data = $request->validate([
+            'team_id'       => 'nullable|exists:teams,id',
+            'position_ids'  => 'nullable|array',
+            'position_ids.*'=> 'exists:positions,id',
+        ]);
+
+        // update team
+        $user->team_id = $data['team_id'] ?? $user->team_id;
+        $user->save();
+
+        // update positions (many-to-many sync)
+        if (isset($data['position_ids'])) {
+            $user->positions()->sync($data['position_ids']);
+        }
+
+        return redirect()
+        ->route('users.index')
+        ->with('success', 'Anggota Telah Di Perbarui!');
+    }
+
 
     /**
      * Display the specified resource.

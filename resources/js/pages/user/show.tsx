@@ -159,9 +159,8 @@ const ShowUser: FC<Props> = ({ user, teams, positions, roles }) => {
                 )}
             </div>
 
-            {/* Tombol Aksi */}
-            {isSuperOrAdmin && (
-                <div className="mt-6 flex justify-end gap-3">
+            <div className="mt-6 flex justify-end gap-3">
+                {isSuperOrAdmin && (
                     <Button
                         onClick={handleSave}
                         disabled={processing}
@@ -169,13 +168,13 @@ const ShowUser: FC<Props> = ({ user, teams, positions, roles }) => {
                     >
                         {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                     </Button>
-                    <Button className="rounded-md bg-red-500 px-4 py-2 text-sm text-white transition-colors hover:bg-red-700" asChild>
-                        <Link href={route('users.index')} method="get">
-                            Kembali
-                        </Link>
-                    </Button>
-                </div>
-            )}
+                )}
+                <Button className="rounded-md bg-red-500 px-4 py-2 text-sm text-white transition-colors hover:bg-red-700" asChild>
+                    <Link href={route('users.index')} method="get">
+                        Kembali
+                    </Link>
+                </Button>
+            </div>
         </AppLayout>
     );
 };

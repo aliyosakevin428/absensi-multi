@@ -14,15 +14,15 @@ class AbsentReasonController extends Controller
      */
     public function index()
     {
-        $this->pass('index absentreason');
+        $this->pass('index absent reason');
 
         return Inertia::render('absentreason/index', [
             'absentreasons' => AbsentReason::get(),
             'permissions' => [
-                'canAdd' => $this->user->can('create absentreason'),
-                'canShow' => $this->user->can('show absentreason'),
-                'canUpdate' => $this->user->can('update absentreason'),
-                'canDelete' => $this->user->can('delete absentreason'),
+                'canAdd' => $this->user->can('create absent reason'),
+                'canShow' => $this->user->can('show absent reason'),
+                'canUpdate' => $this->user->can('update absent reason'),
+                'canDelete' => $this->user->can('delete absent reason'),
             ]
         ]);
     }
@@ -40,7 +40,7 @@ class AbsentReasonController extends Controller
      */
     public function store(StoreAbsentReasonRequest $request)
     {
-        $this->pass('create absentreason');
+        $this->pass('create absent reason');
 
         $data = $request->validated();
 
@@ -52,7 +52,7 @@ class AbsentReasonController extends Controller
      */
     public function show(AbsentReason $absentReason)
     {
-        $this->pass('show absentreason');
+        $this->pass('show absent reason');
 
         return Inertia::render('absentreason/show', [
             'absentreason' => $absentReason,
@@ -72,7 +72,7 @@ class AbsentReasonController extends Controller
      */
     public function update(UpdateAbsentReasonRequest $request, AbsentReason $absentReason)
     {
-        $this->pass('update absentreason');
+        $this->pass('update absent reason');
 
         $data = $request->validated();
 
@@ -84,8 +84,8 @@ class AbsentReasonController extends Controller
      */
     public function destroy(AbsentReason $absentReason)
     {
-        $this->pass('delete absentreason');
-        
+        $this->pass('delete absent reason');
+
         $absentReason->delete();
     }
 }

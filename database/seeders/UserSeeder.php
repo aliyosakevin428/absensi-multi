@@ -28,5 +28,12 @@ class UserSeeder extends Seeder
         ]);
 
         $admin->assignRole('Admin');
+
+        $superadmin = User::factory()->create([
+            'name' => 'Aliyosa Kevin',
+            'email' => 'kevinpalulungan428@gmail.com',
+        ]);
+
+        $superadmin->assignRole('Superadmin');
     }
 }

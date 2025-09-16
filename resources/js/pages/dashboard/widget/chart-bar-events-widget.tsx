@@ -15,7 +15,7 @@ export default function ChartBarEvents({ chartData }: Props) {
     return (
         <Card className="rounded-2xl shadow-md">
             <CardHeader>
-                <CardTitle className="text-lg font-semibold">Jumlah Event Terlaksana</CardTitle>
+                <CardTitle className="text-lg font-semibold">Jumlah Kegiatan Terlaksana</CardTitle>
                 <CardDescription className="text-sm text-muted-foreground">Per bulan</CardDescription>
             </CardHeader>
             <CardContent className="h-[350px]">

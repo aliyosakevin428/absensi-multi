@@ -56,9 +56,9 @@ class HandleInertiaRequests extends Middleware
                 "team" => $user?->can('menu team'),
                 "position" => $user?->can('menu position'),
                 "event" => $user?->can('menu event'),
-                "eventType" => $user?->can('menu event type'),
+                "eventType" => $user?->can('menu eventType'),
                 "attendance" => $user?->can('menu attendance'),
-                'absentReason' => $user?->can('menu absent reason'),
+                "absentReason" => $user?->can('menu absent reason'),
             ],
 
             'ziggy' => fn (): array => [
