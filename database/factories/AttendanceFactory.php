@@ -20,7 +20,7 @@ class AttendanceFactory extends Factory
     {
         return [
             'events_id' => Event::pluck('id')->random(),
-            'Status' => $this->faker->randomElement(['terlaksana', 'tidak terlaksana']),
+            'Status' => $this->faker->randomElement(['Sudah Terlaksana', 'Sedang Berlangsung', 'Rencana', 'Dibatalkan']),
             'absent_reasons_id' => AbsentReason::pluck('id')->random(),
         ];
     }

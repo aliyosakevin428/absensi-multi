@@ -19,6 +19,10 @@ export default ({
             title: 'Dashboard',
             href: route('dashboard'),
         },
+        {
+            title: 'Page Heading',
+            href: '/settings/profile',
+        },
     ],
     title = 'Page Heading',
     description = 'Page description',

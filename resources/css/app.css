@@ -26,7 +26,7 @@
 }
 
 :root {
-    --background: oklch(0.98 0.01 240); /* putih kebiruan */
+    --background: oklch(93.293% 0.02692 237.714); /* putih kebiruan */
     --foreground: oklch(0.2 0.03 250); /* teks gelap kebiruan */
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.2 0.03 250);
@@ -41,14 +41,14 @@
     --muted: oklch(0.95 0.01 240);
     --muted-foreground: oklch(0.5 0.05 250);
     --accent: oklch(0.9 0.1 250); /* aksen biru muda */
-    --accent-foreground: oklch(0.25 0.05 250);
+    --accent-foreground: oklch(25.118% 0.05462 250.928);
 
     --destructive: oklch(0.6 0.25 27.325);
     --destructive-foreground: oklch(1 0 0);
 
     --border: oklch(0.9 0.01 240);
     --input: oklch(0.9 0.01 240);
-    --ring: oklch(0.65 0.15 250);
+    --ring: oklch(78.13% 0.10395 247.275);
 
     /* Chart palette (gradasi biru terang) */
     --chart-1: oklch(0.75 0.2 250);
@@ -59,12 +59,12 @@
 
     --sidebar: oklch(0.98 0.01 240);
     --sidebar-foreground: oklch(0.25 0.05 250);
-    --sidebar-primary: oklch(0.6 0.2 250);
+    --sidebar-primary: oklch(97.472% 0.00523 248.363);
     --sidebar-primary-foreground: oklch(0.98 0.01 240);
     --sidebar-accent: oklch(0.92 0.05 250);
     --sidebar-accent-foreground: oklch(0.25 0.05 250);
     --sidebar-border: oklch(0.9 0.01 240);
-    --sidebar-ring: oklch(0.65 0.15 250);
+    --sidebar-ring: oklch(71.333% 0.14077 248.925);
 
     --font-sans:
         ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
@@ -88,7 +88,7 @@
 }
 
 .dark {
-    --background: oklch(18% 0.05 260); /* biru gelap dasar */
+    --background: oklch(21.752% 0.06176 259.346); /* biru gelap dasar */
     --foreground: oklch(96% 0.01 260); /* teks terang putih kebiruan */
 
     --card: oklch(22% 0.05 260); /* kartu sedikit lebih terang dari bg */
@@ -106,30 +106,30 @@
     --muted: oklch(25% 0.05 260);
     --muted-foreground: oklch(70% 0.02 260);
 
-    --accent: oklch(40% 0.1 260); /* aksen biru medium */
+    --accent: oklch(32.903% 0.08287 259.929); /* aksen biru medium */
     --accent-foreground: oklch(96% 0.01 260);
 
-    --destructive: oklch(55% 0.2 25); /* merah untuk delete */
+    --destructive: oklch(59.997% 0.23501 26.725); /* merah untuk delete */
     --destructive-foreground: oklch(98% 0.01 260);
 
     --border: oklch(24% 0.04 260);
     --input: oklch(26% 0.04 260);
-    --ring: oklch(55% 0.12 260);
+    --ring: oklch(59.8% 0.15773 259.534);
 
     /* Chart palette biru (gradasi) */
-    --chart-1: oklch(70% 0.15 260);
-    --chart-2: oklch(60% 0.14 265);
+    --chart-1: oklch(58.593% 0.2142 260.837);
+    --chart-2: oklch(55.249% 0.21296 263.449);
     --chart-3: oklch(50% 0.12 270);
     --chart-4: oklch(40% 0.1 275);
     --chart-5: oklch(32% 0.08 280);
 
-    --sidebar: oklch(20% 0.05 260);
+    --sidebar: oklch(22.982% 0.05641 261.22);
     --sidebar-foreground: oklch(92% 0.02 260);
-    --sidebar-primary: oklch(55% 0.16 260);
+    --sidebar-primary: oklch(35.306% 0.13109 260.156);
     --sidebar-primary-foreground: oklch(98% 0.01 260);
-    --sidebar-accent: oklch(30% 0.08 265);
+    --sidebar-accent: oklch(33.607% 0.11872 264.185);
     --sidebar-accent-foreground: oklch(92% 0.02 260);
-    --sidebar-border: oklch(24% 0.04 260);
+    --sidebar-border: oklch(24.262% 0.06226 260.042);
     --sidebar-ring: oklch(55% 0.12 260);
 
     --font-sans:
