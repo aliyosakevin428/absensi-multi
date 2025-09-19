@@ -8,7 +8,7 @@ export const welcomeMenuList: NavItem[] = [
         icon: Home,
     },
     {
-        title: 'About',
+        title: 'About Us',
         href: route('about'),
         icon: UserSquare,
     },

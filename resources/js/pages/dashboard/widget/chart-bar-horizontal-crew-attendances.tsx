@@ -32,7 +32,7 @@ const AnimatedBar: React.FC<RectangleProps & { index?: number }> = (props) => {
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: width, opacity: 1 }}
             transition={{
-                duration: 0.8,
+                duration: 1,
                 delay: index * 0.05,
                 ease: 'easeOut',
             }}
@@ -64,8 +64,8 @@ export function ChartBarHorizontalUser({ data, title, description, barHeight = 4
     const chartHeight = Math.min(chartData.length * (barHeight + 35) + 120, maxHeight);
 
     return (
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <Card className="w-full">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <Card className="w-full rounded-2xl shadow-md">
                 <CardHeader className="pb-2">
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
                         <CardTitle>{title}</CardTitle>
@@ -76,13 +76,7 @@ export function ChartBarHorizontalUser({ data, title, description, barHeight = 4
                 <CardContent className="p-4">
                     <ChartContainer config={chartConfig}>
                         <ResponsiveContainer width="100%" height={chartHeight}>
-                            <BarChart
-                                data={chartData}
-                                layout="vertical"
-                                margin={{ top: 0, right: 50, left: 0, bottom: 0 }}
-                                barGap={35}
-                                barSize={14}
-                            >
+                            <BarChart data={chartData} layout="vertical" margin={{ top: 0, right: 50, left: 0, bottom: 0 }} barGap={35} barSize={15}>
                                 <XAxis type="number" dataKey="attendance" domain={[0, 'dataMax + 1']} tickCount={5} tick={{ fontSize: 11 }} />
                                 <YAxis
                                     dataKey="name"
@@ -109,7 +103,7 @@ export function ChartBarHorizontalUser({ data, title, description, barHeight = 4
                 </CardContent>
 
                 <CardFooter className="flex flex-col items-start gap-2 pt-2 text-sm">
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8, duration: 0.5 }}>
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 2 }} transition={{ delay: 1, duration: 1 }}>
                         Total Kehadiran Semua Anggota: {totalAttendance} Kehadiran
                     </motion.div>
                 </CardFooter>

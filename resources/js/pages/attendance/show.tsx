@@ -2,9 +2,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { Attendance, User } from '@/types';
-import { Link, useForm, usePage } from '@inertiajs/react';
+import { Link, router, useForm, usePage } from '@inertiajs/react';
 import { FC, useState } from 'react';
 import { toast } from 'sonner';
+import UploadMedia from './components/upload-media';
 
 // Interface baru untuk user yang punya pivot attendance_user_positions
 interface UserWithAttendancePositions extends User {
@@ -32,6 +33,12 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
     const { props } = usePage<AuthProps>();
     const roles = props.auth?.roles || [];
     const isSuperOrAdmin = roles.includes('Superadmin') || roles.includes('admin');
+    const [selected, setSelected] = useState<number[]>([]);
+    const [mediaList] = useState(attendance.media);
+
+    const toggleSelect = (id: number) => {
+        setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+    };
 
     // Status
     const status = attendance.status;
@@ -79,6 +86,10 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
         positions: checkedPositions,
     });
 
+    // const formDelete = useForm<{ ids: number[] }>({
+    //     ids: [],
+    // });
+
     const handleSaveAll = () => {
         form.post(route('attendances.updatePositionsAll', attendance.id), {
             preserveScroll: true,
@@ -89,7 +100,21 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
         });
     };
 
-    console.log(checkedPositions);
+    const handleDelete = () => {
+        console.log('Delete media dengan id:', selected);
+
+        router.delete(route('attendances.media.destroyBulk', attendance.id), {
+            data: { ids: selected },
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success('Media berhasil dihapus');
+                setSelected([]);
+                window.location.href = route('attendance.show', attendance.id);
+            },
+        });
+    };
+
+    console.log(attendance.media);
 
     return (
         <AppLayout title="Detail Absensi" description="Detail absensi acara dihadiri oleh anggota">
@@ -138,7 +163,7 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                                     <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2">
                                         {user.positions?.length ? (
                                             user.positions.map((pos) => (
-                                                <label key={pos.id} className="flex items-center gap-2 rounded-md border p-2 hover:bg-gray-500">
+                                                <label key={pos.id} className="flex items-center gap-2 rounded-md border p-2 hover:bg-blue-300">
                                                     <input
                                                         type="checkbox"
                                                         checked={checkedPositions[user.id]?.includes(pos.id) || false}
@@ -157,6 +182,48 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                     ))}
                 </div>
             </div>
+
+            {/* Grid Media */}
+            <div className="mt-8 px-1 py-5">
+                <h2 className="mb-4 text-lg font-semibold text-gray-700">Dokumentasi Acara:</h2>
+
+                {/* Grid Gambar */}
+                <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+                    {mediaList.map((media) => (
+                        <div key={media.id} className="group relative overflow-hidden rounded-lg border bg-white shadow-sm">
+                            {/* Checkbox di pojok kiri atas */}
+                            <label className="absolute top-2 left-2 z-10 flex items-center rounded bg-white/70 p-1">
+                                <input
+                                    type="checkbox"
+                                    checked={selected.includes(media.id)}
+                                    onChange={() => toggleSelect(media.id)}
+                                    className="h-4 w-4"
+                                />
+                            </label>
+
+                            {/* Gambar */}
+                            <img
+                                src={media.original_url}
+                                alt={media.file_name}
+                                className="h-40 w-full object-cover transition group-hover:opacity-80"
+                            />
+
+                            {/* Nama file */}
+                            <div className="truncate p-2 text-center text-sm text-gray-600">{media.file_name}</div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Tombol Hapus */}
+                {selected.length > 0 && (
+                    <div className="mt-6 flex justify-end">
+                        <button onClick={handleDelete} className="rounded-md bg-red-500 px-4 py-2 text-white shadow hover:bg-red-600">
+                            Hapus {selected.length} File
+                        </button>
+                    </div>
+                )}
+            </div>
+            <UploadMedia attendance={attendance} />
 
             {/* Tombol Simpan Semua */}
             <div className="mt-4 flex justify-end gap-2">

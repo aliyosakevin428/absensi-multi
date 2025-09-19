@@ -38,7 +38,7 @@ export default function ChartBarEvents({ chartData }: Props) {
                             }}
                             labelStyle={{ display: 'none' }}
                         />
-                        <Bar dataKey="total" fill="#3b82f6" radius={8} />
+                        <Bar dataKey="total" fill="var(--chart-1)" radius={8} />
                     </BarChart>
                 </ResponsiveContainer>
             </CardContent>

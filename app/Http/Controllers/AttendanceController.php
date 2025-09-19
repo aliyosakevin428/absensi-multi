@@ -10,7 +10,9 @@ use App\Models\AttendanceUserPosition;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class AttendanceController extends Controller
 {
@@ -72,6 +74,7 @@ class AttendanceController extends Controller
         $this->pass('show attendance');
 
             $attendance->load([
+            'media',
             'event',
             'absent_reason',
             'users.positions', // daftar semua posisi yang dimiliki user
@@ -173,7 +176,53 @@ class AttendanceController extends Controller
     public function destroy(Attendance $attendance)
     {
         $this->pass('delete attendance');
-        
+
         $attendance->delete();
     }
+
+    public function uploadMedia (Request $request, Attendance $attendance)
+    {
+        $this->pass('upload media');
+
+        $request->validate([
+            'file' => 'required|file',
+        ]);
+
+        $file = $request->file('file');
+
+         $attendance->addMedia($file)->toMediaCollection();
+
+        return redirect()
+            ->route('attendance.show', $attendance->id)
+            ->with('success', 'Media berhasil diupload');
+
+    }
+
+    public function destroyMediaBulk(Request $request, Attendance $attendance)
+    {
+       $ids = (array) $request->input('ids', []);
+
+        if (empty($ids)) {
+            \Log::warning('Tidak ada ID media dikirim');
+            return back()->with('error', 'Tidak ada media yang dipilih');
+        }
+
+        $media = Media::where('model_type', Attendance::class)
+            ->where('model_id', $attendance->id)
+            ->whereIn('id', $ids)
+            ->get();
+
+        \Log::info('IDs yang dikirim:', $ids);
+        \Log::info('Jumlah media ketemu: ' . $media->count());
+
+        foreach ($media as $m) {
+            \Log::info("Sebelum hapus media ID={$m->id}, file={$m->file_name}");
+            $deleted = $m->delete();
+            \Log::info("Setelah delete() → return: " . var_export($deleted, true));
+        }
+
+        return redirect()
+            ->route('attendance.show', $attendance->id)
+            ->with('success', 'Media berhasil dihapus');
+        }
 }

@@ -10,7 +10,7 @@ const WelcomeLayout: FC<Props> = ({ children }) => {
     // const isOpen = usePage<SharedData>().props.sidebarOpen;
 
     return (
-        <SidebarProvider defaultOpen={false}>
+        <SidebarProvider defaultOpen={true}>
             <WelcomeSidebar />
             <SidebarInset>
                 <div className="mx-auto grid w-full max-w-5xl space-y-12 px-4">

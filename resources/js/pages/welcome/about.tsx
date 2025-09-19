@@ -1,17 +1,16 @@
-// import MarkdownReader from '@/components/markdown-reader';
-// import { FC } from 'react';
-// import WelcomeLayout from './layouts/welcome-layout';
+import { FC } from 'react';
+import WelcomeLayout from './layouts/welcome-layout';
 
-// type Props = {
-//     content: string;
-// };
+type Props = {
+    content: string;
+};
 
-// const AboutPage: FC<Props> = ({ content = '' }) => {
-//     return (
-//         <WelcomeLayout>
-//             <MarkdownReader className="!max-w-full break-all" content={content} />
-//         </WelcomeLayout>
-//     );
-// };
+const AboutPage: FC<Props> = () => {
+    return (
+        <WelcomeLayout>
+            <h1>Multimedia Lahai Roi Balikpapan</h1>
+        </WelcomeLayout>
+    );
+};
 
-// export default AboutPage;
+export default AboutPage;

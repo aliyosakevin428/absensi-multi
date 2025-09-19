@@ -26,13 +26,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('position', PositionController::class);
     Route::put('/users/{user}/positions-team', [UserController::class, 'updatePositionsAndTeam'])
     ->name('users.updatePositionsAndTeam');
-    Route::post('/attendances/{attendance}/positions/all', [AttendanceController::class, 'updatePositionsAll'])
-    ->name('attendances.updatePositionsAll');
     Route::resource('absent-reason', AbsentReasonController::class);
     Route::resource('event-type', EventTypeController::class);
     Route::resource('event', EventController::class);
     Route::get('/charts/events-bar', [EventController::class, 'chartBar'])->name('charts.events.bar');
+    Route::post('attendances/{attendance}/media', [AttendanceController::class, 'uploadMedia'])->name('attendances.media.upload');
+    Route::delete('attendances/{attendance}/media/bulk', [AttendanceController::class, 'destroyMediaBulk'])
+    ->name('attendances.media.destroyBulk');
     Route::resource('attendance', AttendanceController::class);
+    Route::post('/attendances/{attendance}/positions/all', [AttendanceController::class, 'updatePositionsAll'])
+    ->name('attendances.updatePositionsAll');
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
 });

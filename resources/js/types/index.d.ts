@@ -98,6 +98,7 @@ export type Attendance = {
     event: Event;
     status: string;
     absent_reason: AbsentReason;
+    media: Media[];
 };
 
 export type Permission = {
@@ -114,4 +115,20 @@ export type Role = {
     permissions: Permission[];
     created_at: string;
     updated_at: string;
+};
+
+export type Media = {
+    id: number;
+    collection_name: string;
+    name: string;
+    file_name: string;
+    mime_type: string;
+    disk: string;
+    conversions_disk: string;
+    size: number;
+    order_column: number;
+    created_at: string;
+    updated_at: string;
+    original_url: string;
+    preview_url: string;
 };
