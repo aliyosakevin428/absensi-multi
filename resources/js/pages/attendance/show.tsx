@@ -190,27 +190,27 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                 {/* Grid Gambar */}
                 <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
                     {mediaList.map((media) => (
-                        <div key={media.id} className="group relative overflow-hidden rounded-lg border bg-white shadow-sm">
-                            {/* Checkbox di pojok kiri atas */}
-                            <label className="absolute top-2 left-2 z-10 flex items-center rounded bg-white/70 p-1">
-                                <input
-                                    type="checkbox"
-                                    checked={selected.includes(media.id)}
-                                    onChange={() => toggleSelect(media.id)}
-                                    className="h-4 w-4"
-                                />
-                            </label>
+                        <label key={media.id} className="group relative cursor-pointer overflow-hidden rounded-lg border bg-white shadow-sm">
+                            {/* Checkbox (hidden tapi masih bisa di-toggle lewat label) */}
+                            <input
+                                type="checkbox"
+                                checked={selected.includes(media.id)}
+                                onChange={() => toggleSelect(media.id)}
+                                className="absolute top-2 left-2 z-10 h-4 w-4"
+                            />
 
                             {/* Gambar */}
                             <img
                                 src={media.original_url}
                                 alt={media.file_name}
-                                className="h-40 w-full object-cover transition group-hover:opacity-80"
+                                className={`h-40 w-full object-cover transition group-hover:opacity-80 ${
+                                    selected.includes(media.id) ? 'opacity-70 ring-4 ring-blue-200' : ''
+                                }`}
                             />
 
                             {/* Nama file */}
                             <div className="truncate p-2 text-center text-sm text-gray-600">{media.file_name}</div>
-                        </div>
+                        </label>
                     ))}
                 </div>
 
@@ -223,6 +223,7 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                     </div>
                 )}
             </div>
+
             <UploadMedia attendance={attendance} />
 
             {/* Tombol Simpan Semua */}
