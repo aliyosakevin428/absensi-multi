@@ -1,19 +1,20 @@
 import { ReactNode } from 'react';
 
-type HeadingSmallProps = {
+type Props = {
     title: string;
     description?: string;
-    actions?: ReactNode; // 👈 ini ditambah
+    actions?: ReactNode;
 };
 
-export default function HeadingSmall({ title, description, actions }: HeadingSmallProps) {
+export default function HeadingSmall({ title, description, actions }: Props) {
     return (
-        <div className="flex items-center justify-between">
-            <div>
-                <h2>{title}</h2>
-                {description && <p>{description}</p>}
-            </div>
-            <div>{actions}</div> {/* 👈 render di sini */}
+        <div className="flex flex-col justify-between gap-4 sm:flex-row">
+            <header>
+                <h3 className="mb-0.5 text-base font-medium">{title}</h3>
+                {description && <p className="text-sm text-muted-foreground">{description}</p>}
+            </header>
+
+            <div className="flex flex-col gap-2 sm:flex-row">{actions}</div>
         </div>
     );
 }

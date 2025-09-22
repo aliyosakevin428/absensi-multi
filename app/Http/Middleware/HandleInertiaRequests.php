@@ -52,13 +52,15 @@ class HandleInertiaRequests extends Middleware
                 //settings menu
                 "user" => $user?->can('menu user'),
                 "role" => $user?->can('menu role'),
-                //dashboard menu
+                //acara menu
                 "team" => $user?->can('menu team'),
                 "position" => $user?->can('menu position'),
                 "event" => $user?->can('menu event'),
                 "eventType" => $user?->can('menu eventType'),
                 "attendance" => $user?->can('menu attendance'),
                 "absentReason" => $user?->can('menu absent reason'),
+                //news menu
+                'news' => $user?->can('menu news'),
             ],
 
             'ziggy' => fn (): array => [

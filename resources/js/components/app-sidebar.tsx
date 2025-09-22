@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookCheckIcon, BookCopy, BookOpen, BookOpenCheck, Grid2X2, KeySquare, LayoutGrid, SwitchCamera, Users } from 'lucide-react';
+import { BookCheckIcon, BookCopy, BookOpen, BookOpenCheck, Grid2X2, KeySquare, LayoutGrid, Newspaper, SwitchCamera, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -94,6 +94,12 @@ export function AppSidebar() {
                             href: route('team.index'),
                             icon: BookCheckIcon,
                             available: menus.team,
+                        },
+                        {
+                            title: 'Berita Gereja',
+                            href: route('news.index'),
+                            icon: Newspaper,
+                            available: menus.news,
                         },
                         {
                             title: 'Role & Permission',

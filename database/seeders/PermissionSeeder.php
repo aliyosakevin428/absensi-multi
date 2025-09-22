@@ -12,6 +12,11 @@ class PermissionSeeder extends Seeder
     /**
      * Run the database seeds.
      */
+
+    protected function resetPermissionsOnly(): void
+    {
+        
+    }
     public function run(): void
     {
         $permissionGroups = [
@@ -94,6 +99,24 @@ class PermissionSeeder extends Seeder
                 "edit absent reason" => ["Admin", "Superadmin"],
                 "update absent reason" => ["Admin", "Superadmin"],
                 "delete absent reason" => ["Admin", "Superadmin"],
+            ],
+            "permission" => [
+                "menu permission" => ["Superadmin"],
+                "index permission" => ["Superadmin"],
+                "show permission" => ["Superadmin"],
+                "create permission" => ["Superadmin"],
+                "edit permission" => ["Superadmin"],
+                "update permission" => ["Superadmin"],
+                "delete permission" => ["Superadmin"],
+            ],
+            "news" => [
+                "menu news" => ["*"],
+                "index news" => ["*"],
+                "show news" => ["*"],
+                "create news" => ["Admin", "Superadmin"],
+                "edit news" => ["Admin", "Superadmin"],
+                "update news" => ["Admin", "Superadmin"],
+                "delete news" => ["Admin", "Superadmin"],
             ]
         ];
 

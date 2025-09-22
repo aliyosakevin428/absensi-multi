@@ -117,6 +117,20 @@ export type Role = {
     updated_at: string;
 };
 
+export type News = {
+    id: number;
+    title: string;
+    slug: string;
+    content: string;
+    description: string;
+    user_id: number;
+    user: User;
+    thumbnail: string;
+    media: Media[];
+    created_at: string;
+    updated_at?: string;
+};
+
 export type Media = {
     id: number;
     collection_name: string;
