@@ -49,7 +49,7 @@ export default function Password() {
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <AppLayout breadcrumbs={breadcrumbs} title="Password settings" description="Update your account's password">
             <Head title="Password settings" />
 
             <SettingsLayout>

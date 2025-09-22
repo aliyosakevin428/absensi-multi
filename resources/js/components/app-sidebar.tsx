@@ -84,12 +84,6 @@ export function AppSidebar() {
                 <NavMain
                     items={[
                         {
-                            title: 'Role & permission',
-                            href: route('role.index'),
-                            icon: KeySquare,
-                            available: menus.role,
-                        },
-                        {
                             title: 'Position',
                             href: route('position.index'),
                             icon: SwitchCamera,
@@ -100,6 +94,12 @@ export function AppSidebar() {
                             href: route('team.index'),
                             icon: BookCheckIcon,
                             available: menus.team,
+                        },
+                        {
+                            title: 'Role & Permission',
+                            href: route('role.index'),
+                            icon: KeySquare,
+                            available: menus.role,
                         },
                     ]}
                     label="Settings"

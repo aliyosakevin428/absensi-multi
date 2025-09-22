@@ -41,7 +41,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <AppLayout breadcrumbs={breadcrumbs} title="Profile Settings" description="Update your account's profile information and email address">
             <Head title="Profile settings" />
 
             <SettingsLayout>

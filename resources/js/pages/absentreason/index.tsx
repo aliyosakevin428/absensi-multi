@@ -23,7 +23,7 @@ const ListAbsentReason = ({ absentreasons }: { absentreasons: AbsentReason[] }) 
                         <AbsentReasonFormSheet purpose="create">
                             <Button>
                                 <PlusCircle />
-                                Create new Team
+                                Create new Absent Reason
                             </Button>
                         </AbsentReasonFormSheet>
                     )}

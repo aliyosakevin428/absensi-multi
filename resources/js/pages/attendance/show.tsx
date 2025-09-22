@@ -185,12 +185,12 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
 
             {/* Grid Media */}
             <div className="mt-8 px-1 py-5">
-                <h2 className="mb-4 text-lg font-semibold text-gray-700">Dokumentasi Acara:</h2>
+                <h2 className="mb-4 text-lg font-semibold">Dokumentasi Acara:</h2>
 
                 {/* Grid Gambar */}
                 <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
                     {mediaList.map((media) => (
-                        <label key={media.id} className="group relative cursor-pointer overflow-hidden rounded-lg border bg-white shadow-sm">
+                        <label key={media.id} className="group relative cursor-pointer overflow-hidden rounded-lg border bg-transparent shadow-sm">
                             {/* Checkbox (hidden tapi masih bisa di-toggle lewat label) */}
                             <input
                                 type="checkbox"
@@ -209,7 +209,7 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                             />
 
                             {/* Nama file */}
-                            <div className="truncate p-2 text-center text-sm text-gray-600">{media.file_name}</div>
+                            <div className="truncate p-2 text-center text-sm text-secondary-foreground">{media.file_name}</div>
                         </label>
                     ))}
                 </div>

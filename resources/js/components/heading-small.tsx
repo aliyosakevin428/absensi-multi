@@ -6,7 +6,7 @@ type HeadingSmallProps = {
     actions?: ReactNode; // 👈 ini ditambah
 };
 
-export function HeadingSmall({ title, description, actions }: HeadingSmallProps) {
+export default function HeadingSmall({ title, description, actions }: HeadingSmallProps) {
     return (
         <div className="flex items-center justify-between">
             <div>

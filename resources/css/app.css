@@ -89,7 +89,7 @@
 
 .dark {
     --background: oklch(21.752% 0.06176 259.346); /* biru gelap dasar */
-    --foreground: oklch(96% 0.01 260); /* teks terang putih kebiruan */
+    --foreground: oklch(90.775% 0.03416 263.6); /* teks terang putih kebiruan */
 
     --card: oklch(31.194% 0.08681 260.569); /* kartu sedikit lebih terang dari bg */
     --card-foreground: oklch(96% 0.01 260);
@@ -104,7 +104,7 @@
     --secondary-foreground: oklch(90% 0.02 260);
 
     --muted: oklch(25% 0.05 260);
-    --muted-foreground: oklch(70% 0.02 260);
+    --muted-foreground: oklch(75.553% 0.04082 257.96);
 
     --accent: oklch(39.398% 0.13156 259.68); /* aksen biru medium */
     --accent-foreground: oklch(96% 0.01 260);

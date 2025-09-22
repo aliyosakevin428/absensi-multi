@@ -15,18 +15,14 @@ export default function ChartBarEvents({ chartData }: Props) {
     return (
         <Card className="rounded-2xl shadow-md">
             <CardHeader>
-                <CardTitle className="text-lg font-semibold">Jumlah Kegiatan Terlaksana</CardTitle>
+                <CardTitle className="text-lg font-semibold text-foreground">Jumlah Kegiatan Terlaksana</CardTitle>
                 <CardDescription className="text-sm text-muted-foreground">Per bulan</CardDescription>
             </CardHeader>
             <CardContent className="h-[350px]">
                 <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                        data={chartData}
-                        barSize={30}
-                        barCategoryGap="15%" // kasih jarak antar bar
-                    >
+                    <BarChart data={chartData} barSize={25} barCategoryGap="20%">
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                        <XAxis dataKey="month" type="category" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} tickMargin={10} />
+                        <XAxis dataKey="month" type="category" tickLine={false} axisLine={false} tick={{ fontSize: 12 }} tickMargin={10} />
                         <YAxis allowDecimals={false} tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
                         <Tooltip
                             cursor={{ fill: 'rgba(59,130,246,0.1)' }}
@@ -38,7 +34,15 @@ export default function ChartBarEvents({ chartData }: Props) {
                             }}
                             labelStyle={{ display: 'none' }}
                         />
-                        <Bar dataKey="total" fill="var(--chart-1)" radius={8} />
+                        <Bar
+                            dataKey="total"
+                            fill="var(--chart-1)"
+                            radius={10}
+                            isAnimationActive={true}
+                            animationDuration={1100}
+                            animationBegin={0}
+                            animationEasing="ease-out"
+                        />
                     </BarChart>
                 </ResponsiveContainer>
             </CardContent>
