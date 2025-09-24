@@ -22,6 +22,7 @@ export interface NavItem {
     icon?: LucideIcon | null;
     isActive?: boolean;
     available?: boolean;
+    items?: NavItem[];
 }
 
 export type FormPurpose = 'create' | 'edit' | 'duplicate';

@@ -57,7 +57,7 @@
     --chart-4: oklch(0.5 0.18 260);
     --chart-5: oklch(0.45 0.15 265);
 
-    --sidebar: oklch(0.98 0.01 240);
+    --sidebar: oklch(98.265% 0.00511 229.665);
     --sidebar-foreground: oklch(0.25 0.05 250);
     --sidebar-primary: oklch(97.472% 0.00523 248.363);
     --sidebar-primary-foreground: oklch(0.98 0.01 240);
@@ -88,67 +88,62 @@
 }
 
 .dark {
-    --background: oklch(21.752% 0.06176 259.346); /* biru gelap dasar */
-    --foreground: oklch(90.775% 0.03416 263.6); /* teks terang putih kebiruan */
+  --background: oklch(22% 0.06 260); /* biru gelap banget */
+  --foreground: oklch(95% 0.02 260); /* teks terang */
 
-    --card: oklch(31.194% 0.08681 260.569); /* kartu sedikit lebih terang dari bg */
-    --card-foreground: oklch(96% 0.01 260);
+  --card: oklch(32% 0.08 260); /* sedikit lebih terang */
+  --card-foreground: oklch(96% 0.015 260);
 
-    --popover: oklch(41.489% 0.14557 260.691);
-    --popover-foreground: oklch(96% 0.01 260);
+  --popover: oklch(40% 0.10 260); /* biru sedang */
+  --popover-foreground: oklch(96% 0.015 260);
 
-    --primary: oklch(65% 0.18 260); /* biru terang */
-    --primary-foreground: oklch(98% 0.01 260);
+  --primary: oklch(52% 0.12 260); /* biru terang (seperti baris ketiga gambar) */
+  --primary-foreground: oklch(98% 0.01 260);
 
-    --secondary: oklch(31.379% 0.09405 260.256); /* biru tua */
-    --secondary-foreground: oklch(90% 0.02 260);
+  --secondary: oklch(62% 0.10 210); /* kebiruan agak hijau */
+  --secondary-foreground: oklch(15% 0.02 260);
 
-    --muted: oklch(25% 0.05 260);
-    --muted-foreground: oklch(75.553% 0.04082 257.96);
+  --muted: oklch(28% 0.05 260);
+  --muted-foreground: oklch(75% 0.03 260);
 
-    --accent: oklch(39.398% 0.13156 259.68); /* aksen biru medium */
-    --accent-foreground: oklch(96% 0.01 260);
+  --accent: oklch(68% 0.09 180); /* hijau kebiruan pucat (baris paling bawah gambar) */
+  --accent-foreground: oklch(20% 0.02 260);
 
-    --destructive: oklch(59.997% 0.23501 26.725); /* merah untuk delete */
-    --destructive-foreground: oklch(98% 0.01 260);
+  --destructive: oklch(60% 0.23 26); /* merah delete */
+  --destructive-foreground: oklch(98% 0.01 260);
 
-    --border: oklch(26.085% 0.04717 261.256);
-    --input: oklch(26% 0.04 260);
-    --ring: oklch(68.922% 0.15039 259.749);
+  --border: oklch(30% 0.04 260);
+  --input: oklch(28% 0.05 260);
+  --ring: oklch(55% 0.1 260);
 
-    /* Chart palette biru (gradasi) */
-    --chart-1: oklch(58.593% 0.2142 260.837);
-    --chart-2: oklch(55.249% 0.21296 263.449);
-    --chart-3: oklch(50% 0.12 270);
-    --chart-4: oklch(40% 0.1 275);
-    --chart-5: oklch(32% 0.08 280);
+  /* Chart palette pakai variasi dari biru → aqua */
+  --chart-1: oklch(60% 0.14 260);
+  --chart-2: oklch(50% 0.12 260);
+  --chart-3: oklch(45% 0.1 250);
+  --chart-4: oklch(55% 0.09 220);
+  --chart-5: oklch(65% 0.08 190);
 
-    --sidebar: oklch(24.475% 0.06518 261.77);
-    --sidebar-foreground: oklch(92% 0.02 260);
-    --sidebar-primary: oklch(35.306% 0.13109 260.156);
-    --sidebar-primary-foreground: oklch(98% 0.01 260);
-    --sidebar-accent: oklch(46.467% 0.15766 264.836);
-    --sidebar-accent-foreground: oklch(92% 0.02 260);
-    --sidebar-border: oklch(24.262% 0.06226 260.042);
-    --sidebar-ring: oklch(55% 0.12 260);
+  --sidebar: oklch(24% 0.06 260);
+  --sidebar-foreground: oklch(92% 0.02 260);
+  --sidebar-primary: oklch(36% 0.08 260);
+  --sidebar-primary-foreground: oklch(98% 0.01 260);
+  --sidebar-accent: oklch(52% 0.09 220);
+  --sidebar-accent-foreground: oklch(92% 0.02 260);
+  --sidebar-border: oklch(26% 0.05 260);
+  --sidebar-ring: oklch(55% 0.1 260);
 
-    --font-sans:
-        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
-        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-    --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --radius: 0.625rem;
 
-    --radius: 0.625rem;
-
-    --shadow-2xs: 0 1px 3px 0px hsl(220 50% 5% / 0.2);
-    --shadow-xs: 0 1px 3px 0px hsl(220 50% 5% / 0.3);
-    --shadow-sm: 0 1px 3px 0px hsl(220 50% 5% / 0.4), 0 1px 2px -1px hsl(220 50% 5% / 0.4);
-    --shadow: 0 1px 3px 0px hsl(220 50% 5% / 0.5), 0 1px 2px -1px hsl(220 50% 5% / 0.5);
-    --shadow-md: 0 1px 3px 0px hsl(220 50% 5% / 0.5), 0 2px 4px -1px hsl(220 50% 5% / 0.5);
-    --shadow-lg: 0 1px 3px 0px hsl(220 50% 5% / 0.6), 0 4px 6px -1px hsl(220 50% 5% / 0.6);
-    --shadow-xl: 0 1px 3px 0px hsl(220 50% 5% / 0.7), 0 8px 10px -1px hsl(220 50% 5% / 0.7);
-    --shadow-2xl: 0 1px 3px 0px hsl(220 50% 5% / 0.8);
+  --shadow-2xs: 0 1px 3px 0px hsl(220 50% 5% / 0.2);
+  --shadow-xs: 0 1px 3px 0px hsl(220 50% 5% / 0.3);
+  --shadow-sm: 0 1px 3px 0px hsl(220 50% 5% / 0.4), 0 1px 2px -1px hsl(220 50% 5% / 0.4);
+  --shadow: 0 1px 3px 0px hsl(220 50% 5% / 0.5), 0 1px 2px -1px hsl(220 50% 5% / 0.5);
+  --shadow-md: 0 1px 3px 0px hsl(220 50% 5% / 0.5), 0 2px 4px -1px hsl(220 50% 5% / 0.5);
+  --shadow-lg: 0 1px 3px 0px hsl(220 50% 5% / 0.6), 0 4px 6px -1px hsl(220 50% 5% / 0.6);
+  --shadow-xl: 0 1px 3px 0px hsl(220 50% 5% / 0.7), 0 8px 10px -1px hsl(220 50% 5% / 0.7);
+  --shadow-2xl: 0 1px 3px 0px hsl(220 50% 5% / 0.8);
 }
+
 
 @theme {
     --font-sans:

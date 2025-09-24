@@ -74,7 +74,7 @@ const ShowUser: FC<Props> = ({ user, teams, positions, roles }) => {
                     <CardDescription>{user.email}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-blue-600">Kontak: {user.kontak ?? '-'}</p>
+                    <p className="text-sm text-foreground">Kontak: {user.kontak ?? '-'}</p>
                 </CardContent>
             </Card>
 

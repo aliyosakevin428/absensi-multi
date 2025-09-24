@@ -42,7 +42,8 @@ export function dateDFYHIS(date: string | Date) {
     return dayjs(date).format('DD MMMM YYYY HH:mm:ss');
 }
 
-export function strLimit(text: string = '', limit: number = 50, end: string = '...'): string {
+export function strLimit(text: string | null | undefined, limit: number = 50, end: string = '...'): string {
+    if (!text) return ''; // kalau null/undefined/empty string
     if (text.length <= limit) return text;
     return text.slice(0, limit - end.length) + end;
 }

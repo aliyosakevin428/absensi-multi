@@ -95,7 +95,7 @@ const NewsList: FC<Props> = ({ news, query }) => {
                         <TableHead>Judul berita</TableHead>
                         <TableHead>Isi berita</TableHead>
                         <TableHead>Creator</TableHead>
-                        <TableHead>Created At</TableHead>
+                        <TableHead>Dibuat pada Tanggal</TableHead>
                         <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -121,7 +121,7 @@ const NewsList: FC<Props> = ({ news, query }) => {
                                     </Button>
                                 </TableCell>
                                 <TableCell>{strLimit(news.title)}</TableCell>
-                                <TableCell>{strLimit(news.content)}</TableCell>
+                                <TableCell>{strLimit(news.content) || 'N/A'}</TableCell>
                                 <TableCell>{news.user.name}</TableCell>
                                 <TableCell>{dateDFY(news.created_at)}</TableCell>
                                 <TableCell>

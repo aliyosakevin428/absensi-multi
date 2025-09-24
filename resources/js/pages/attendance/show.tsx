@@ -209,7 +209,7 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                             />
 
                             {/* Nama file */}
-                            <div className="truncate p-2 text-center text-sm text-secondary-foreground">{media.file_name}</div>
+                            <div className="truncate p-2 text-center text-sm text-foreground">{media.file_name}</div>
                         </label>
                     ))}
                 </div>

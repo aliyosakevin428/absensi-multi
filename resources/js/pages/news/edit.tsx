@@ -72,7 +72,7 @@ const EditNews: FC<Props> = ({ news }) => {
             <div className="grid grid-cols-3 gap-6">
                 <Card className="col-span-2">
                     <CardContent className="space-y-6">
-                        <FormControl label="Juul berita">
+                        <FormControl label="Judul berita">
                             <Input value={data.title} onChange={(e) => setData('title', e.target.value)} />
                         </FormControl>
                         <FormControl label="Konten berita" hint="Tulis dalam format markdown">

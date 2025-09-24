@@ -96,7 +96,7 @@ export function AppSidebar() {
                             available: menus.team,
                         },
                         {
-                            title: 'Berita Gereja',
+                            title: 'Artikel / Warta Jemaat',
                             href: route('news.index'),
                             icon: Newspaper,
                             available: menus.news,

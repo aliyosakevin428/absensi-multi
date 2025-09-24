@@ -9,7 +9,7 @@ type Props = PropsWithChildren & {
 
 const SectionContainer: FC<Props> = ({ children, title, description, className }) => {
     return (
-        <div className={cn('mx-auto w-full max-w-6xl space-y-10 px-6 py-20 text-lg', className)}>
+        <div className={cn('mx-auto w-full max-w-6xl space-y-10 px-6 py-8 text-lg', className)}>
             {title && description && (
                 <div className="flex flex-col items-center space-y-1.5 text-center">
                     <h1 className="text-3xl font-bold text-primary">{title}</h1>

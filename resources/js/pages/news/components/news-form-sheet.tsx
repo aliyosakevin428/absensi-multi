@@ -25,7 +25,6 @@ const NewsFormSheet: FC<Props> = ({ children, news, purpose }) => {
     const { data, setData, put, post, reset, processing } = useForm({
         title: news?.title ?? '',
         user_id: news?.user_id ?? '',
-        content: news?.content ?? '',
     });
 
     const handleSubmit = () => {
@@ -67,8 +66,8 @@ const NewsFormSheet: FC<Props> = ({ children, news, purpose }) => {
                             handleSubmit();
                         }}
                     >
-                        <FormControl label="Nama news">
-                            <Input type="text" placeholder="Name" value={data.title} onChange={(e) => setData('title', e.target.value)} />
+                        <FormControl label="Judul news">
+                            <Input type="text" placeholder="Judul" value={data.title} onChange={(e) => setData('title', e.target.value)} />
                         </FormControl>
                         <Select value={data.user_id.toString()} onValueChange={(value) => setData('user_id', value)}>
                             <SelectTrigger>

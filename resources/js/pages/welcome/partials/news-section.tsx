@@ -6,23 +6,26 @@ import { BookOpen } from 'lucide-react';
 import SectionContainer from '../layouts/section-container';
 
 const NewsSection = () => {
-    const { news } = usePage<{ news: News[] }>().props;
+    const { news = [] } = usePage<{ news: News[] }>().props;
 
     return (
-        <SectionContainer title="Kegiatan terbaru" description="Berita kegiatan sekolah terbaru">
-            <div className="grid gap-6 md:grid-cols-3">
-                {news.map((berita) => (
-                    <NewsItemCard news={berita} key={berita.id} />
-                ))}
-            </div>
-
-            <div className="flex items-center justify-center">
-                <Button asChild>
-                    <Link href={route('berita')}>
-                        <BookOpen />
-                        Baca berita lainnya
-                    </Link>
-                </Button>
+        <SectionContainer>
+            <div className="mx-auto w-full space-y-1 py-4 text-center">
+                <h3 className="px-4 text-3xl font-bold text-foreground">Kegiatan Gereja yang sedang berlangsung dan Warta Jemaat</h3>
+                <p className="px-4 py-5 text-lg text-foreground">Berita kegiatan Gereja terbaru</p>
+                <div className="grid gap-6 md:grid-cols-3">
+                    {news.map((berita) => (
+                        <NewsItemCard news={berita} key={berita.id.toString()} />
+                    ))}
+                </div>
+                <div className="flex items-center justify-center py-4">
+                    <Button asChild>
+                        <Link href={route('berita')}>
+                            <BookOpen />
+                            Baca berita lainnya
+                        </Link>
+                    </Button>
+                </div>
             </div>
         </SectionContainer>
     );
