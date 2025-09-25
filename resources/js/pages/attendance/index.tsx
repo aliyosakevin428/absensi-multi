@@ -51,7 +51,7 @@ const ListAttendance = ({
                         <TableHead>No</TableHead>
                         <TableHead>Jumlah Anggota</TableHead>
                         <TableHead>Acara/Kegiatan</TableHead>
-                        <TableHead>Jenis Kehadiran</TableHead>
+                        <TableHead>Keterangan Kehadiran</TableHead>
                         <TableHead>Status Kegiatan</TableHead>
                         <TableHead>Actions</TableHead>
                     </TableRow>

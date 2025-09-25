@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@plugin '@tailwindcss/typography';
+
 @plugin 'tailwindcss-animate';
 
 @source '../views';
@@ -47,7 +49,7 @@
     --destructive-foreground: oklch(1 0 0);
 
     --border: oklch(0.9 0.01 240);
-    --input: oklch(0.9 0.01 240);
+    --input: oklch(70.817% 0.0287 237.864);
     --ring: oklch(78.13% 0.10395 247.275);
 
     /* Chart palette (gradasi biru terang) */
@@ -113,7 +115,7 @@
   --destructive-foreground: oklch(98% 0.01 260);
 
   --border: oklch(30% 0.04 260);
-  --input: oklch(28% 0.05 260);
+  --input: oklch(28.814% 0.0488 259.507);
   --ring: oklch(55% 0.1 260);
 
   /* Chart palette pakai variasi dari biru → aqua */
@@ -200,6 +202,32 @@
 @layer base {
     * {
         @apply border-border;
+    }
+
+    .prose,
+    .prose :where(h1, h2, h3, h4, h5, h6, strong, a, li, p) {
+    color: var(--foreground) !important;
+    }
+
+    .prose h1,
+    .prose h2,
+    .prose h3,
+    .prose h4,
+    .prose h5,
+    .prose h6 {
+        color: var(--foreground);
+    }
+
+    .prose strong {
+        color: var(--foreground);
+    }
+
+    .prose a {
+        color: var(--foreground);
+    }
+
+    .prose li {
+        color: var(--foreground);
     }
 
     body {
