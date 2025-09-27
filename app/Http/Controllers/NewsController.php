@@ -29,7 +29,7 @@ class NewsController extends Controller
         return Inertia::render('news/index', [
             'news' => $data->get(),
             'query' => $request->input(),
-            'users' => User::role('user')->get(),
+            'users' => User::role('user',)->get(),
             'permissions' => [
                 'canAdd' => $this->user->can('create news'),
                 'canUpdate' => $this->user->can('update news'),

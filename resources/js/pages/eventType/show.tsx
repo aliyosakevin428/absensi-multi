@@ -10,9 +10,23 @@ type Props = {
 };
 
 const ShowEventType: FC<Props> = ({ eventType }) => {
+    const getEventStatus = (event: Event) => {
+        if (!event.waktu_kegiatan) return { text: 'Belum Dijadwalkan', color: 'bg-gray-100 text-gray-800' };
+
+        const eventDate = new Date(event.waktu_kegiatan);
+        const now = new Date();
+        const eventDateOnly = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+        const nowDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+        if (eventDateOnly < nowDateOnly) return { text: 'Sudah Terlaksana', color: 'bg-green-100 text-green-800' };
+        if (eventDateOnly.getTime() === nowDateOnly.getTime()) return { text: 'Hari Ini', color: 'bg-blue-100 text-blue-800' };
+
+        const diffDays = Math.ceil((eventDateOnly.getTime() - nowDateOnly.getTime()) / (1000 * 60 * 60 * 24));
+        return { text: `${diffDays} Hari Lagi`, color: 'bg-yellow-100 text-yellow-800' };
+    };
+
     return (
         <AppLayout title="Detail Jenis Acara" description="Daftar acara berdasarkan jenis yang dipilih">
-            {/* Header event type */}
             <Card>
                 <CardHeader>
                     <CardTitle>{eventType.name}</CardTitle>
@@ -20,40 +34,44 @@ const ShowEventType: FC<Props> = ({ eventType }) => {
                 </CardHeader>
             </Card>
 
-            {/* List event */}
             <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {eventType.events?.length ? (
-                    eventType.events.map((event: Event) => (
-                        <Card key={event.id} className="shadow-sm">
-                            <CardHeader>
-                                <CardTitle>{event.name}</CardTitle>
-                                <CardDescription>
-                                    {event.waktu_kegiatan
-                                        ? new Date(event.waktu_kegiatan).toLocaleString('id-ID', {
-                                              day: '2-digit',
-                                              weekday: 'long',
-                                              month: '2-digit',
-                                              year: 'numeric',
-                                              hour: '2-digit',
-                                              minute: '2-digit',
-                                          })
-                                        : '-'}
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-sm text-gray-400">{event.lokasi_kegiatan}</p>
-                            </CardContent>
-                        </Card>
-                    ))
+                    eventType.events.map((event: Event) => {
+                        const status = getEventStatus(event);
+                        return (
+                            <Card key={event.id} className="shadow-sm">
+                                <CardHeader className="pb-3">
+                                    <div className="flex items-start justify-between">
+                                        <CardTitle className="text-lg">{event.name}</CardTitle>
+                                        <span className={`rounded-full px-2 py-1 text-xs ${status.color}`}>{status.text}</span>
+                                    </div>
+                                    <CardDescription>
+                                        {event.waktu_kegiatan
+                                            ? new Date(event.waktu_kegiatan).toLocaleString('id-ID', {
+                                                  weekday: 'long',
+                                                  day: '2-digit',
+                                                  month: 'long',
+                                                  year: 'numeric',
+                                                  hour: '2-digit',
+                                                  minute: '2-digit',
+                                              })
+                                            : 'Tanggal belum ditentukan'}
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-sm text-gray-300">📍 {event.lokasi_kegiatan || 'Lokasi belum ditentukan'}</p>
+                                </CardContent>
+                            </Card>
+                        );
+                    })
                 ) : (
                     <p className="col-span-full text-center text-sm text-gray-500">Belum ada event untuk tipe ini.</p>
                 )}
             </div>
-            <div className="flex justify-end">
-                <Button className="mt-4 rounded-md bg-blue-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-blue-700" asChild>
-                    <Link href={route('event-type.index')} method="get">
-                        Kembali
-                    </Link>
+
+            <div className="mt-6 flex justify-end">
+                <Button asChild>
+                    <Link href={route('event-type.index')}>Kembali</Link>
                 </Button>
             </div>
         </AppLayout>

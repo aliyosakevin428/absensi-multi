@@ -12,31 +12,27 @@ type AppLayoutProps = PropsWithChildren & {
     actions?: ReactNode;
 };
 
-export default ({
-    children,
-    breadcrumbs = [
+export default ({ children, breadcrumbs, title = 'Page Heading', description = 'Page description', actions }: AppLayoutProps) => {
+    const defaultBreadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Dashboard',
-            href: route('dashboard'),
+            title: title,
+            href: window.location.pathname,
         },
-        {
-            title: 'Page Heading',
-            href: '/settings/profile',
-        },
-    ],
-    title = 'Page Heading',
-    description = 'Page description',
-    actions,
-}: AppLayoutProps) => (
-    <AppLayoutTemplate breadcrumbs={breadcrumbs}>
-        <Head title={title} />
-        <div className="flex h-full flex-1 flex-col gap-4 space-y-1 overflow-x-auto rounded-xl p-5">
-            <div className="flex items-start justify-between">
-                <Heading title={title} description={description} />
-                {actions && <div className="ml-auto flex items-center gap-2">{actions}</div>}
+    ];
+
+    const finalBreadcrumbs = breadcrumbs || defaultBreadcrumbs;
+
+    return (
+        <AppLayoutTemplate breadcrumbs={finalBreadcrumbs}>
+            <Head title={title} />
+            <div className="flex h-full flex-1 flex-col gap-4 space-y-1 overflow-x-auto rounded-xl p-5">
+                <div className="flex items-start justify-between">
+                    <Heading title={title} description={description} />
+                    {actions && <div className="ml-auto flex items-center gap-2">{actions}</div>}
+                </div>
+                {children}
             </div>
-            {children}
-        </div>
-        <Toaster position="top-center" />
-    </AppLayoutTemplate>
-);
+            <Toaster position="top-center" />
+        </AppLayoutTemplate>
+    );
+};

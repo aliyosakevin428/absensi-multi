@@ -1,5 +1,5 @@
 import { NavItem } from '@/types';
-import { Home, Newspaper, UserSquare } from 'lucide-react';
+import { Home, Info, Newspaper } from 'lucide-react';
 
 export const welcomeMenuList: NavItem[] = [
     {
@@ -10,11 +10,11 @@ export const welcomeMenuList: NavItem[] = [
     {
         title: 'About Us',
         href: route('about'),
-        icon: UserSquare,
+        icon: Info,
     },
     {
         title: 'Berita Terbaru',
         href: route('berita'),
         icon: Newspaper,
-    }
+    },
 ];

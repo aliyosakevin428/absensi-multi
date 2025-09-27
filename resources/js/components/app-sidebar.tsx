@@ -4,14 +4,14 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookCheckIcon, BookCopy, BookOpen, BookOpenCheck, Grid2X2, KeySquare, LayoutGrid, Newspaper, SwitchCamera, Users } from 'lucide-react';
+import { Book, BookCheckIcon, BookCopy, BookOpen, BookOpenCheck, KeySquare, LayoutDashboardIcon, Newspaper, SwitchCamera, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: route('dashboard'),
-        icon: LayoutGrid,
+        icon: LayoutDashboardIcon,
     },
     // {
     //     title: 'Documentation',
@@ -63,7 +63,7 @@ export function AppSidebar() {
                         {
                             title: 'Jenis Acara',
                             href: route('event-type.index'),
-                            icon: Grid2X2,
+                            icon: Book,
                             available: menus.eventType,
                         },
                         {
