@@ -72,6 +72,7 @@ export type Position = {
 export type AbsentReason = {
     id: number;
     name: string;
+    attendances?: Attendance[];
     created_at: string;
     updated_at: string;
 };

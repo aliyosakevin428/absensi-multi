@@ -1,26 +1,41 @@
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { AbsentReason } from '@/types';
+import { User } from '@/types';
 import { FC } from 'react';
 
 type Props = {
-    absentreason: AbsentReason;
+    absentReason: {
+        id: number;
+        name: string;
+    };
+    users: User[];
 };
 
-const showAbsentReason: FC<Props> = ({ absentreason }) => {
+const ShowAbsentReason: FC<Props> = ({ absentReason, users }) => {
     return (
-        <AppLayout title="Detail absent" description="Detail absent">
+        <AppLayout title="Detail Absen" description="Detail alasan absen">
             <Card>
                 <CardHeader>
-                    <CardTitle>{absentreason.name}</CardTitle>
-                    <CardDescription>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, quo impedit cupiditate voluptas culpa magnam itaque distinctio
-                        at ullam, beatae perferendis doloremque facilis mollitia, quod corporis. Autem voluptatum ipsum placeat.
-                    </CardDescription>
+                    <CardTitle>
+                        {absentReason.name} {users.length > 0 && `(${users.length} orang)`}
+                    </CardTitle>
+                    <CardDescription>Daftar anggota yang menggunakan alasan ini.</CardDescription>
                 </CardHeader>
+
+                <CardContent>
+                    {users.length > 0 ? (
+                        <ul className="text-foreground list-disc space-y-1 pl-5 text-sm">
+                            {users.map((user) => (
+                                <li key={user.id}>{user.name}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-sm text-gray-500">Belum ada anggota yang pakai alasan ini.</p>
+                    )}
+                </CardContent>
             </Card>
         </AppLayout>
     );
 };
 
-export default showAbsentReason;
+export default ShowAbsentReason;

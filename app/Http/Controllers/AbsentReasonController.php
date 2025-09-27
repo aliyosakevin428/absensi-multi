@@ -54,8 +54,21 @@ class AbsentReasonController extends Controller
     {
         $this->pass('show absent reason');
 
+        $absentReason->load(['attendances.users']);
+
+        $users = $absentReason->attendances
+            ->flatMap(fn($attendance) => $attendance->users)
+            ->unique('id')
+            ->values()
+            ->map(fn($user) => [
+                'id' => $user->id,
+                'name' => $user->name,
+            ])
+            ->toArray(); // penting biar array biasa
+
         return Inertia::render('absentreason/show', [
-            'absentreason' => $absentReason,
+            'absentReason' => $absentReason,
+            'users' => $users,
         ]);
     }
 
