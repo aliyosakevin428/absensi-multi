@@ -56,7 +56,7 @@ class EventTypeController extends Controller
     {
         $this->pass('show eventType');
 
-        $eventType->load(['events']); // eager load daftar event
+        $eventType->load(['events.attendances']); 
 
             return Inertia::render('eventType/show', [
             'eventType' => $eventType,
