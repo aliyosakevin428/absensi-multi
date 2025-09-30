@@ -1,5 +1,7 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { Position, SharedData, Team, User } from '@/types';
@@ -49,7 +51,7 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                         <UserFormSheet purpose="create" teams={teams} positions={positions}>
                             <Button>
                                 <PlusCircle />
-                                Create new Team
+                                Tambah Anggota
                             </Button>
                         </UserFormSheet>
                     )}
@@ -84,7 +86,15 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                                 <TableHead>{user.team?.name || 'N/A'}</TableHead>
                                 <TableHead>{user.roles?.join(', ') || 'N/A'}</TableHead>
                                 <TableHead>
-                                    {user.positions && user.positions.length > 0 ? user.positions.map((p) => p.name).join(', ') : 'N/A'}
+                                    <Popover>
+                                        <PopoverTrigger>
+                                            <Badge>{user.positions?.length} positions</Badge>
+                                        </PopoverTrigger>
+                                        <PopoverContent align="end">
+                                            {user.positions && user.positions.length > 0 ? user.positions.map((p) => p.name).join(', ') : 'N/A'}
+                                        </PopoverContent>
+                                    </Popover>
+                                    {/* {user.positions && user.positions.length > 0 ? user.positions.map((p) => p.name).join(', ') : 'N/A'} */}
                                 </TableHead>
                                 <TableHead>
                                     {permissions?.canShow && (

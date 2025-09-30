@@ -23,7 +23,7 @@ const ListEventType = ({ events = [] }: { events?: EventType[] }) => {
                     <EventTypeFormSheet purpose="create">
                         <Button>
                             <PlusCircle />
-                            Create new EventType
+                            Buat Jenis Acara
                         </Button>
                     </EventTypeFormSheet>
                 )

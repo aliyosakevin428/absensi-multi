@@ -19,7 +19,7 @@ class Event extends Model
     ];
 
     protected $casts = [
-        'waktu_kegiatan' => 'datetime:Y-m-d H:i:s'
+        'waktu_kegiatan' => 'datetime:Y-m-d H:i:s',
     ];
 
     public function event_types()

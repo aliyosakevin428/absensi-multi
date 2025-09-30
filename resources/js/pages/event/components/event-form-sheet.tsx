@@ -29,7 +29,7 @@ const EventFormSheet: FC<Props> = ({ children, purpose, event }) => {
         name: event?.name ?? '',
         waktu_kegiatan: event?.waktu_kegiatan ?? '',
         lokasi_kegiatan: event?.lokasi_kegiatan ?? '',
-        event_types_id: event?.event_types.id?.toString() ?? (event_types.length > 0 ? event_types[0].id.toString() : ''),
+        event_types_id: event?.event_types.id?.toString() ?? event_types[0]?.id?.toString() ?? '',
     });
 
     const resetForm = () => {

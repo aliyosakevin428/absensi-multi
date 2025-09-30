@@ -1,9 +1,12 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { AbsentReason, Attendance, Event, SharedData, User } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
+import dayjs from 'dayjs';
 import { Edit, Folder, PlusCircle, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import AttendanceDeleteDialog from './components/attendance-delete-dialog';
@@ -27,14 +30,14 @@ const ListAttendance = ({
     return (
         <AppLayout
             title="Kehadiran Anggota"
-            description="Daftar kehadiran anggota"
+            description="Daftar kehadiran anggota yang tersimpan dalam sistem"
             actions={
                 <>
                     {permissions?.canAdd && (
                         <AttendanceFormSheet purpose="create" users={users} events={events} absent={absent}>
                             <Button>
                                 <PlusCircle />
-                                Create new Attendance
+                                Buat Daftar Kehadiran
                             </Button>
                         </AttendanceFormSheet>
                     )}
@@ -51,7 +54,7 @@ const ListAttendance = ({
                         <TableHead>No</TableHead>
                         <TableHead>Jumlah Anggota</TableHead>
                         <TableHead>Acara/Kegiatan</TableHead>
-                        <TableHead>Keterangan Kehadiran</TableHead>
+                        <TableHead>Tanggal Kegiatan</TableHead>
                         <TableHead>Status Kegiatan</TableHead>
                         <TableHead>Actions</TableHead>
                     </TableRow>
@@ -62,10 +65,20 @@ const ListAttendance = ({
                         .map((attendance, index) => (
                             <TableRow key={attendance.id}>
                                 <TableHead>{index + 1}</TableHead>
-                                <TableHead>{attendance.users.length} Anggota</TableHead>
+                                <TableHead>
+                                    <Popover>
+                                        <PopoverTrigger>
+                                            <Badge>{attendance.users?.length} Anggota</Badge>
+                                        </PopoverTrigger>
+                                        <PopoverContent align="center">
+                                            {attendance.users && attendance.users.map((user) => user.name).join(', ')}
+                                        </PopoverContent>
+                                    </Popover>
+                                </TableHead>
                                 {/* <TableHead>{attendance.users?.map((user) => user.name).join(', ') || 'N/A'}</TableHead> */}
                                 <TableHead>{attendance.event?.name || 'N/A'}</TableHead>
-                                <TableHead>{attendance.absent_reason?.name || 'N/A'}</TableHead>
+                                <TableHead>{dayjs(attendance.event?.waktu_kegiatan).format('DD MMMM YYYY HH:mm')} WITA</TableHead>
+                                {/* <TableHead>{attendance.absent_reason?.name || 'N/A'}</TableHead> */}
                                 <TableHead>{attendance.status || 'N/A'}</TableHead>
                                 <TableHead>
                                     {permissions?.canShow && (

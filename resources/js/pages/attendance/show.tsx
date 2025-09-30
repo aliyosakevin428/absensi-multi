@@ -151,7 +151,7 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
 
             {/* Grid Anggota */}
             <div className="mt-6">
-                <h2 className="mb-5 text-lg font-bold">Anggota yang hadir :</h2>
+                <h2 className="mb-5 text-lg font-bold">Anggota yang Terdaftar:</h2>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {attendance.users.map((user) => (
                         <Card key={user.id} className="p-4 shadow-sm">

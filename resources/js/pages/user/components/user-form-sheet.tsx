@@ -1,9 +1,9 @@
 import FormControl from '@/components/form-control';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import MultipleSelector from '@/components/ui/multiple-selector';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Position, Role, Team, User } from '@/types';
@@ -124,8 +124,8 @@ const UserFormSheet: FC<Props> = ({ children, purpose, user, teams, positions })
                     }
                     placeholder="Pilih Posisi"
                 />
-                <FormControl label="Select role: ">
-                    <div className="grid">
+                <FormControl label="Select role: " className="my-2 flex px-2">
+                    {/* <div className="grid">
                         {roles.map((roleObj) => (
                             <Label key={roleObj.id} className="flex h-8 items-center gap-2">
                                 <Checkbox
@@ -137,7 +137,18 @@ const UserFormSheet: FC<Props> = ({ children, purpose, user, teams, positions })
                                 {roleObj.name}
                             </Label>
                         ))}
-                    </div>
+                    </div> */}
+
+                    <RadioGroup value={data.roles[0]} onValueChange={(v) => setData('roles', [v])}>
+                        {roles.map((role) => (
+                            <div className="flex items-center gap-3 px-1">
+                                <Label className="flex items-center gap-3">
+                                    <RadioGroupItem value={role.name} />
+                                    {role.name}
+                                </Label>
+                            </div>
+                        ))}
+                    </RadioGroup>
                 </FormControl>
                 <SheetFooter>
                     <Button onClick={handleSubmit} type="submit" disabled={processing}>

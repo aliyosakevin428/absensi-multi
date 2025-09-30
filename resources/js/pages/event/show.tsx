@@ -35,7 +35,7 @@ const ShowEvent: FC<Props> = ({ event }) => {
     }
 
     return (
-        <AppLayout title="Detail Event" description="Detail event">
+        <AppLayout title="Detail Acara" description="Detail acara yang terdaftar di sistem">
             <Card>
                 <CardHeader>
                     <CardTitle>{event.name}</CardTitle>

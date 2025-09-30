@@ -5,6 +5,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventTypeController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PositionController;
@@ -35,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('absent-reason', AbsentReasonController::class);
 
     Route::resource('event-type', EventTypeController::class);
+    Route::apiResource('document', MediaController::class);
 
     Route::resource('event', EventController::class);
     Route::get('/charts/events-bar', [EventController::class, 'chartBar'])->name('charts.events.bar');

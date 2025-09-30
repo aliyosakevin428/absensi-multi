@@ -11,7 +11,7 @@ import AppLayout from '@/layouts/app-layout';
 import { copyMarkdownImage, em, handlePasteScreenshot } from '@/lib/utils';
 import { News } from '@/types';
 import { Link, router, useForm } from '@inertiajs/react';
-import { Folder, Info } from 'lucide-react';
+import { Folder, Info, Trash2 } from 'lucide-react';
 import { FC, useEffect } from 'react';
 import { toast } from 'sonner';
 
@@ -94,9 +94,25 @@ const EditNews: FC<Props> = ({ news }) => {
                                 {(news.media ?? []).length > 0 && (
                                     <>
                                         {news.media.map((m) => (
-                                            <Avatar className="size-full rounded-lg" onClick={() => copyMarkdownImage(m.name, m.original_url)}>
-                                                <AvatarImage src={m.preview_url} className="object-cover" />
-                                            </Avatar>
+                                            <div className="group relative">
+                                                <Avatar className="size-full rounded-lg" onClick={() => copyMarkdownImage(m.name, m.original_url)}>
+                                                    <AvatarImage src={m.preview_url} className="object-cover" />
+                                                </Avatar>
+                                                <Button
+                                                    onClick={() => {
+                                                        router.delete(route('document.destroy', m.id), {
+                                                            preserveScroll: true,
+                                                            onSuccess: () => toast.success('upload completed'),
+                                                            onError: (e) => toast.error(em(e)),
+                                                        });
+                                                    }}
+                                                    size={'sm'}
+                                                    variant={'destructive'}
+                                                    className="absolute right-0 bottom-0 opacity-0 group-hover:opacity-100"
+                                                >
+                                                    <Trash2 />
+                                                </Button>
+                                            </div>
                                         ))}
                                     </>
                                 )}
