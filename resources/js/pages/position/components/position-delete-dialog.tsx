@@ -27,7 +27,7 @@ const PositionDeleteDialog: FC<Props> = ({ children, position }) => {
         router.delete(route('position.destroy', position.id), {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success('Position deleted successfully');
+                toast.success('Posisi deleted successfully');
                 setOpen(false);
             },
             onError: (e) => toast.error(em(e)),

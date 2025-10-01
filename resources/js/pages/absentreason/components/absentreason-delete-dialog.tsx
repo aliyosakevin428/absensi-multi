@@ -27,7 +27,7 @@ const AbsentReasonDeleteDialog: FC<Props> = ({ children, absent_reason }) => {
         router.delete(route('absent-reason.destroy', absent_reason.id), {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success('Position deleted successfully');
+                toast.success('Keterangan Kehadiran deleted successfully');
                 setOpen(false);
             },
             onError: (e) => toast.error(em(e)),

@@ -67,7 +67,7 @@ export function AppSidebar() {
                             available: menus.eventType,
                         },
                         {
-                            title: 'Kehadiran',
+                            title: 'Daftar Kehadiran',
                             href: route('attendance.index'),
                             icon: BookOpenCheck,
                             available: menus.attendance,

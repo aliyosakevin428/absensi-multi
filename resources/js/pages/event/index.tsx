@@ -13,6 +13,8 @@ import EventFormSheet from './components/event-form-sheet';
 const ListEvent = ({ eventses }: { eventses: Event[]; event_types: EventType[] }) => {
     const [cari, setCari] = useState('');
 
+    console.log(eventses);
+
     const { permissions } = usePage<SharedData>().props;
 
     return (
@@ -56,7 +58,7 @@ const ListEvent = ({ eventses }: { eventses: Event[]; event_types: EventType[] }
                                 <TableHead>{events.name}</TableHead>
                                 <TableHead>{dayjs(events.waktu_kegiatan).format('DD MMMM YYYY HH:mm')} WITA</TableHead>
                                 <TableHead>{events.lokasi_kegiatan}</TableHead>
-                                <TableHead>{events.event_types?.name}</TableHead>
+                                <TableHead>{events.event_types?.name ?? '-'}</TableHead>
                                 <TableHead>
                                     {permissions?.canShow && (
                                         <Button variant={'ghost'} size={'icon'} asChild>

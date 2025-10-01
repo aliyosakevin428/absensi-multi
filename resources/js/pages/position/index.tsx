@@ -24,7 +24,7 @@ const ListPosition = ({ positions }: { positions: Position[] }) => {
                         <PositionFormSheet purpose="create">
                             <Button>
                                 <PlusCircle />
-                                Create new Position
+                                Buat Posisi Baru
                             </Button>
                         </PositionFormSheet>
                     )}

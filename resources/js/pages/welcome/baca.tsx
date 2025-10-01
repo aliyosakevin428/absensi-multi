@@ -24,7 +24,7 @@ const Baca: FC<Props> = ({ news }) => {
                         </CarouselContent>
                     </Carousel>
                 )}
-                <MarkdownReader content={news.content} className="mx-auto max-w-4xl space-y-4 text-base leading-relaxed text-foreground" />
+                <MarkdownReader content={news.content} className="mx-auto max-w-6xl space-y-4 text-base leading-relaxed text-foreground" />
             </SectionContainer>
         </WelcomeLayout>
     );

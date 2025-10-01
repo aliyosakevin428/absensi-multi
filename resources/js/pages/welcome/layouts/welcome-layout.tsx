@@ -13,7 +13,7 @@ const WelcomeLayout: FC<Props> = ({ children }) => {
         <SidebarProvider defaultOpen={false}>
             <WelcomeSidebar />
             <SidebarInset>
-                <div className="mx-auto grid w-full max-w-5xl space-y-1 px-4">
+                <div className="mx-auto grid w-full max-w-7xl space-y-6 px-6">
                     <WelcomeNavbar />
                     {children}
                     <WelcomeFooter />

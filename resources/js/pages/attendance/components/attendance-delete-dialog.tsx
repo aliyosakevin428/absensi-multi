@@ -27,7 +27,7 @@ const AttendanceDeleteDialog: FC<Props> = ({ children, attendance }) => {
         router.delete(route('attendance.destroy', attendance.id), {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success('Attendance deleted successfully');
+                toast.success('Kehadiran deleted successfully');
                 setOpen(false);
             },
             onError: (e) => toast.error(em(e)),

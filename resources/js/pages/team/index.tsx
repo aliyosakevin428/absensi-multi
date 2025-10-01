@@ -28,7 +28,7 @@ const ListTeam: FC<Props> = ({ teams }) => {
                         <TeamFormSheet purpose="create">
                             <Button>
                                 <PlusCircle />
-                                Create new Team
+                                Buat Tim Baru
                             </Button>
                         </TeamFormSheet>
                     )}

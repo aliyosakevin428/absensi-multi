@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Position, Role, Team, User } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
+import { X } from 'lucide-react';
 import { FC, PropsWithChildren, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -155,7 +156,10 @@ const UserFormSheet: FC<Props> = ({ children, purpose, user, teams, positions })
                         {processing ? 'Menyimpan...' : 'Simpan'}
                     </Button>
                     <SheetClose asChild>
-                        <Button>Close</Button>
+                        <Button variant={'outline'}>
+                            <X />
+                            Close
+                        </Button>
                     </SheetClose>
                 </SheetFooter>
             </SheetContent>

@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { AbsentReason } from '@/types';
 import { useForm } from '@inertiajs/react';
+import { X } from 'lucide-react';
 import { FC, PropsWithChildren, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -51,7 +52,7 @@ const UserFormSheet: FC<Props> = ({ children, purpose, absent }) => {
                     <SheetTitle className="capitalize">{purpose} Your Absent Reason</SheetTitle>
                 </SheetHeader>
                 <Input value={data.name} onChange={(e) => setData('name', e.target.value)} placeholder="Name" />
-                <p className="p-2 text-sm text-neutral-400">isi bagian ini untuk membuat alasan absen</p>
+                <p className="px-1 text-sm text-neutral-500">isi bagian ini untuk membuat alasan absen</p>
                 {/* <Input value={data.email} onChange={(e) => setData('email', e.target.value)} placeholder="Email" />
                 <Input value={data.password} onChange={(e) => setData('password', e.target.value)} placeholder="Password" /> */}
 
@@ -68,7 +69,10 @@ const UserFormSheet: FC<Props> = ({ children, purpose, absent }) => {
                 <SheetFooter>
                     <Button onClick={handleSubmit}>Simpan</Button>
                     <SheetClose asChild>
-                        <Button>Close</Button>
+                        <Button variant={'outline'}>
+                            <X />
+                            Close
+                        </Button>
                     </SheetClose>
                 </SheetFooter>
             </SheetContent>

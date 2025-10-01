@@ -27,7 +27,7 @@ const UserDeleteDialog: FC<Props> = ({ children, user }) => {
         router.delete(route('users.destroy', user.id), {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success('User deleted successfully');
+                toast.success('Anggota deleted successfully');
                 setOpen(false);
             },
             onError: (e) => toast.error(em(e)),

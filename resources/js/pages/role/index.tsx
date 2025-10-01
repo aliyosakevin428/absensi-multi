@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import AppLayout from '@/layouts/app-layout';
 import { Role } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Edit, Filter, Folder, List, Plus, Trash2 } from 'lucide-react';
+import { Edit, Filter, Folder, List, PlusCircle, Trash2 } from 'lucide-react';
 import { FC, useState } from 'react';
 import RoleDeleteDialog from './components/role-delete-dialog';
 import RoleFilterSheet from './components/role-filter-sheet';
@@ -30,8 +30,8 @@ const RoleList: FC<Props> = ({ roles, query }) => {
                 <>
                     <RoleFormSheet purpose="create">
                         <Button>
-                            <Plus />
-                            Create new role
+                            <PlusCircle />
+                            Tambah role baru
                         </Button>
                     </RoleFormSheet>
                     <Button asChild>

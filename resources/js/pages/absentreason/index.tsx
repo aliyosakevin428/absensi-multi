@@ -15,7 +15,7 @@ const ListAbsentReason = ({ absentreasons }: { absentreasons: AbsentReason[] }) 
     const { permissions } = usePage<SharedData>().props;
     return (
         <AppLayout
-            title="Halaman Alasan Kehadiran"
+            title="Keterangan Kehadiran"
             description="Halaman Alasan Kehadiran untuk absensi anggota multimedia"
             actions={
                 <>
@@ -23,7 +23,7 @@ const ListAbsentReason = ({ absentreasons }: { absentreasons: AbsentReason[] }) 
                         <AbsentReasonFormSheet purpose="create">
                             <Button>
                                 <PlusCircle />
-                                Create new Absent Reason
+                                Buat Alasan Kehadiran Baru
                             </Button>
                         </AbsentReasonFormSheet>
                     )}

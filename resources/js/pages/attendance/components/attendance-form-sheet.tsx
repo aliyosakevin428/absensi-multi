@@ -7,7 +7,7 @@ import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, 
 import { cn } from '@/lib/utils';
 import { AbsentReason, Attendance, Event, User } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown, X } from 'lucide-react';
 import { FC, PropsWithChildren, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -62,7 +62,7 @@ const AttendanceFormSheet: FC<Props> = ({ children, purpose, attendance, users =
             <SheetTrigger>{children}</SheetTrigger>
             <SheetContent>
                 <SheetHeader>
-                    <SheetTitle className="capitalize">{purpose} Attendance</SheetTitle>
+                    <SheetTitle className="capitalize">{purpose} Kehadiran Acara</SheetTitle>
                 </SheetHeader>
                 <MultipleSelector
                     value={USER_OPTIONS.filter((opt) => data.users_id.includes(opt.value))}
@@ -131,7 +131,10 @@ const AttendanceFormSheet: FC<Props> = ({ children, purpose, attendance, users =
                         {processing ? 'Menyimpan...' : 'Simpan'}
                     </Button>
                     <SheetClose asChild>
-                        <Button>Close</Button>
+                        <Button variant={'outline'}>
+                            <X />
+                            Close
+                        </Button>
                     </SheetClose>
                 </SheetFooter>
             </SheetContent>

@@ -43,7 +43,10 @@ const WelcomeFooter = () => {
                 {/* Bagian bawah: Copyright + Link */}
                 <div className="flex flex-col items-center justify-between gap-4 text-sm text-muted-foreground md:flex-row">
                     <p>
-                        © {new Date().getFullYear()} <span className="font-semibold">Multimedia Lahai Roi Balikpapan</span> | All rights reserved
+                        © {new Date().getFullYear()}{' '}
+                        <span className="font-semibold">
+                            Multimedia Lahai Roi Balikpapan | Created by: <i>Aliyosa Kevin</i>
+                        </span>
                     </p>
                     <div className="flex gap-6">
                         <Link href="/" className="flex items-center gap-1 transition hover:scale-105 hover:text-primary">

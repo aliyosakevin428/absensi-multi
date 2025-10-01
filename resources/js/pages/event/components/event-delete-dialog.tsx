@@ -27,7 +27,7 @@ const EventDeleteDialog: FC<Props> = ({ children, event }) => {
         router.delete(route('event.destroy', event.id), {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success('Event deleted successfully');
+                toast.success('Acara deleted successfully');
                 setOpen(false);
             },
             onError: (e) => toast.error(em(e)),

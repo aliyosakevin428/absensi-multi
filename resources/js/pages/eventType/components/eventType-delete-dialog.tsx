@@ -27,7 +27,7 @@ const EventTypeDeleteDialog: FC<Props> = ({ children, event_type }) => {
         router.delete(route('event-type.destroy', event_type.id), {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success('Event type deleted successfully');
+                toast.success('Jenis Acara deleted successfully');
                 setOpen(false);
             },
             onError: (e) => toast.error(em(e)),

@@ -8,7 +8,7 @@ import AppLayout from '@/layouts/app-layout';
 import { dateDFY, strLimit } from '@/lib/utils';
 import { News, SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Edit, Filter, Folder, Plus, Trash2 } from 'lucide-react';
+import { Edit, Filter, Folder, PlusCircle, Trash2 } from 'lucide-react';
 import { FC, useState } from 'react';
 import NewsBulkDeleteDialog from './components/news-bulk-delete-dialog';
 import NewsBulkEditSheet from './components/news-bulk-edit-sheet';
@@ -29,15 +29,15 @@ const NewsList: FC<Props> = ({ news, query }) => {
 
     return (
         <AppLayout
-            title="Berita Kegiatan Gereja"
-            description="List berita kegiatan yang ada di Gereja"
+            title="Artikel Settings"
+            description="List artikel / warta jemaat gereja yang sedang berlangsung"
             actions={
                 <>
                     {permissions?.canAdd && (
                         <NewsFormSheet purpose="create">
                             <Button>
-                                <Plus />
-                                Create new news
+                                <PlusCircle />
+                                Buat Berita Baru
                             </Button>
                         </NewsFormSheet>
                     )}

@@ -87,7 +87,7 @@ const NewsFormSheet: FC<Props> = ({ children, news, purpose }) => {
                     <SubmitButton onClick={handleSubmit} label={`${capitalizeWords(purpose)} news`} loading={processing} disabled={processing} />
                     <SheetClose asChild>
                         <Button variant={'outline'}>
-                            <X /> Batalin
+                            <X /> Close
                         </Button>
                     </SheetClose>
                 </SheetFooter>

@@ -27,7 +27,7 @@ const NewsDeleteDialog: FC<Props> = ({ children, news }) => {
         router.delete(route('news.destroy', news.id), {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success('News deleted successfully');
+                toast.success('Artikel deleted successfully');
                 setOpen(false);
             },
             onError: (e) => toast.error(em(e)),

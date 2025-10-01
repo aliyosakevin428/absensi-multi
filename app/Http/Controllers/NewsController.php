@@ -20,6 +20,8 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
+        $this->pass('index news');
+
         $data = News::query()
             ->with('user')
             ->when($request->user_id, function ($q, $v) {
@@ -29,7 +31,7 @@ class NewsController extends Controller
         return Inertia::render('news/index', [
             'news' => $data->get(),
             'query' => $request->input(),
-            'users' => User::role('user',)->get(),
+            'users' => User::role('creator')->get(),
             'permissions' => [
                 'canAdd' => $this->user->can('create news'),
                 'canUpdate' => $this->user->can('update news'),
@@ -44,9 +46,11 @@ class NewsController extends Controller
      */
     public function store(StoreNewsRequest $request)
     {
+        $this->pass('create news');
+
         $data = $request->validated();
         $data['slug'] = Str::slug($data['title']);
-        $data['user_id'] = auth()->id();
+        $data['user_id'] = auth('web')->id(); // -> user_id is only for admin and Superadmin
 
         News::create($data);
     }
@@ -56,6 +60,8 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
+        $this->pass('show news');
+
         return Inertia::render('news/show', [
             'news' => $news->load(['user', 'media']),
             'permissions' => [
@@ -69,6 +75,8 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
+        $this->pass('update news');
+
         return Inertia::render('news/edit', [
             'news' => $news->load(['user', 'media']),
             'permissions' => [
@@ -82,8 +90,11 @@ class NewsController extends Controller
      */
     public function update(UpdateNewsRequest $request, News $news)
     {
+        $this->pass('update news');
+        
         $data = $request->validated();
         $data['slug'] = Str::slug($data['title']);
+        $data['user_id'] = auth()->id(); // -> user_id is only for admin and Superadmin
 
         $news->update($data);
     }

@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Position } from '@/types';
 import { useForm } from '@inertiajs/react';
+import { X } from 'lucide-react';
 import { FC, PropsWithChildren, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -23,14 +24,14 @@ const PositionFormSheet: FC<Props> = ({ children, purpose, position }) => {
                 onSuccess: () => {
                     toast.success('Posisi berhasil dibuat');
                     setOpen(false);
-                }
+                },
             });
         } else {
             put(route('position.update', position?.id), {
                 onSuccess: () => {
                     toast.success('Posisi berhasil diubah');
                     setOpen(false);
-                }
+                },
             });
         }
     };
@@ -43,12 +44,15 @@ const PositionFormSheet: FC<Props> = ({ children, purpose, position }) => {
                     <SheetTitle className="capitalize">{purpose} Your Position</SheetTitle>
                 </SheetHeader>
                 <Input value={data.name} onChange={(e) => setData('name', e.target.value)} placeholder="Nama Posisi" />
-                <p className="text-sm text-neutral-400">isi bagian ini untuk membuat posisi</p>
+                <p className="flex px-1 text-sm text-neutral-500">isi bagian ini untuk membuat posisi</p>
 
                 <SheetFooter>
                     <Button onClick={handleSubmit}>Simpan</Button>
                     <SheetClose asChild>
-                        <Button>Close</Button>
+                        <Button variant={'outline'}>
+                            <X />
+                            Close
+                        </Button>
                     </SheetClose>
                 </SheetFooter>
             </SheetContent>

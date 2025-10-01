@@ -8,7 +8,7 @@ import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, 
 import { Event, EventType } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
-import { ChevronDownIcon } from 'lucide-react';
+import { ChevronDownIcon, X } from 'lucide-react';
 import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -29,7 +29,7 @@ const EventFormSheet: FC<Props> = ({ children, purpose, event }) => {
         name: event?.name ?? '',
         waktu_kegiatan: event?.waktu_kegiatan ?? '',
         lokasi_kegiatan: event?.lokasi_kegiatan ?? '',
-        event_types_id: event?.event_types.id?.toString() ?? event_types[0]?.id?.toString() ?? '',
+        event_types_id: event?.event_types?.id?.toString() ?? event_types[0]?.id?.toString() ?? '',
     });
 
     const resetForm = () => {
@@ -47,7 +47,7 @@ const EventFormSheet: FC<Props> = ({ children, purpose, event }) => {
                 name: event.name,
                 waktu_kegiatan: event.waktu_kegiatan,
                 lokasi_kegiatan: event.lokasi_kegiatan,
-                event_types_id: event.event_types.id?.toString() ?? '',
+                event_types_id: event.event_types?.id?.toString() ?? '',
             });
             setDate(new Date(event.waktu_kegiatan));
             setTime(dayjs(event.waktu_kegiatan).format('HH:mm'));
@@ -94,8 +94,8 @@ const EventFormSheet: FC<Props> = ({ children, purpose, event }) => {
             }}
         >
             <SheetTrigger asChild>{children}</SheetTrigger>
-            <SheetContent>
-                <form onSubmit={handleSubmit}>
+            <SheetContent className="flex flex-col">
+                <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
                     <SheetHeader>
                         <SheetTitle className="capitalize">{purpose} Your Event</SheetTitle>
                     </SheetHeader>
@@ -157,7 +157,10 @@ const EventFormSheet: FC<Props> = ({ children, purpose, event }) => {
                             {processing ? 'Menyimpan...' : 'Simpan'}
                         </Button>
                         <SheetClose asChild>
-                            <Button variant="outline">Tutup</Button>
+                            <Button variant={'outline'}>
+                                <X />
+                                Close
+                            </Button>
                         </SheetClose>
                     </SheetFooter>
                 </form>
