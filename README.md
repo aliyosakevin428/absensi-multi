@@ -21,7 +21,7 @@
 | Layer               | Teknologi yang digunakan          |
 | ------------------- | --------------------------------- |
 | **Frontend**        | React + TypeScript + Tailwind CSS |
-| **Backend**         | Laravel 11 (Inertia.js)           |
+| **Backend**         | Laravel 12 (Inertia.js)           |
 | **UI Components**   | shadcn/ui + Lucide Icons          |
 | **Theme System**    | next-themes (Dark/Light Mode)     |
 | **Bundler**         | Vite                              |
