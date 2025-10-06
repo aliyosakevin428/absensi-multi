@@ -59,6 +59,6 @@ project-root/
 │   └── web.php
 └── README.md
 
-<h3 align="center">❤️ Terima kasih!</h3> <p align="center"> <i>"Code with purpose, design with heart."</i><br/> Dibangun dengan Laravel, React, dan secangkir kopi ☕ </p>
-
 ```
+
+<h3 align="center">❤️ Terima kasih!</h3> <p align="center"> <i>"Code with purpose, design with heart."</i><br/> Dibangun dengan Laravel, React, dan secangkir kopi ☕ </p>
