@@ -33,7 +33,7 @@ const PermissionList: FC<Props> = ({ permissions, query }) => {
             description="Manage your permissions"
             actions={
                 <>
-                    <Button asChild variant={'secondary'}>
+                    <Button asChild variant={'outline'}>
                         <Link href={route('role.index')}>
                             <ArrowLeft />
                             Kembali ke list role

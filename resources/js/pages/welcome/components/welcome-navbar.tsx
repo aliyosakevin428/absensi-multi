@@ -1,3 +1,4 @@
+import ThemeToggler from '@/components/theme-toggler';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -16,17 +17,26 @@ const WelcomeNavbar = () => {
                 <SidebarTrigger />
             ) : (
                 <nav className="flex w-full items-center justify-between gap-4">
-                    <div>
-                        {welcomeMenuList.map((menu, index) => (
-                            <Button variant={menu.isActive ? 'outline' : 'ghost'} key={index} asChild>
-                                <Link href={menu.href}>
-                                    {menu.icon && <menu.icon />}
-                                    {menu.title}
-                                </Link>
-                            </Button>
-                        ))}
+                    <div className="flex items-center gap-8">
+                        {/* Logo */}
+                        <Link href="/" className="flex items-center gap-3">
+                            <img src="/images/logo-channel.png" alt="Logo" className="h-10 w-auto" />
+                            <span className="text-md font-semibold tracking-tight">Multimedia Official</span>
+                        </Link>
+
+                        <div className="flex items-center gap-3">
+                            {welcomeMenuList.map((menu, index) => (
+                                <Button variant={menu.isActive ? 'outline' : 'ghost'} key={index} asChild>
+                                    <Link href={menu.href} className="flex items-center gap-1">
+                                        {menu.icon && <menu.icon className="h-4 w-4" />}
+                                        {menu.title}
+                                    </Link>
+                                </Button>
+                            ))}
+                        </div>
                     </div>
-                    <div>
+                    <div className="flex items-center gap-5">
+                        <ThemeToggler width="fit" />
                         {[
                             ...(auth.user
                                 ? [

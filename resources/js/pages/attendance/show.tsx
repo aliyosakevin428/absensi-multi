@@ -163,7 +163,10 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                                     <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2">
                                         {user.positions?.length ? (
                                             user.positions.map((pos) => (
-                                                <label key={pos.id} className="flex items-center gap-2 rounded-md border p-2 hover:bg-blue-300">
+                                                <label
+                                                    key={pos.id}
+                                                    className="flex items-center gap-2 rounded-md border p-2 hover:!bg-secondary hover:!text-foreground"
+                                                >
                                                     <input
                                                         type="checkbox"
                                                         checked={checkedPositions[user.id]?.includes(pos.id) || false}

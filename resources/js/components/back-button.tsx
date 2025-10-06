@@ -9,7 +9,7 @@ type Props = {
 const BackButton: FC<Props> = ({ label = 'Kembali' }) => {
     return (
         <Button
-            variant={'secondary'}
+            variant={'outline'}
             onClick={() => {
                 window.history.back();
             }}

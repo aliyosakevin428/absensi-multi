@@ -42,7 +42,7 @@ const ShowRole: FC<Props> = ({ role, permissions }) => {
             actions={
                 <>
                     <Link href={route('role.index')}>
-                        <Button variant={'secondary'}>
+                        <Button variant={'outline'}>
                             <ArrowLeft />
                             Back to route list
                         </Button>

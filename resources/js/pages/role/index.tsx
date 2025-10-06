@@ -24,7 +24,7 @@ const RoleList: FC<Props> = ({ roles, query }) => {
 
     return (
         <AppLayout
-            title="Roles"
+            title="Roles Settings"
             description="Manage your roles"
             actions={
                 <>

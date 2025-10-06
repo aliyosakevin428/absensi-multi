@@ -14,7 +14,7 @@ const ThemeToggler: FC<Props> = ({ width = 'fit' }) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className={`w-${width}`} asChild>
-                <Button variant={'outline'} className={`w-${width} hover:!bg-primary hover:!text-primary-foreground`}>
+                <Button variant={'outline'} className={`w-${width} hover:!text-foreground`}>
                     {appearance === 'light' && <Sun />}
                     {appearance === 'dark' && <Moon />}
                     {appearance === 'system' && <Monitor />}

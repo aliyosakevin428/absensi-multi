@@ -20,7 +20,7 @@ const ShowNews: FC<Props> = ({ news }) => {
             actions={
                 <>
                     <BackButton />
-                    <Button asChild>
+                    <Button  asChild>
                         <Link href={route('news.edit', news.id)}>
                             <Edit />
                             Edit Content
