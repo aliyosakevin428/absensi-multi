@@ -22,7 +22,7 @@ const NewsSection = () => {
                     <Button asChild>
                         <Link href={route('berita')}>
                             <BookOpen />
-                            Baca berita lainnya
+                            Baca artikel lainnya
                         </Link>
                     </Button>
                 </div>
