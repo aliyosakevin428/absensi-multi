@@ -11,7 +11,7 @@ type Props = {
 const Berita: FC<Props> = ({ news }) => {
     return (
         <WelcomeLayout>
-            <SectionContainer title="Kegiatan Gereja yang sedang berlangsung dan Warta Jemaat" description="Berita kegiatan Gereja terbaru">
+            <SectionContainer title="Artikel Kegiatan Yang Berlangsung di Gereja" description="Artikel kegiatan Gereja terbaru">
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {news.map((berita) => (
                         <NewsItemCard news={berita} key={berita.id} />

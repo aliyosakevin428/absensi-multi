@@ -24,7 +24,7 @@ class UpdateNewsRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
-            'user_id' => 'sometimes|exists:users,id',
+            'user_id' => 'nullable|exists:users,id',
         ];
     }
 }

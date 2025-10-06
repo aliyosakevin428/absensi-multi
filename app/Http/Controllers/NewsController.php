@@ -91,10 +91,13 @@ class NewsController extends Controller
     public function update(UpdateNewsRequest $request, News $news)
     {
         $this->pass('update news');
-        
+
         $data = $request->validated();
         $data['slug'] = Str::slug($data['title']);
-        $data['user_id'] = auth()->id(); // -> user_id is only for admin and Superadmin
+
+        if(!isset($data['user_id'])) {
+            $data['user_id'] = auth()->id(); // -> user_id is only for admin, Superadmin, creator
+        }
 
         $news->update($data);
     }

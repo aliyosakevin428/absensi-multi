@@ -13,7 +13,7 @@ export const welcomeMenuList: NavItem[] = [
         icon: Info,
     },
     {
-        title: 'Berita Terbaru',
+        title: 'Artikel & Warta Jemaat',
         href: route('berita'),
         icon: Newspaper,
     },

@@ -1,5 +1,5 @@
 import MarkdownReader from '@/components/markdown-reader';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { News } from '@/types';
 import { FC } from 'react';
 import SectionContainer from './layouts/section-container';
@@ -12,7 +12,7 @@ type Props = {
 const Baca: FC<Props> = ({ news }) => {
     return (
         <WelcomeLayout>
-            <SectionContainer title={news.title} description={news.description} className="mx-auto max-w-3xl space-y-10">
+            <SectionContainer title={news.title} description={news.description} className="mx-auto max-w-4xl space-y-10">
                 {(news.media ?? []).length > 0 && (
                     <Carousel>
                         <CarouselContent>
@@ -22,9 +22,11 @@ const Baca: FC<Props> = ({ news }) => {
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
+                        <CarouselNext />
+                        <CarouselPrevious />
                     </Carousel>
                 )}
-                <MarkdownReader content={news.content} className="mx-auto max-w-6xl space-y-4 text-base leading-relaxed text-foreground" />
+                <MarkdownReader content={news.content} className="mx-auto max-w-7xl space-y-4 text-base leading-relaxed text-foreground" />
             </SectionContainer>
         </WelcomeLayout>
     );

@@ -1,4 +1,6 @@
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { SharedData } from '@/types';
+import { Head, usePage } from '@inertiajs/react';
 import { FC, PropsWithChildren } from 'react';
 import WelcomeFooter from '../components/welcome-footer';
 import WelcomeNavbar from '../components/welcome-navbar';
@@ -9,9 +11,15 @@ type Props = PropsWithChildren;
 const WelcomeLayout: FC<Props> = ({ children }) => {
     // const isOpen = usePage<SharedData>().props.sidebarOpen;
 
+    const { name } = usePage<SharedData>().props;
+
     return (
         <SidebarProvider defaultOpen={false}>
             <WelcomeSidebar />
+            <Head>
+                <title>{name}</title>
+                <link rel="icon" type="image/x-icon" href="/images/logo-channel.png" />
+            </Head>
             <SidebarInset>
                 <div className="mx-auto grid w-full max-w-7xl space-y-6 px-6">
                     <WelcomeNavbar />

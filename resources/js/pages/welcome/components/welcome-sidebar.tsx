@@ -9,7 +9,6 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-    SidebarRail,
 } from '@/components/ui/sidebar';
 import { SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
@@ -57,7 +56,7 @@ const WelcomeSidebar = () => {
             <SidebarFooter>
                 <ThemeToggler />
             </SidebarFooter>
-            <SidebarRail />
+            {/* <SidebarRail /> */}
         </Sidebar>
     );
 };
