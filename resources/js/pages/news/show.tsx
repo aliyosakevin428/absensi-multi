@@ -20,7 +20,7 @@ const ShowNews: FC<Props> = ({ news }) => {
             actions={
                 <>
                     <BackButton />
-                    <Button  asChild>
+                    <Button asChild>
                         <Link href={route('news.edit', news.id)}>
                             <Edit />
                             Edit Content
@@ -39,7 +39,7 @@ const ShowNews: FC<Props> = ({ news }) => {
                         <CarouselContent>
                             {news.media.map((m) => (
                                 <CarouselItem key={m.id}>
-                                    <img src={m.original_url} className="rounded-lg" />
+                                    <img src={m.original_url} className="h-full w-full rounded-lg object-cover" />
                                 </CarouselItem>
                             ))}
                         </CarouselContent>

@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Attendance extends Model implements HasMedia
 {
@@ -48,8 +50,10 @@ class Attendance extends Model implements HasMedia
             ->withTimestamps();
     }
 
-    // public function absent()
+    // public function registerMediaConversions(?Media $media = null): void
     // {
-    //     return $this->belongsTo(AbsentReason::class, 'absent_reasons_id');
+    //     $this->addMediaConversion('preview')
+    //         ->fit(Fit::Contain, 300, 300)
+    //         ->nonQueued();
     // }
 }

@@ -19,7 +19,7 @@ const DateTimeWidget = () => {
     return (
         <Card>
             <CardContent className="flex flex-1 items-center justify-center font-mono">
-                <Button variant={'ghost'} disabled>
+                <Button variant={'ghost'} className="text-lg" disabled>
                     <Calendar />
                     {now}
                 </Button>
