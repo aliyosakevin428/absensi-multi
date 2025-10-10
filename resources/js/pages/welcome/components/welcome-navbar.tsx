@@ -16,12 +16,12 @@ const WelcomeNavbar = () => {
             {isMobile ? (
                 <SidebarTrigger />
             ) : (
-                <nav className="flex w-full items-center justify-between gap-4">
-                    <div className="flex items-center gap-8">
+                <nav className="flex w-full items-center justify-between gap-5">
+                    <div className="flex items-center gap-6">
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-3">
-                            <img src="/images/logo-channel.png" alt="Logo" className="h-10 w-auto" />
-                            <span className="text-md font-semibold tracking-tight">Multimedia Official</span>
+                            <img src="/images/logo-channel.png" alt="Logo" className="h-12 w-auto" />
+                            {/* <span className="text-md font-semibold tracking-tight">Multimedia Official</span> */}
                         </Link>
 
                         <div className="flex items-center gap-3">

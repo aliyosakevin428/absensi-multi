@@ -83,7 +83,7 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
     };
 
     const form = useForm({
-        positions: checkedPositions,
+        positions: checkedPositions, // to save checked position in pivot table
     });
 
     // const formDelete = useForm<{ ids: number[] }>({
