@@ -1,5 +1,5 @@
 import MarkdownReader from '@/components/markdown-reader';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { News } from '@/types';
 import { FC } from 'react';
 import SectionContainer from './layouts/section-container';
@@ -22,8 +22,8 @@ const Baca: FC<Props> = ({ news }) => {
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
-                        <CarouselNext />
-                        <CarouselPrevious />
+                        {/* <CarouselNext />
+                        <CarouselPrevious /> */}
                     </Carousel>
                 )}
                 <MarkdownReader content={news.content} className="mx-auto max-w-7xl space-y-4 text-base leading-relaxed text-foreground" />
