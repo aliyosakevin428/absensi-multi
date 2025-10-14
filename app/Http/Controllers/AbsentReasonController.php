@@ -17,7 +17,7 @@ class AbsentReasonController extends Controller
         $this->pass('index absent reason');
 
         return Inertia::render('absentreason/index', [
-            'absentreasons' => AbsentReason::get(),
+            'absentreasons' => AbsentReason::with('attendances')->get(),
             'permissions' => [
                 'canAdd' => $this->user->can('create absent reason'),
                 'canShow' => $this->user->can('show absent reason'),
@@ -54,17 +54,36 @@ class AbsentReasonController extends Controller
     {
         $this->pass('show absent reason');
 
-        $absentReason->load(['attendances.users']);
+        // Load relasi event dan users untuk setiap attendance
+        $absentReason->load(['attendances.event', 'attendances.users']);
 
+        // Kumpulkan user + daftar tanggal event
         $users = $absentReason->attendances
-            ->flatMap(fn($attendance) => $attendance->users)
-            ->unique('id')
+            ->flatMap(function ($attendance) {
+                return $attendance->users->map(function ($user) use ($attendance) {
+                    return [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'attendanceDate' => $attendance->event->waktu_kegiatan ?? null,
+                    ];
+                });
+            })
+            ->groupBy('id') // 🔹 kelompokkan per user
+            ->map(function ($items) {
+                $user = $items->first();
+                return [
+                    'id' => $user['id'],
+                    'name' => $user['name'],
+                    // 🔹 ambil semua tanggal (tanpa null)
+                    'attendanceDates' => collect($items)
+                        ->pluck('attendanceDate')
+                        ->filter()
+                        ->unique()
+                        ->values(),
+                ];
+            })
             ->values()
-            ->map(fn($user) => [
-                'id' => $user->id,
-                'name' => $user->name,
-            ])
-            ->toArray(); // penting biar array biasa
+            ->toArray();
 
         return Inertia::render('absentreason/show', [
             'absentReason' => $absentReason,

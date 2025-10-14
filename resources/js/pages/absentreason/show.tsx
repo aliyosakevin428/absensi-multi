@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { User } from '@/types';
 import { FC } from 'react';
 
 type Props = {
@@ -8,7 +8,11 @@ type Props = {
         id: number;
         name: string;
     };
-    users: User[];
+    users: {
+        id: number;
+        name: string;
+        attendanceDates: string[];
+    }[];
 };
 
 const ShowAbsentReason: FC<Props> = ({ absentReason, users }) => {
@@ -24,13 +28,45 @@ const ShowAbsentReason: FC<Props> = ({ absentReason, users }) => {
 
                 <CardContent>
                     {users.length > 0 ? (
-                        <ul className="text-foreground list-disc space-y-1 pl-5 text-sm">
-                            {users.map((user) => (
-                                <li key={user.id}>{user.name}</li>
-                            ))}
-                        </ul>
+                        <div className="overflow-x-auto">
+                            <Table>
+                                <TableCaption>Total: {users.length} anggota menggunakan alasan ini.</TableCaption>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="w-[50px]">#</TableHead>
+                                        <TableHead>Nama</TableHead>
+                                        <TableHead>Tanggal Absen</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {users.map((user, i) => (
+                                        <TableRow key={user.id}>
+                                            <TableCell>{i + 1}</TableCell>
+                                            <TableCell>{user.name}</TableCell>
+                                            <TableCell>
+                                                {user.attendanceDates.length > 0 ? (
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {user.attendanceDates.map((date, idx) => (
+                                                            <span key={idx} className="rounded-md bg-muted px-2 py-0.5 text-xs">
+                                                                {new Date(date).toLocaleDateString('id-ID', {
+                                                                    day: '2-digit',
+                                                                    month: 'short',
+                                                                    year: 'numeric',
+                                                                })}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-sm text-muted-foreground">-</span>
+                                                )}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </div>
                     ) : (
-                        <p className="text-sm text-gray-500">Belum ada anggota yang pakai alasan ini.</p>
+                        <p className="text-sm text-muted-foreground">Belum ada anggota yang pakai alasan ini.</p>
                     )}
                 </CardContent>
             </Card>
