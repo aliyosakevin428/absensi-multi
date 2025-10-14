@@ -90,7 +90,7 @@ export function AppSidebar() {
                             available: menus.position,
                         },
                         {
-                            title: 'Teams & Members',
+                            title: 'Team Lists',
                             href: route('team.index'),
                             icon: BookCheckIcon,
                             available: menus.team,

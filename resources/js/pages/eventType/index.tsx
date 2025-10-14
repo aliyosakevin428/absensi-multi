@@ -43,7 +43,7 @@ const ListEventType = ({ events = [] }: { events?: EventType[] }) => {
                 <TableBody>
                     {/* {(console.log('Events data:', events), '')} */}
                     {events
-                        .filter((event) => event.name.includes(cari))
+                        .filter((event) => JSON.stringify(event).toLowerCase().includes(cari.toLowerCase()))
                         .map((event, index) => (
                             <TableRow key={event.id}>
                                 <TableHead>{index + 1}</TableHead>

@@ -45,7 +45,7 @@ const ListAttendance = ({
             }
         >
             <div className="flex gap-4">
-                <Input value={cari} onChange={(e) => setCari(e.target.value)} placeholder="Cari Kegiatan" className="w-full" />
+                <Input placeholder="Cari Kegiatan" value={cari} onChange={(e) => setCari(e.target.value)} className="w-full" />
             </div>
 
             <Table>
@@ -56,12 +56,13 @@ const ListAttendance = ({
                         <TableHead>Acara/Kegiatan</TableHead>
                         <TableHead>Tanggal Kegiatan</TableHead>
                         <TableHead>Status Kegiatan</TableHead>
+                        <TableHead>Status Kehadiran</TableHead>
                         <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {attendances
-                        .filter((attendance) => attendance.status.includes(cari))
+                        .filter((attendance) => JSON.stringify(attendance).toLowerCase().includes(cari.toLowerCase()))
                         .map((attendance, index) => (
                             <TableRow key={attendance.id}>
                                 <TableHead>{index + 1}</TableHead>
@@ -78,8 +79,8 @@ const ListAttendance = ({
                                 {/* <TableHead>{attendance.users?.map((user) => user.name).join(', ') || 'N/A'}</TableHead> */}
                                 <TableHead>{attendance.event?.name || 'N/A'}</TableHead>
                                 <TableHead>{dayjs(attendance.event?.waktu_kegiatan).format('DD MMMM YYYY HH:mm')} WITA</TableHead>
-                                {/* <TableHead>{attendance.absent_reason?.name || 'N/A'}</TableHead> */}
                                 <TableHead>{attendance.status || 'N/A'}</TableHead>
+                                <TableHead>{attendance.absent_reason?.name || 'N/A'}</TableHead>
                                 <TableHead>
                                     {permissions?.canShow && (
                                         <Button variant={'ghost'} size={'icon'} asChild>

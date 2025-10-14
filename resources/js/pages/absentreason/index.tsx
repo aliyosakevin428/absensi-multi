@@ -43,7 +43,7 @@ const ListAbsentReason = ({ absentreasons }: { absentreasons: AbsentReason[] }) 
                 </TableHeader>
                 <TableBody>
                     {absentreasons
-                        .filter((absent) => absent.name.includes(cari))
+                        .filter((absent) => JSON.stringify(absent).toLowerCase().includes(cari.toLowerCase()))
                         .map((absent, index) => (
                             <TableRow key={absent.id}>
                                 <TableHead>{index + 1}</TableHead>

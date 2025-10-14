@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
+import { strLimit } from '@/lib/utils';
 import { Event, EventType, SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
@@ -51,11 +52,11 @@ const ListEvent = ({ eventses }: { eventses: Event[]; event_types: EventType[] }
                 <TableBody>
                     {/* {(console.log('Events data:', eventses), '')} */}
                     {eventses
-                        .filter((events) => events.name.includes(cari))
+                        .filter((events) => JSON.stringify(events).toLowerCase().includes(cari.toLowerCase()))
                         .map((events, index) => (
                             <TableRow key={events.id}>
                                 <TableHead>{index + 1}</TableHead>
-                                <TableHead>{events.name}</TableHead>
+                                <TableHead>{strLimit(events.name)}</TableHead>
                                 <TableHead>{dayjs(events.waktu_kegiatan).format('DD MMMM YYYY HH:mm')} WITA</TableHead>
                                 <TableHead>{events.lokasi_kegiatan}</TableHead>
                                 <TableHead>{events.event_types?.name ?? '-'}</TableHead>

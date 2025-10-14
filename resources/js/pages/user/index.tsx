@@ -76,7 +76,7 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                 </TableHeader>
                 <TableBody>
                     {users
-                        .filter((user) => user.name.includes(cari))
+                        .filter((user) => JSON.stringify(user).toLowerCase().includes(cari.toLowerCase()))
                         .map((user, index) => (
                             <TableRow key={user.id}>
                                 <TableHead>{index + 1}</TableHead>
