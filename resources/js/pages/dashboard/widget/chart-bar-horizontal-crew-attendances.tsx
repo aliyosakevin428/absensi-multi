@@ -95,7 +95,7 @@ export function ChartBarHorizontalUser({ data, title, description, barHeight = 4
                                         return value.length > maxLength ? value.substring(0, maxLength - 1) + '…' : value;
                                     }}
                                 />
-                                <ChartTooltip cursor={{ fill: 'rgba(0,0,0,0.05)' }} content={<ChartTooltipContent hideLabel />} />
+                                <ChartTooltip content={<ChartTooltipContent hideLabel />} />
                                 <Bar dataKey="attendance" fill="var(--chart-1)" shape={renderAnimatedBar} />
                             </BarChart>
                         </ResponsiveContainer>

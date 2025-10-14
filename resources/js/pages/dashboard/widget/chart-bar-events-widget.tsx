@@ -13,8 +13,8 @@ type Props = {
 
 export default function ChartBarEvents({ chartData }: Props) {
     return (
-        <Card className="rounded-2xl shadow-md">
-            <CardHeader>
+        <Card className="w-full rounded-2xl shadow-md">
+            <CardHeader className="pb-2">
                 <CardTitle className="text-lg font-semibold text-foreground">Jumlah Kegiatan Terlaksana</CardTitle>
                 <CardDescription className="text-sm text-muted-foreground">Per bulan</CardDescription>
             </CardHeader>
@@ -30,9 +30,9 @@ export default function ChartBarEvents({ chartData }: Props) {
                                 backgroundColor: 'transparent',
                                 border: 'none',
                                 boxShadow: 'none',
-                                fontSize: '12px',
+                                fontSize: '13px',
                             }}
-                            labelStyle={{ display: 'none' }}
+                            labelStyle={{ display: 'outline' }}
                         />
                         <Bar
                             dataKey="total"
