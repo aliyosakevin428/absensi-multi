@@ -18,7 +18,7 @@ class WelcomeController extends BaseController
     public function index()
     {
         return Inertia::render('welcome/index', [
-            'news' => News::with('media')->orderBy('created_at', 'desc')->limit(3)->get(),
+            'news' => News::with('media')->orderBy('created_at', 'desc')->limit(4)->get(),
         ]);
     }
 
