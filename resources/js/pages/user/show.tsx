@@ -34,7 +34,7 @@ const ShowUser: FC<Props> = ({ user, teams, positions }) => {
 
     const { props } = usePage<AuthProps>();
     const authRoles = props.auth?.roles || [];
-    const isSuperOrAdmin = authRoles.includes('Superadmin') || authRoles.includes('admin');
+    const isSuperOrAdmin = authRoles.includes('Superadmin') || authRoles.includes('Admin');
 
     // Toggle posisi pakai checkbox
     const togglePosition = (posId: number) => {
