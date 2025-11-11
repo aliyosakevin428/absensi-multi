@@ -31,7 +31,7 @@ class NewsController extends Controller
         return Inertia::render('news/index', [
             'news' => $data->get(),
             'query' => $request->input(),
-            'users' => User::role('creator')->get(),
+            'users' => User::role(['creator', 'admin'])->get(),
             'permissions' => [
                 'canAdd' => $this->user->can('create news'),
                 'canUpdate' => $this->user->can('update news'),
@@ -50,7 +50,6 @@ class NewsController extends Controller
 
         $data = $request->validated();
         $data['slug'] = Str::slug($data['title']);
-        $data['user_id'] = auth('web')->id(); // -> user_id is only for admin and Superadmin
 
         News::create($data);
     }
