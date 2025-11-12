@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Event;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use App\Models\Event;
 use App\Models\EventType;
-use Carbon\Carbon;
 use Inertia\Inertia;
 
 class EventController extends Controller
@@ -18,6 +17,7 @@ class EventController extends Controller
     {
         // dd(Event::get()->toArray());
         $this->pass('index event');
+
         return Inertia::render('event/index', [
             'eventses' => Event::with('event_types')->get(),
             'event_types' => EventType::get(),
@@ -26,7 +26,7 @@ class EventController extends Controller
                 'canShow' => $this->user->can('show event'),
                 'canUpdate' => $this->user->can('update event'),
                 'canDelete' => $this->user->can('delete event'),
-            ]
+            ],
         ]);
     }
 
@@ -50,7 +50,7 @@ class EventController extends Controller
         Event::create($data);
 
         return redirect()->route('event.index')
-        ->with('success', 'Event created successfully');
+            ->with('success', 'Event created successfully');
     }
 
     /**
@@ -61,9 +61,9 @@ class EventController extends Controller
         $this->pass('show event');
         $event->load(['attendances']);
 
-            return Inertia::render('event/show', [
+        return Inertia::render('event/show', [
             'event' => $event,
-    ]);
+        ]);
     }
 
     /**
@@ -79,9 +79,9 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
-       $this->pass('update event');
+        $this->pass('update event');
 
-       $event->update($request->validated());
+        $event->update($request->validated());
 
     }
 
@@ -91,7 +91,7 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         $this->pass('delete event');
-        
+
         $event->delete();
     }
 }

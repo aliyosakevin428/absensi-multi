@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreEventRequest extends FormRequest
@@ -26,7 +25,7 @@ class StoreEventRequest extends FormRequest
             'name' => 'required|string|max:255',
             'waktu_kegiatan' => 'required|date',
             'lokasi_kegiatan' => 'required',
-            'event_types_id' => 'nullable|exists:event_types,id'
+            'event_types_id' => 'nullable|exists:event_types,id',
         ];
     }
 

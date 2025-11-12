@@ -16,9 +16,10 @@ class SuperadminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
 
-        if (!auth()->user()->hasRole('Superadmin')) {
+        if (! auth()->user()->hasRole('Superadmin')) {
             return redirect()->route('dashboard');
         }
+
         return $next($request);
     }
 }

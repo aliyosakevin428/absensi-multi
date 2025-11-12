@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BulkDeleteNewsRequest;
 use App\Http\Requests\BulkUpdateNewsRequest;
-use App\Http\Requests\UploadNewsMediaRequest;
-use App\Models\News;
 use App\Http\Requests\StoreNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
+use App\Http\Requests\UploadNewsMediaRequest;
+use App\Models\News;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -94,7 +94,7 @@ class NewsController extends Controller
         $data = $request->validated();
         $data['slug'] = Str::slug($data['title']);
 
-        if(!isset($data['user_id'])) {
+        if (! isset($data['user_id'])) {
             $data['user_id'] = auth()->id(); // -> user_id is only for admin, Superadmin, creator
         }
 

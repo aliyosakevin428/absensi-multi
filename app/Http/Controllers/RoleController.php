@@ -18,7 +18,7 @@ class RoleController extends Controller
     {
         $this->pass('index role');
 
-        $data = Role::query()->when($request->name, fn($q, $v) => $q->where('name', 'like', "%$v%"));
+        $data = Role::query()->when($request->name, fn ($q, $v) => $q->where('name', 'like', "%$v%"));
 
         return Inertia::render('role/index', [
             'roles' => $data->get()->each(function ($role) {
@@ -57,7 +57,7 @@ class RoleController extends Controller
 
         return Inertia::render('role/show', [
             'role' => $role->load('permissions'),
-            'permissions' => Permission::get()
+            'permissions' => Permission::get(),
         ]);
     }
 

@@ -22,10 +22,10 @@ class UpdateAttendanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'users_id'          => 'required|array',
-            'users_id.*'        => 'exists:users,id',
-            'events_id'         => 'required|exists:events,id',
-            'status'            => 'required|string|in:Rencana,Sedang Berlangsung,Sudah Terlaksana,Dibatalkan',
+            'users_id' => 'required|array',
+            'users_id.*' => 'exists:users,id',
+            'events_id' => 'required|exists:events,id',
+            'status' => 'required|string|in:Rencana,Sedang Berlangsung,Sudah Terlaksana,Dibatalkan',
             'absent_reasons_id' => 'nullable|exists:absent_reasons,id',
         ];
     }

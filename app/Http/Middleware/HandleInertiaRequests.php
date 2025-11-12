@@ -49,17 +49,17 @@ class HandleInertiaRequests extends Middleware
                 'roles' => $request->user()?->getRoleNames(),
             ],
             'menus' => [
-                //settings menu
-                "user" => $user?->can('menu user'),
-                "role" => $user?->can('menu role'),
-                //acara menu
-                "team" => $user?->can('menu team'),
-                "position" => $user?->can('menu position'),
-                "event" => $user?->can('menu event'),
-                "eventType" => $user?->can('menu eventType'),
-                "attendance" => $user?->can('menu attendance'),
-                "absentReason" => $user?->can('menu absent reason'),
-                //news menu
+                // settings menu
+                'user' => $user?->can('menu user'),
+                'role' => $user?->can('menu role'),
+                // acara menu
+                'team' => $user?->can('menu team'),
+                'position' => $user?->can('menu position'),
+                'event' => $user?->can('menu event'),
+                'eventType' => $user?->can('menu eventType'),
+                'attendance' => $user?->can('menu attendance'),
+                'absentReason' => $user?->can('menu absent reason'),
+                // news menu
                 'news' => $user?->can('menu news'),
             ],
 
@@ -71,7 +71,7 @@ class HandleInertiaRequests extends Middleware
 
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
-                'error'   => fn () => $request->session()->get('error'),
+                'error' => fn () => $request->session()->get('error'),
             ],
         ];
     }

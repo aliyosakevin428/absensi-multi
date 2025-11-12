@@ -15,7 +15,7 @@ class PermissionController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Permission::query()->when($request->name, fn($q, $v) => $q->where('name', 'like', "%$v%"));
+        $data = Permission::query()->when($request->name, fn ($q, $v) => $q->where('name', 'like', "%$v%"));
 
         return Inertia::render('permission/index', [
             'permissions' => $data->orderBy('group')->get(),

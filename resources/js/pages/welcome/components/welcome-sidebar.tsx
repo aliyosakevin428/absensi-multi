@@ -1,15 +1,7 @@
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
 import ThemeToggler from '@/components/theme-toggler';
-import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-} from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { LogIn } from 'lucide-react';

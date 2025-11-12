@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AbsentReason;
-use App\Models\Attendance;
 use App\Http\Requests\StoreAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
+use App\Models\AbsentReason;
+use App\Models\Attendance;
 use App\Models\AttendanceUserPosition;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -34,7 +33,7 @@ class AttendanceController extends Controller
                 'canShow' => $this->user->can('show attendance'),
                 'canUpdate' => $this->user->can('update attendance'),
                 'canDelete' => $this->user->can('delete attendance'),
-            ]
+            ],
         ]);
     }
 
@@ -56,8 +55,8 @@ class AttendanceController extends Controller
         $validated = $request->validated();
 
         $attendance = Attendance::create([
-            'events_id'         => $validated['events_id'],
-            'status'            => $validated['status'],
+            'events_id' => $validated['events_id'],
+            'status' => $validated['status'],
             'absent_reasons_id' => $validated['absent_reasons_id'] ?? null,
         ]);
 
@@ -73,7 +72,7 @@ class AttendanceController extends Controller
     {
         $this->pass('show attendance');
 
-            $attendance->load([
+        $attendance->load([
             'media',
             'event',
             'absent_reason',
@@ -116,8 +115,8 @@ class AttendanceController extends Controller
         $validated = $request->validated();
 
         $attendance->update([
-            'events_id'         => $validated['events_id'],
-            'status'            => $validated['status'],
+            'events_id' => $validated['events_id'],
+            'status' => $validated['status'],
             'absent_reasons_id' => $validated['absent_reasons_id'] ?? null,
         ]);
 
@@ -128,7 +127,7 @@ class AttendanceController extends Controller
 
     public function updatePositionsAll(Request $request, Attendance $attendance)
     {
-            $data = $request->validate([
+        $data = $request->validate([
             'positions' => 'required|array',
             'positions.*' => 'array',
             'positions.*.*' => 'exists:positions,id',
@@ -139,8 +138,8 @@ class AttendanceController extends Controller
                 ->where('user_id', $userId)
                 ->delete();
 
-            if (!empty($posIds)) {
-                $insertData = array_map(fn($posId) => [
+            if (! empty($posIds)) {
+                $insertData = array_map(fn ($posId) => [
                     'attendance_id' => $attendance->id,
                     'user_id' => $userId,
                     'position_id' => $posId,
@@ -180,7 +179,7 @@ class AttendanceController extends Controller
         $attendance->delete();
     }
 
-    public function uploadMedia (Request $request, Attendance $attendance)
+    public function uploadMedia(Request $request, Attendance $attendance)
     {
         $this->pass('upload media');
 
@@ -190,7 +189,7 @@ class AttendanceController extends Controller
 
         $file = $request->file('file');
 
-         $attendance->addMedia($file)->toMediaCollection();
+        $attendance->addMedia($file)->toMediaCollection();
 
         return redirect()
             ->route('attendance.show', $attendance->id)
@@ -200,10 +199,11 @@ class AttendanceController extends Controller
 
     public function destroyMediaBulk(Request $request, Attendance $attendance)
     {
-       $ids = (array) $request->input('ids', []);
+        $ids = (array) $request->input('ids', []);
 
         if (empty($ids)) {
             \Log::warning('Tidak ada ID media dikirim');
+
             return back()->with('error', 'Tidak ada media yang dipilih');
         }
 
@@ -213,16 +213,16 @@ class AttendanceController extends Controller
             ->get();
 
         \Log::info('IDs yang dikirim:', $ids);
-        \Log::info('Jumlah media ketemu: ' . $media->count());
+        \Log::info('Jumlah media ketemu: '.$media->count());
 
         foreach ($media as $m) {
             \Log::info("Sebelum hapus media ID={$m->id}, file={$m->file_name}");
             $deleted = $m->delete();
-            \Log::info("Setelah delete() → return: " . var_export($deleted, true));
+            \Log::info('Setelah delete() → return: '.var_export($deleted, true));
         }
 
         return redirect()
             ->route('attendance.show', $attendance->id)
             ->with('success', 'Media berhasil dihapus');
-        }
+    }
 }

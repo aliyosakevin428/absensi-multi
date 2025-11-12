@@ -19,31 +19,29 @@ class UserController extends Controller
         // dd(auth()->user()->getRoleNames(), auth()->user()->getAllPermissions()->pluck('name'));
         $this->pass('index user');
 
-            $users = User::query()
+        $users = User::query()
             ->with(['team', 'positions', 'roles'])
             ->withoutRole('superadmin') // exclude superadmin
-            ->when($request->role, fn($q, $v) =>
-                $q->role($v) // filter role
+            ->when($request->role, fn ($q, $v) => $q->role($v) // filter role
             )
-            ->when($request->name, fn($q, $v) =>
-                $q->where('name', 'like', "%$v%") // filter by name
+            ->when($request->name, fn ($q, $v) => $q->where('name', 'like', "%$v%") // filter by name
             )
             ->get()
-            ->map(fn($user) => [
-                'id'        => $user->id,
-                'name'      => $user->name,
-                'email'     => $user->email,
-                'kontak'    => $user->kontak,
-                'team'      => $user->team,
+            ->map(fn ($user) => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'kontak' => $user->kontak,
+                'team' => $user->team,
                 'positions' => $user->positions,
-                'roles'     => $user->getRoleNames()->toArray(),
+                'roles' => $user->getRoleNames()->toArray(),
             ]);
 
         return Inertia::render('user/index', [
-            'users'     => $users,
-            'query'     => $request->input(),
-            'roles'     => Role::whereNot('name', "superadmin")->get(),
-            'teams'     => Team::get(),
+            'users' => $users,
+            'query' => $request->input(),
+            'roles' => Role::whereNot('name', 'superadmin')->get(),
+            'teams' => Team::get(),
             'positions' => Position::get(),
             'permissions' => [
                 // 'canView' => $this->user->can('index user'),
@@ -51,7 +49,7 @@ class UserController extends Controller
                 'canShow' => $this->user->can('show user'),
                 'canUpdate' => $this->user->can('update user'),
                 'canDelete' => $this->user->can('delete user'),
-            ]
+            ],
         ]);
     }
 
@@ -62,30 +60,30 @@ class UserController extends Controller
     {
         $this->pass('create user');
         $data = $request->validate([
-            'name'         => 'required',
-            'email'        => 'required|email|unique:users,email',
-            'kontak'       => 'nullable|string',
-            'password'     => 'required|min:3',
-            'team_id'      => 'nullable|exists:teams,id',
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'kontak' => 'nullable|string',
+            'password' => 'required|min:3',
+            'team_id' => 'nullable|exists:teams,id',
             'position_ids' => 'nullable|array',
             'position_ids.*' => 'exists:positions,id',
-            'roles'        => 'array',
-            'roles.*'      => 'exists:roles,name',
+            'roles' => 'array',
+            'roles.*' => 'exists:roles,name',
         ]);
 
         $user = User::create([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
-            'kontak'   => $data['kontak'] ?? null,
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'kontak' => $data['kontak'] ?? null,
             'password' => bcrypt($data['password']),
-            'team_id'  => $data['team_id'] ?? null,
+            'team_id' => $data['team_id'] ?? null,
         ]);
 
-        if (!empty($data['position_ids'])) {
+        if (! empty($data['position_ids'])) {
             $user->positions()->sync($data['position_ids']);
         }
 
-        if (!empty($data['roles'])) {
+        if (! empty($data['roles'])) {
             $user->syncRoles($data['roles']);
         }
 
@@ -100,29 +98,29 @@ class UserController extends Controller
         $this->pass('update user');
 
         $data = $request->validate([
-            'name'         => 'required',
-            'email'        => 'required|email|unique:users,email,' . $user->id,
-            'kontak'       => 'nullable|string',
-            'password'     => 'nullable|min:3',
-            'team_id'      => 'nullable|exists:teams,id',
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$user->id,
+            'kontak' => 'nullable|string',
+            'password' => 'nullable|min:3',
+            'team_id' => 'nullable|exists:teams,id',
             'position_ids' => 'nullable|array',
             'position_ids.*' => 'exists:positions,id',
-            'roles'        => 'array',
+            'roles' => 'array',
         ]);
 
         // Hash password hanya kalau dikirim
-        if (!empty($data['password'])) {
+        if (! empty($data['password'])) {
             $data['password'] = bcrypt($data['password']);
         } else {
             unset($data['password']);
         }
 
         $user->update([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
-            'kontak'   => $data['kontak'] ?? $user->kontak,
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'kontak' => $data['kontak'] ?? $user->kontak,
             'password' => $data['password'] ?? $user->password,
-            'team_id'  => $data['team_id'] ?? $user->team_id,
+            'team_id' => $data['team_id'] ?? $user->team_id,
         ]);
 
         $user->positions()->sync($data['position_ids'] ?? []);
@@ -136,9 +134,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $data = $request->validate([
-            'team_id'       => 'nullable|exists:teams,id',
-            'position_ids'  => 'nullable|array',
-            'position_ids.*'=> 'exists:positions,id',
+            'team_id' => 'nullable|exists:teams,id',
+            'position_ids' => 'nullable|array',
+            'position_ids.*' => 'exists:positions,id',
         ]);
 
         // update team
@@ -151,10 +149,9 @@ class UserController extends Controller
         }
 
         return redirect()
-        ->route('users.index')
-        ->with('success', 'Anggota Telah Di Perbarui!');
+            ->route('users.index')
+            ->with('success', 'Anggota Telah Di Perbarui!');
     }
-
 
     /**
      * Display the specified resource.
@@ -166,17 +163,17 @@ class UserController extends Controller
 
         return Inertia::render('user/show', [
             'user' => [
-                'id'        => $user->id,
-                'name'      => $user->name,
-                'email'     => $user->email,
-                'kontak'    => $user->kontak,
-                'team'      => $user->team,
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'kontak' => $user->kontak,
+                'team' => $user->team,
                 'positions' => $user->positions,
-                'roles'     => $user->getRoleNames()->toArray(),
+                'roles' => $user->getRoleNames()->toArray(),
             ],
-            'teams'     => Team::get(),
+            'teams' => Team::get(),
             'positions' => Position::get(),
-            'roles'     => Role::whereNot('name', 'superadmin')->pluck('name'),
+            'roles' => Role::whereNot('name', 'superadmin')->pluck('name'),
         ]);
     }
 
