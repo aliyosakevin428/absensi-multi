@@ -32,7 +32,7 @@ type AuthProps = {
 const ShowAttendance: FC<Props> = ({ attendance }) => {
     const { props } = usePage<AuthProps>();
     const roles = props.auth?.roles || [];
-    const isSuperOrAdmin = roles.includes('Superadmin') || roles.includes('admin');
+    const isSuperOrAdmin = roles.some((role) => role.toLowerCase() === 'superadmin' || role.toLowerCase() === 'admin');
     const [selected, setSelected] = useState<number[]>([]);
     const [mediaList] = useState(attendance.media);
 

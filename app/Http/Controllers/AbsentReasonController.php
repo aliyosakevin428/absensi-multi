@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AbsentReason;
 use App\Http\Requests\StoreAbsentReasonRequest;
 use App\Http\Requests\UpdateAbsentReasonRequest;
+use App\Models\AbsentReason;
 use Inertia\Inertia;
 
 class AbsentReasonController extends Controller
@@ -23,7 +23,7 @@ class AbsentReasonController extends Controller
                 'canShow' => $this->user->can('show absent reason'),
                 'canUpdate' => $this->user->can('update absent reason'),
                 'canDelete' => $this->user->can('delete absent reason'),
-            ]
+            ],
         ]);
     }
 
@@ -71,6 +71,7 @@ class AbsentReasonController extends Controller
             ->groupBy('id') // 🔹 kelompokkan per user
             ->map(function ($items) {
                 $user = $items->first();
+
                 return [
                     'id' => $user['id'],
                     'name' => $user['name'],

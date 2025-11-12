@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Position;
 use App\Http\Requests\StorePositionRequest;
 use App\Http\Requests\UpdatePositionRequest;
+use App\Models\Position;
 use Inertia\Inertia;
 
 class PositionController extends Controller
 {
-     /**
+    /**
      * Display a listing of the resource.
      */
     public function index()
@@ -23,7 +23,7 @@ class PositionController extends Controller
                 'canShow' => $this->user->can('show position'),
                 'canUpdate' => $this->user->can('update position'),
                 'canDelete' => $this->user->can('delete position'),
-            ]
+            ],
         ]);
     }
 
@@ -56,9 +56,9 @@ class PositionController extends Controller
 
         $position->load(['users.team']); // load users beserta tim mereka
 
-            return Inertia::render('position/show', [
+        return Inertia::render('position/show', [
             'position' => $position,
-    ]);
+        ]);
     }
 
     /**
@@ -87,7 +87,7 @@ class PositionController extends Controller
     public function destroy(Position $position)
     {
         $this->pass('delete position');
-        
+
         $position->delete();
     }
 }

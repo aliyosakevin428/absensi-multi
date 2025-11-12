@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -37,14 +37,12 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-
     public $appends = ['avatar'];
 
     public function getAvatarAttribute()
     {
         return "https://api.dicebear.com/9.x/dylan/png?seed={$this->email}";
     }
-    
 
     /**
      * Get the attributes that should be cast.
@@ -71,15 +69,14 @@ class User extends Authenticatable
 
     public function attendances()
     {
-    return $this->belongsToMany(Attendance::class, 'attendance_user', 'user_id', 'attendance_id')
-        ->withTimestamps();
+        return $this->belongsToMany(Attendance::class, 'attendance_user', 'user_id', 'attendance_id')
+            ->withTimestamps();
     }
 
     public function attendancePositions()
     {
         return $this->belongsToMany(Attendance::class, 'attendance_user_position', 'user_id', 'attendance_id')
-        ->withPivot('position_id')
-        ->withTimestamps();
+            ->withPivot('position_id')
+            ->withTimestamps();
     }
 }
-

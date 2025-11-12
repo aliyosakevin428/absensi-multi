@@ -13,6 +13,7 @@ class Attendance extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\AttendanceFactory> */
     use HasFactory;
+
     use InteractsWithMedia;
 
     protected $fillable = [
@@ -24,8 +25,8 @@ class Attendance extends Model implements HasMedia
 
     public function users()
     {
-    return $this->belongsToMany(User::class, 'attendance_user', 'attendance_id', 'user_id')
-                ->withTimestamps();
+        return $this->belongsToMany(User::class, 'attendance_user', 'attendance_id', 'user_id')
+            ->withTimestamps();
     }
 
     public function event()

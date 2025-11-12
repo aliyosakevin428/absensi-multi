@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\EventType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class EventTypeSeeder extends Seeder
@@ -13,9 +12,9 @@ class EventTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        EventType::create(['name' => 'Ibadah Hari Minggu',]);
-        EventType::create(['name' => 'Ibadah Pemberkatan Nikah',]);
-        EventType::create(['name' => 'Resepsi Pernikahan',]);
-        EventType::create(['name' => 'Kegiatan Sosialisasi',]);
+        EventType::create(['name' => 'Ibadah Hari Minggu']);
+        EventType::create(['name' => 'Ibadah Pemberkatan Nikah']);
+        EventType::create(['name' => 'Resepsi Pernikahan']);
+        EventType::create(['name' => 'Kegiatan Sosialisasi']);
     }
 }

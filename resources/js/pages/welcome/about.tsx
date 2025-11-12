@@ -58,7 +58,7 @@ const AboutPage: FC<Props> = ({ content }) => {
 
                     {/* Optional: Konten tambahan dari props */}
                     {content && (
-                        <section className="prose prose-neutral dark:prose-invert max-w-none">
+                        <section className="prose max-w-none prose-neutral dark:prose-invert">
                             <div dangerouslySetInnerHTML={{ __html: content }} />
                         </section>
                     )}

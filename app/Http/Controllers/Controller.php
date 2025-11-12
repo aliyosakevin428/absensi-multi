@@ -16,6 +16,7 @@ abstract class Controller
     public function pass(string $ability, mixed $arguments = null): bool
     {
         abort_unless($this->user?->can($ability, $arguments), 403);
+
         return true;
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EventType;
 use App\Http\Requests\StoreEventTypeRequest;
 use App\Http\Requests\UpdateEventTypeRequest;
+use App\Models\EventType;
 use Inertia\Inertia;
 
 class EventTypeController extends Controller
@@ -25,7 +25,7 @@ class EventTypeController extends Controller
                 'canUpdate' => $this->user->can('update eventType'),
                 'canDelete' => $this->user->can('delete eventType'),
                 'canMenu' => $this->user->can('menu eventType'),
-            ]
+            ],
         ]);
     }
 
@@ -56,11 +56,11 @@ class EventTypeController extends Controller
     {
         $this->pass('show eventType');
 
-        $eventType->load(['events.attendances']); 
+        $eventType->load(['events.attendances']);
 
-            return Inertia::render('eventType/show', [
+        return Inertia::render('eventType/show', [
             'eventType' => $eventType,
-    ]);
+        ]);
     }
 
     /**

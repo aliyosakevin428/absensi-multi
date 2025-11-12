@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Team;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Spatie\Permission\Models\Role;
 
 class TeamController extends Controller
 {
@@ -21,9 +20,10 @@ class TeamController extends Controller
 
         $data = Team::query()
                     // ->with(['roles'])
-                    ->when($request->name, function($q, $v){
-                        $q->where('name', $v);
-                    });
+            ->when($request->name, function ($q, $v) {
+                $q->where('name', $v);
+            });
+
         return Inertia::render('team/index', [
             'teams' => $data->get(),
             'query' => $request->input(),
@@ -33,7 +33,7 @@ class TeamController extends Controller
                 'canShow' => $this->user->can('show team'),
                 'canUpdate' => $this->user->can('update team'),
                 'canDelete' => $this->user->can('delete team'),
-            ]
+            ],
         ]);
     }
 

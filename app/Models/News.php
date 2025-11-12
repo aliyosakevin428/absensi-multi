@@ -13,6 +13,7 @@ class News extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\NewsFactory> */
     use HasFactory;
+
     use InteractsWithMedia;
 
     /*
@@ -58,5 +59,4 @@ class News extends Model implements HasMedia
     {
         return "Ditulis oleh {$this->user->name} pada {$this->created_at->diffForHumans()}";
     }
-
 }

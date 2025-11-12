@@ -14,7 +14,6 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/about', [WelcomeController::class, 'about'])->name('about');
@@ -31,7 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('position', PositionController::class);
     Route::put('/users/{user}/positions-team', [UserController::class, 'updatePositionsAndTeam'])
-    ->name('users.updatePositionsAndTeam');
+        ->name('users.updatePositionsAndTeam');
 
     Route::resource('absent-reason', AbsentReasonController::class);
 
@@ -43,10 +42,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('attendances/{attendance}/media', [AttendanceController::class, 'uploadMedia'])->name('attendances.media.upload');
     Route::delete('attendances/{attendance}/media/bulk', [AttendanceController::class, 'destroyMediaBulk'])
-    ->name('attendances.media.destroyBulk');
+        ->name('attendances.media.destroyBulk');
     Route::resource('attendance', AttendanceController::class);
     Route::post('/attendances/{attendance}/positions/all', [AttendanceController::class, 'updatePositionsAll'])
-    ->name('attendances.updatePositionsAll');
+        ->name('attendances.updatePositionsAll');
 
     Route::post('news/{news}/uploadMedia', [NewsController::class, 'uploadMedia'])->name('news.upload-media');
     Route::put('news/bulk', [NewsController::class, 'bulkUpdate'])->name('news.bulk.update');

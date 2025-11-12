@@ -27,7 +27,9 @@ const UploadMedia = ({ attendance }: { attendance: Attendance }) => {
             </CardHeader>
             <CardContent>
                 <Input type="file" onChange={(e) => setData('file', e.target.files?.[0])} className="px-2 pt-2" />
-                <Button className='mt-2' onClick={handleUploadMedia}>Upload</Button>
+                <Button className="mt-2" onClick={handleUploadMedia}>
+                    Upload
+                </Button>
             </CardContent>
         </Card>
     );

@@ -11,72 +11,72 @@ import { toast } from 'sonner';
 type Props = PropsWithChildren & {};
 
 const RoleFilterSheet: FC<Props> = ({ children }) => {
-  const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
 
-  const { data, setData, get } = useForm({
-    name: '',
-  });
-
-  const applyFilter = () => {
-    get(route('role.index'), {
-      preserveScroll: true,
-      preserveState: true,
-      replace: true,
-      onSuccess: () => {
-        toast.success('Filter applied successfully');
-        setOpen(false);
-      },
-    });
-  };
-
-  const resetFilter = () => {
-    setData('name', '');
-    router.get(
-      route('role.index'),
-      {
+    const { data, setData, get } = useForm({
         name: '',
-      },
-      {
-        preserveScroll: true,
-        preserveState: true,
-        replace: true,
-      },
-    );
-  };
+    });
 
-  return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Filter role</SheetTitle>
-          <SheetDescription>Filter data role</SheetDescription>
-        </SheetHeader>
-        <ScrollArea className="flex-1 overflow-y-auto">
-          <form
-            method="get"
-            className="space-y-6 px-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              applyFilter();
-            }}
-          >
-            <FormControl label="Nama Role">
-              <Input type="text" placeholder="Name role" value={data.name} onChange={(e) => setData('name', e.target.value)} />
-            </FormControl>
-          </form>
-        </ScrollArea>
-        <SheetFooter>
-          <Button type="submit" onClick={applyFilter}>
-            <Check /> Apply filter
-          </Button>
-          <Button variant={'outline'} onClick={resetFilter}>
-            <X /> Reset filter
-          </Button>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
-  );
+    const applyFilter = () => {
+        get(route('role.index'), {
+            preserveScroll: true,
+            preserveState: true,
+            replace: true,
+            onSuccess: () => {
+                toast.success('Filter applied successfully');
+                setOpen(false);
+            },
+        });
+    };
+
+    const resetFilter = () => {
+        setData('name', '');
+        router.get(
+            route('role.index'),
+            {
+                name: '',
+            },
+            {
+                preserveScroll: true,
+                preserveState: true,
+                replace: true,
+            },
+        );
+    };
+
+    return (
+        <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>{children}</SheetTrigger>
+            <SheetContent>
+                <SheetHeader>
+                    <SheetTitle>Filter role</SheetTitle>
+                    <SheetDescription>Filter data role</SheetDescription>
+                </SheetHeader>
+                <ScrollArea className="flex-1 overflow-y-auto">
+                    <form
+                        method="get"
+                        className="space-y-6 px-4"
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            applyFilter();
+                        }}
+                    >
+                        <FormControl label="Nama Role">
+                            <Input type="text" placeholder="Name role" value={data.name} onChange={(e) => setData('name', e.target.value)} />
+                        </FormControl>
+                    </form>
+                </ScrollArea>
+                <SheetFooter>
+                    <Button type="submit" onClick={applyFilter}>
+                        <Check /> Apply filter
+                    </Button>
+                    <Button variant={'outline'} onClick={resetFilter}>
+                        <X /> Reset filter
+                    </Button>
+                </SheetFooter>
+            </SheetContent>
+        </Sheet>
+    );
 };
 
 export default RoleFilterSheet;

@@ -28,6 +28,7 @@ class UpdateEventRequest extends FormRequest
             'event_types_id' => 'nullable|exists:event_types,id',
         ];
     }
+
     public function messages()
     {
         return [

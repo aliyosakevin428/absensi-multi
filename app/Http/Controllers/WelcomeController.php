@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Middleware\WithLandingPageMiddleware;
 use App\Models\News;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Routing\Controller as BaseController;
+use Inertia\Inertia;
 
 class WelcomeController extends BaseController
 {

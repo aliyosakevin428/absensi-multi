@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BulkDeleteNewsRequest;
 use App\Http\Requests\BulkUpdateNewsRequest;
-use App\Http\Requests\UploadNewsMediaRequest;
-use App\Models\News;
 use App\Http\Requests\StoreNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
+use App\Http\Requests\UploadNewsMediaRequest;
+use App\Models\News;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -31,7 +31,7 @@ class NewsController extends Controller
         return Inertia::render('news/index', [
             'news' => $data->get(),
             'query' => $request->input(),
-            'users' => User::role('creator')->get(),
+            'users' => User::role(['creator', 'admin'])->get(),
             'permissions' => [
                 'canAdd' => $this->user->can('create news'),
                 'canUpdate' => $this->user->can('update news'),
@@ -50,7 +50,6 @@ class NewsController extends Controller
 
         $data = $request->validated();
         $data['slug'] = Str::slug($data['title']);
-        $data['user_id'] = auth('web')->id(); // -> user_id is only for admin and Superadmin
 
         News::create($data);
     }
@@ -95,7 +94,7 @@ class NewsController extends Controller
         $data = $request->validated();
         $data['slug'] = Str::slug($data['title']);
 
-        if(!isset($data['user_id'])) {
+        if (! isset($data['user_id'])) {
             $data['user_id'] = auth()->id(); // -> user_id is only for admin, Superadmin, creator
         }
 

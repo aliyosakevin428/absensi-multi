@@ -19,15 +19,16 @@ class EventFactory extends Factory
     {
         return [
             'name' => $this->faker->randomElement([
-            'Tech Conference '.$this->faker->year(),
-            $this->faker->city().' Music Festival',
-            'International '.$this->faker->word().' Summit',
-            $this->faker->firstName()."'s ".$this->faker->word().' Workshop',
-            'Digital '.$this->faker->word().' Expo'
+                'Tech Conference '.$this->faker->year(),
+                $this->faker->city().' Music Festival',
+                'International '.$this->faker->word().' Summit',
+                $this->faker->firstName()."'s ".$this->faker->word().' Workshop',
+                'Digital '.$this->faker->word().' Expo',
             ]),
             'waktu_kegiatan' => function () {
-            $date = $this->faker->dateTimeBetween('now', '+1 year');
-            return $date->format('Y-m-d H:i');
+                $date = $this->faker->dateTimeBetween('now', '+1 year');
+
+                return $date->format('Y-m-d H:i');
             },
             'lokasi_kegiatan' => $this->faker->address(),
             'event_types_id' => EventType::pluck('id')->random(),

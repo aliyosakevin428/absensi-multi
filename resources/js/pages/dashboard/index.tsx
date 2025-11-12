@@ -31,7 +31,7 @@ export default function Dashboard() {
 
     return (
         <AppLayout title="Dashboard" description={`Selamat datang, kamu masuk sebagai ${roles.join(', ')}`} breadcrumbs={breadcrumbs}>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
                 <UserInfoWidget />
                 <DateTimeWidget />
                 <ChartBarEvents chartData={chartData} />
