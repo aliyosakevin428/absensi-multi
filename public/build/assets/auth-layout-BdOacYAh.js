@@ -1,1 +1,0 @@
-import{j as a}from"./app-DDfrCDLw.js";import{A as s}from"./auth-card-layout-BvlrowA_.js";function n({children:t,title:o,description:r,...u}){return a.jsx(s,{title:o,description:r,...u,children:t})}export{n as A};

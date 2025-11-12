@@ -1,0 +1,1 @@
+import{j as a}from"./app-Df3mbPUi.js";import{A as s}from"./auth-card-layout-CSq4cweT.js";function n({children:t,title:o,description:r,...u}){return a.jsx(s,{title:o,description:r,...u,children:t})}export{n as A};
