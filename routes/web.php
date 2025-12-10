@@ -46,6 +46,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('attendance', AttendanceController::class);
     Route::post('/attendances/{attendance}/positions/all', [AttendanceController::class, 'updatePositionsAll'])
         ->name('attendances.updatePositionsAll');
+    Route::post('/attendance/{attendance}/join', [AttendanceController::class, 'joinAttendance'])
+        ->name('attendance.join')
+        ->middleware('auth');
+    Route::delete('/attendance/{attendance}/cancel', [AttendanceController::class, 'cancelAttendance'])
+        ->name('attendance.cancel')
+        ->middleware('auth');
+    Route::post(
+    '/attendance/{attendance}/my-position', [AttendanceController::class, 'updateMyPosition'])
+        ->name('attendance.updateMyPosition')
+        ->middleware('auth');
+
+
 
     Route::post('news/{news}/uploadMedia', [NewsController::class, 'uploadMedia'])->name('news.upload-media');
     Route::put('news/bulk', [NewsController::class, 'bulkUpdate'])->name('news.bulk.update');

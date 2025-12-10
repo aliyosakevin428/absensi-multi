@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import { Attendance, User } from '@/types';
+import { AbsentReason, Attendance, User } from '@/types';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
 import { FC, useState } from 'react';
 import { toast } from 'sonner';
@@ -10,12 +11,14 @@ import UploadMedia from './components/upload-media';
 // Interface baru untuk user yang punya pivot attendance_user_positions
 interface UserWithAttendancePositions extends User {
     attendancePositions: { position_id: number }[];
+    my_absent_reason_id?: number | null;
 }
 
 type Props = {
     attendance: Attendance & {
         users: UserWithAttendancePositions[];
     };
+    absent: AbsentReason[];
 };
 
 type AuthProps = {
@@ -29,12 +32,19 @@ type AuthProps = {
     };
 };
 
-const ShowAttendance: FC<Props> = ({ attendance }) => {
+const ShowAttendance: FC<Props> = ({ attendance, absent }) => {
     const { props } = usePage<AuthProps>();
     const roles = props.auth?.roles || [];
     const isSuperOrAdmin = roles.some((role) => role.toLowerCase() === 'superadmin' || role.toLowerCase() === 'admin');
     const [selected, setSelected] = useState<number[]>([]);
     const [mediaList] = useState(attendance.media);
+    const [absentReasons, setAbsentReasons] = useState<Record<number, number | null>>(() => {
+        const init: Record<number, number | null> = {};
+        attendance.users.forEach((u) => {
+            init[u.id] = u.my_absent_reason_id ?? null;
+        });
+        return init;
+    });
 
     const toggleSelect = (id: number) => {
         setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -71,19 +81,53 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
         return initial;
     });
 
+    const handleAbsentChange = (userId: number, value: number) => {
+        if (!isSuperOrAdmin && authUser?.id !== userId) {
+            toast.error('Kamu tidak boleh mengubah kehadiran anggota lain');
+            return;
+        }
+
+        setAbsentReasons((prev) => ({
+            ...prev,
+            [userId]: value,
+        }));
+
+        if (isSuperOrAdmin) {
+            form.setData('absent_reasons', {
+                ...form.data.absent_reasons,
+                [userId]: value,
+            });
+        }
+    };
+
+    const authUser = props.auth?.user;
+    const isJoined = attendance.users.some((user) => user.id === authUser?.id);
+    const isClosed = status === 'Dibatalkan' || status === 'Sudah Terlaksana';
+
+    const myPositions = checkedPositions[authUser?.id || 0] || [];
+
     const handleCheckboxChange = (userId: number, positionId: number) => {
         const current = checkedPositions[userId] || [];
         const newPositions = current.includes(positionId) ? current.filter((id) => id !== positionId) : [...current, positionId];
 
         setCheckedPositions((prev) => {
             const updated = { ...prev, [userId]: newPositions };
-            form.setData('positions', updated); // update langsung ke form
+            form.setData('positions', updated); // update langsung ke form untuk admin
+
+            if (userId === authUser?.id) {
+                myForm.setData('positions', updated[userId]); // update langsung ke myForm untuk user/anggota biasa
+            }
             return updated;
         });
     };
 
     const form = useForm({
         positions: checkedPositions, // to save checked position in pivot table
+        absent_reasons: absentReasons, // to save absent reasons in pivot table
+    });
+
+    const myForm = useForm({
+        positions: myPositions, //update my positions for user only
     });
 
     // const formDelete = useForm<{ ids: number[] }>({
@@ -98,6 +142,36 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                 window.location.href = route('attendance.index');
             },
         });
+    };
+
+
+    const handleSaveMyPosition = () => {
+        if (!authUser) return;
+
+        const myOnlyData: Record<number, number[]> = {
+            [authUser.id]: checkedPositions[authUser.id] || [],
+        };
+
+        router.post(
+            route('attendance.updateMyPosition', attendance.id),
+            {
+                positions: myOnlyData, // <-- ini posisi user
+                absent_reason_id: absentReasons[authUser.id], // <-- ini status kehadiran user
+            },
+            {
+                preserveScroll: true,
+                onSuccess: (page) => {
+                    const errors = page.props?.errors;
+
+                    if (errors?.message) {
+                        toast.error(errors.message);
+                    } else {
+                        toast.success('Data berhasil disimpan');
+                        window.location.href = route('attendance.show', attendance.id);
+                    }
+                },
+            },
+        );
     };
 
     const handleDelete = () => {
@@ -141,10 +215,10 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                             <span className={`font-semibold ${statusColor}`}>{statusText}</span>
                         </p>
 
-                        <p>
+                        {/* <p>
                             <strong>Keterangan Absen: </strong>
                             {attendance.absent_reason?.name ?? '-'}
-                        </p>
+                        </p> */}
                     </CardDescription>
                 </CardHeader>
             </Card>
@@ -158,6 +232,8 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                             <CardContent>
                                 <p className="font-medium">{user.name}</p>
                                 <p className="text-sm text-gray-500">{user.email}</p>
+
+                                {/* Posisi */}
                                 <div className="mt-4">
                                     <strong>Posisi:</strong>
                                     <div className="mt-2 grid grid-cols-1 gap-2 md:grid-cols-2">
@@ -169,6 +245,7 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                                                 >
                                                     <input
                                                         type="checkbox"
+                                                        disabled={authUser?.id !== user.id && !isSuperOrAdmin}
                                                         checked={checkedPositions[user.id]?.includes(pos.id) || false}
                                                         onChange={() => handleCheckboxChange(user.id, pos.id)}
                                                     />
@@ -180,10 +257,51 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                                         )}
                                     </div>
                                 </div>
+
+                                {/* Absent Reason Dropdown */}
+                                <div className="mt-4">
+                                    <strong>Status Kehadiran:</strong>
+                                    <Select
+                                        value={absentReasons[user.id]?.toString() ?? ''}
+                                        onValueChange={(val) => handleAbsentChange(user.id, Number(val))}
+                                        disabled={authUser?.id !== user.id && !isSuperOrAdmin}
+                                    >
+                                        <SelectTrigger className="mt-2 w-fit">
+                                            <SelectValue placeholder="Pilih status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {absent.map((item) => (
+                                                <SelectItem key={item.id} value={item.id.toString()}>
+                                                    {item.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </CardContent>
                         </Card>
                     ))}
                 </div>
+                {/* Tombol Join Absensi */}
+                {!isClosed && authUser && (
+                    <div className="mt-4 flex justify-end gap-2">
+                        {!isJoined ? (
+                            <Button
+                                className="bg-green-600 text-white hover:bg-green-700"
+                                onClick={() => router.post(route('attendance.join', attendance.id))}
+                            >
+                                Hadir
+                            </Button>
+                        ) : (
+                            <Button
+                                className="bg-yellow-500 text-white hover:bg-yellow-600"
+                                onClick={() => router.delete(route('attendance.cancel', attendance.id))}
+                            >
+                                Batalkan Kehadiran
+                            </Button>
+                        )}
+                    </div>
+                )}
             </div>
 
             {/* Grid Media */}
@@ -229,7 +347,7 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
 
             <UploadMedia attendance={attendance} />
 
-            {/* Tombol Simpan Semua */}
+            {/* Tombol Simpan Semua untuk admin */}
             <div className="mt-4 flex justify-end gap-2">
                 {isSuperOrAdmin && (
                     <Button
@@ -239,6 +357,13 @@ const ShowAttendance: FC<Props> = ({ attendance }) => {
                         Simpan
                     </Button>
                 )}
+                {/* Tombol Simpan Posisi Saya untuk user */}
+                {!isSuperOrAdmin && authUser && (
+                    <Button className="rounded-md bg-blue-400 px-3 py-1.5 text-sm text-white hover:bg-blue-600" onClick={handleSaveMyPosition}>
+                        Simpan Posisi Saya
+                    </Button>
+                )}
+
                 <Button className="rounded-md bg-red-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-red-700" asChild>
                     <Link href={route('attendance.index')} method="get">
                         Kembali
