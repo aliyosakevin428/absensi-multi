@@ -16,6 +16,14 @@ class AbsentReason extends Model
 
     public function attendances()
     {
-        return $this->hasMany(Attendance::class, 'absent_reasons_id');
+        return $this->belongsToMany(
+            Attendance::class,
+            'attendance_user',     // pivot table
+            'absent_reason_id',    // FK di pivot menuju AbsentReason
+            'attendance_id'        // FK di pivot menuju Attendance
+        )->withPivot('user_id')
+        ->withTimestamps()
+        ->with('event'); // eager load event supaya mudah
     }
+
 }

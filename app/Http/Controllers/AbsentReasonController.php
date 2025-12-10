@@ -59,32 +59,28 @@ class AbsentReasonController extends Controller
 
         // Kumpulkan user + daftar tanggal event
         $users = $absentReason->attendances
-            ->flatMap(function ($attendance) {
-                return $attendance->users->map(function ($user) use ($attendance) {
-                    return [
+            ->flatMap(function ($attendance) use ($absentReason) {
+                return $attendance->users
+                    ->filter(fn($user) => $user->pivot->absent_reason_id === $absentReason->id)
+                    ->map(fn($user) => [
                         'id' => $user->id,
                         'name' => $user->name,
-                        'attendanceDate' => $attendance->event->waktu_kegiatan ?? null,
-                    ];
-                });
+                        'attendanceDate' => optional($attendance->event->waktu_kegiatan)->format('Y-m-d'),
+                    ]);
             })
-            ->groupBy('id') // 🔹 kelompokkan per user
-            ->map(function ($items) {
-                $user = $items->first();
-
-                return [
-                    'id' => $user['id'],
-                    'name' => $user['name'],
-                    // 🔹 ambil semua tanggal (tanpa null)
-                    'attendanceDates' => collect($items)
-                        ->pluck('attendanceDate')
-                        ->filter()
-                        ->unique()
-                        ->values(),
-                ];
-            })
+            ->groupBy('id')
+            ->map(fn($items) => [
+                'id' => $items->first()['id'],
+                'name' => $items->first()['name'],
+                'attendanceDates' => collect($items)
+                    ->pluck('attendanceDate')
+                    ->filter()
+                    ->unique()
+                    ->values(),
+            ])
             ->values()
             ->toArray();
+
 
         return Inertia::render('absentreason/show', [
             'absentReason' => $absentReason,
