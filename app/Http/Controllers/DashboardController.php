@@ -33,10 +33,12 @@ class DashboardController extends Controller
         $attendancePerUser = DB::table('attendance_user')
             ->join('users', 'attendance_user.user_id', '=', 'users.id')
             ->join('attendances', 'attendance_user.attendance_id', '=', 'attendances.id')
-            ->where('attendances.status', 'Sudah Terlaksana')
+            ->where('attendances.status', 'Sudah Terlaksana') // hanya attendances yang sudah selesai
+            ->whereNull('attendance_user.absent_reason_id')  // hanya yang hadir
             ->select('users.name', DB::raw('COUNT(attendance_user.user_id) as total'))
             ->groupBy('users.id', 'users.name')
             ->get();
+
 
         // Kirim ke inertia
         return Inertia::render('dashboard/index', [

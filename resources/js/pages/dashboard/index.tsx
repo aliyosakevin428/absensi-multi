@@ -34,6 +34,8 @@ export default function Dashboard() {
             <div className="grid gap-6 md:grid-cols-2">
                 <UserInfoWidget />
                 <DateTimeWidget />
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
                 <ChartBarEvents chartData={chartData} />
                 <ChartBarHorizontalUser data={attendancePerUser} title="Kehadiran per anggota" description="Jumlah kehadiran masing-masing anggota" />
             </div>

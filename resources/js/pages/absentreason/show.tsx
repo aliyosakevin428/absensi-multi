@@ -42,7 +42,7 @@ const ShowAbsentReason: FC<Props> = ({ absentReason, users }) => {
                                 </TableHeader>
                                 <TableBody>
                                     {users.map((user, i) => {
-                                        const maxVisible = 4; // tampilkan maksimal 3 tanggal
+                                        const maxVisible = 10; // tampilkan maksimal 3 tanggal
                                         const visibleDates = user.attendanceDates.slice(0, maxVisible);
                                         const hiddenDates = user.attendanceDates.slice(maxVisible);
                                         const hiddenCount = hiddenDates.length;
