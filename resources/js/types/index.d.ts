@@ -47,6 +47,7 @@ export interface User {
     positions: Position[];
     avatar?: string;
     roles?: string[];
+    my_absent_reason_id?: number | null;
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
@@ -96,7 +97,9 @@ export type Event = {
 
 export type Attendance = {
     id: number;
-    users: User[];
+    users: (User & {
+        my_absent_reason_id?: number | null;
+    })[];
     event: Event;
     status: string;
     absent_reason: AbsentReason;

@@ -70,6 +70,7 @@ class User extends Authenticatable
     public function attendances()
     {
         return $this->belongsToMany(Attendance::class, 'attendance_user', 'user_id', 'attendance_id')
+            ->withPivot(['absent_reason_id'])
             ->withTimestamps();
     }
 

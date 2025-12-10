@@ -56,7 +56,7 @@ const ListAttendance = ({
                         <TableHead>Acara/Kegiatan</TableHead>
                         <TableHead>Tanggal Kegiatan</TableHead>
                         <TableHead>Status Kegiatan</TableHead>
-                        <TableHead>Status Kehadiran</TableHead>
+                        {/* <TableHead>Status Kehadiran</TableHead> */}
                         <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -80,7 +80,7 @@ const ListAttendance = ({
                                 <TableHead>{attendance.event?.name || 'N/A'}</TableHead>
                                 <TableHead>{dayjs(attendance.event?.waktu_kegiatan).format('DD MMMM YYYY HH:mm')} WITA</TableHead>
                                 <TableHead>{attendance.status || 'N/A'}</TableHead>
-                                <TableHead>{attendance.absent_reason?.name || 'N/A'}</TableHead>
+                                {/* <TableHead>{attendance.absent_reason?.name || 'N/A'}</TableHead> */}
                                 <TableHead>
                                     {permissions?.canShow && (
                                         <Button variant={'ghost'} size={'icon'} asChild>

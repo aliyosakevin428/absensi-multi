@@ -19,7 +19,7 @@ type Props = PropsWithChildren & {
     purpose: 'create' | 'edit';
 };
 
-const AttendanceFormSheet: FC<Props> = ({ children, purpose, attendance, users = [], events, absent }) => {
+const AttendanceFormSheet: FC<Props> = ({ children, purpose, attendance, users = [], events }) => {
     const [sheetOpen, setSheetOpen] = useState(false);
 
     const { data, setData, post, put, processing } = useForm({
@@ -88,7 +88,7 @@ const AttendanceFormSheet: FC<Props> = ({ children, purpose, attendance, users =
                         ))}
                     </SelectContent>
                 </Select>
-                <Select value={data.absent_reasons_id} onValueChange={(value) => setData('absent_reasons_id', value)}>
+                {/* <Select value={data.absent_reasons_id} onValueChange={(value) => setData('absent_reasons_id', value)}>
                     <SelectTrigger>
                         <SelectValue placeholder="Hadir / Tidak Hadir" />
                     </SelectTrigger>
@@ -99,7 +99,7 @@ const AttendanceFormSheet: FC<Props> = ({ children, purpose, attendance, users =
                             </SelectItem>
                         ))}
                     </SelectContent>
-                </Select>
+                </Select> */}
 
                 <Popover>
                     <PopoverTrigger asChild>
