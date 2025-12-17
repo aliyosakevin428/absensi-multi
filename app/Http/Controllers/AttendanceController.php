@@ -24,7 +24,7 @@ class AttendanceController extends Controller
         $this->pass('index attendance');
 
         return Inertia::render('attendance/index', [
-            'attendances' => Attendance::with('users', 'event', 'absent_reason')->get(),
+            'attendances' => Attendance::with('users', 'event', 'absent_reason')->paginate(10),
             'users' => User::get(),
             'events' => Event::get(),
             'absent' => AbsentReason::get(),
@@ -77,7 +77,7 @@ class AttendanceController extends Controller
             'event',
             'users.positions',
             'users' => function ($q) {
-                $q->withPivot(['absent_reason_id']);
+                $q->withPivot(['absent_reason_id', 'attended_at']);
             },
             'users.attendancePositions' => function ($q) use ($attendance) {
                 $q->where('attendance_id', $attendance->id);
@@ -97,6 +97,8 @@ class AttendanceController extends Controller
 
             // keterangan kehadiran milik user ini
             $user->my_absent_reason_id = $user->pivot->absent_reason_id ?? null;
+
+            $user->attended_at = $user->pivot->attended_at ?? null;
         });
 
         return Inertia::render('attendance/show', [
@@ -161,9 +163,20 @@ class AttendanceController extends Controller
         }
 
         if (!empty($data['absent_reasons'])) {
+
+            $hadirId = AbsentReason::where('name', 'Hadir')->value('id');
+
             foreach ($data['absent_reasons'] as $userId => $reasonId) {
+
+                $existing = $attendance->users()
+                    ->where('users.id', $userId)
+                    ->first();
+
                 $attendance->users()->updateExistingPivot($userId, [
                     'absent_reason_id' => $reasonId,
+                    'attended_at' => ((int) $reasonId === (int) $hadirId)
+                        ? ($existing->pivot->attended_at ?? now())
+                        : null,
                 ]);
             }
         }
@@ -257,8 +270,17 @@ class AttendanceController extends Controller
 
         // Simpan status kehadiran ke pivot attendance_user
         if ($request->filled('absent_reason_id')) {
+            $hadirId = AbsentReason::where('name', 'Hadir')->value('id');
+
+            $existing = $attendance->users()
+                ->where('users.id', $user->id)
+                ->first();
+
             $attendance->users()->updateExistingPivot($user->id, [
                 'absent_reason_id' => $request->absent_reason_id,
+                'attended_at' => ((int) $request->absent_reason_id === (int) $hadirId)
+                    ? ($existing->pivot->attended_at ?? now()) // 🔒 kunci waktu pertama
+                    : null, // selain Hadir → Belum Absen
             ]);
         }
 
@@ -369,5 +391,90 @@ class AttendanceController extends Controller
 
         return back()->with('success', 'Berhasil membatalkan absensi');
     }
+
+    public function scan(string $qr_token)
+    {
+        $event = Event::where('qr_token', $qr_token)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        // cari attendance aktif untuk event ini
+        $attendance = Attendance::where('events_id', $event->id)
+            ->whereNotIn('status', ['Sudah Terlaksana', 'Dibatalkan'])
+            ->first();
+
+        // kalau belum ada, buat otomatis
+        if (!$attendance) {
+            $attendance = Attendance::create([
+                'events_id' => $event->id,
+                'status' => 'Sedang Berlangsung',
+            ]);
+        }
+
+        return Inertia::render('attendance/scan', [
+            'event' => $event,
+            'attendance' => $attendance,
+            'alreadyJoined' => auth()->check()
+                ? $attendance->users()->where('users.id', auth()->id())->exists()
+                : false,
+        ]);
+    }
+
+    public function joinByEvent(Event $event)
+    {
+        $user = auth()->user();
+
+        if (!$user) {
+            abort(403, 'Harus login');
+        }
+
+        $attendance = Attendance::where('events_id', $event->id)
+            ->whereNotIn('status', ['Sudah Terlaksana', 'Dibatalkan'])
+            ->firstOrFail();
+
+        $already = $attendance->users()
+            ->where('users.id', $user->id)
+            ->exists();
+
+        if ($already) {
+            return back()->with('info', 'Kamu sudah absen');
+        }
+
+        $attendance->users()->attach($user->id);
+
+        return back()->with('success', 'Absensi berhasil');
+
+    }
+
+    public function markPresent(Attendance $attendance)
+    {
+        $user = auth()->user();
+
+        if (! $user) {
+            abort(403, 'Harus login');
+        }
+
+        if (in_array($attendance->status, ['Sudah Terlaksana', 'Dibatalkan'])) {
+            return back()->with('error', 'Absensi sudah ditutup');
+        }
+
+        $hadirId = AbsentReason::where('name', 'Hadir')->value('id');
+
+        if (! $hadirId) {
+            abort(500, 'Absent reason Hadir belum ada');
+        }
+
+        $attendance->users()->syncWithoutDetaching([
+            $user->id => [
+                'absent_reason_id' => $hadirId,
+                'attended_at'      => now(),
+            ],
+        ]);
+
+        return redirect()
+            ->route('attendance.show', $attendance->id)
+            ->with('success', 'Kehadiran berhasil dicatat (Hadir)');
+    }
+
 
 }

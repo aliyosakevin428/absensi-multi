@@ -93,12 +93,17 @@ export type Event = {
     lokasi_kegiatan: string;
     event_types: EventType;
     attendances: Attendance[];
+    qr_token: string;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
 };
 
 export type Attendance = {
     id: number;
     users: (User & {
         my_absent_reason_id?: number | null;
+        attended_at?: string | null;
     })[];
     event: Event;
     status: string;

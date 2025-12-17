@@ -22,6 +22,16 @@ Route::get('/berita', [WelcomeController::class, 'berita'])->name('berita');
 Route::get('/berita/{slug}', [WelcomeController::class, 'baca'])->name('baca');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Join attendance by event
+    Route::post('/attendance/event/{event}/join', [AttendanceController::class, 'joinByEvent'])
+        ->name('attendance.joinByEvent');
+    // QR Scan
+    Route::get('/attendance/scan/{qr_token}', [AttendanceController::class, 'scan'])
+        ->name('attendance.scan');
+
+    Route::post('/attendance/{attendance}/present', [AttendanceController::class, 'markPresent'])
+        ->name('attendance.present');
+
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('users', UserController::class);
     // Route::put('/users/{user}/details', [UserController::class, 'updateDetails'])->name('users.updateDetails');
@@ -39,6 +49,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('event', EventController::class);
     Route::get('/charts/events-bar', [EventController::class, 'chartBar'])->name('charts.events.bar');
+    Route::patch('/event/{event}/toggle', [EventController::class, 'toggle'])
+        ->name('event.toggle');
 
     Route::post('attendances/{attendance}/media', [AttendanceController::class, 'uploadMedia'])->name('attendances.media.upload');
     Route::delete('attendances/{attendance}/media/bulk', [AttendanceController::class, 'destroyMediaBulk'])
@@ -47,17 +59,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/attendances/{attendance}/positions/all', [AttendanceController::class, 'updatePositionsAll'])
         ->name('attendances.updatePositionsAll');
     Route::post('/attendance/{attendance}/join', [AttendanceController::class, 'joinAttendance'])
-        ->name('attendance.join')
-        ->middleware('auth');
+        ->name('attendance.join');
     Route::delete('/attendance/{attendance}/cancel', [AttendanceController::class, 'cancelAttendance'])
-        ->name('attendance.cancel')
-        ->middleware('auth');
-    Route::post(
-    '/attendance/{attendance}/my-position', [AttendanceController::class, 'updateMyPosition'])
-        ->name('attendance.updateMyPosition')
-        ->middleware('auth');
-
-
+        ->name('attendance.cancel');
+    Route::post('/attendance/{attendance}/my-position', [AttendanceController::class, 'updateMyPosition'])
+        ->name('attendance.updateMyPosition');
 
     Route::post('news/{news}/uploadMedia', [NewsController::class, 'uploadMedia'])->name('news.upload-media');
     Route::put('news/bulk', [NewsController::class, 'bulkUpdate'])->name('news.bulk.update');

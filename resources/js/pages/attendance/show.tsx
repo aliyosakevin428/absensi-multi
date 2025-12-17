@@ -12,6 +12,10 @@ import UploadMedia from './components/upload-media';
 interface UserWithAttendancePositions extends User {
     attendancePositions: { position_id: number }[];
     my_absent_reason_id?: number | null;
+    pivot?: {
+        absent_reason_id?: number | null;
+        attended_at?: string | null;
+    };
 }
 
 type Props = {
@@ -144,7 +148,6 @@ const ShowAttendance: FC<Props> = ({ attendance, absent }) => {
         });
     };
 
-
     const handleSaveMyPosition = () => {
         if (!authUser) return;
 
@@ -269,6 +272,7 @@ const ShowAttendance: FC<Props> = ({ attendance, absent }) => {
                                         <SelectTrigger className="mt-2 w-fit">
                                             <SelectValue placeholder="Pilih status" />
                                         </SelectTrigger>
+
                                         <SelectContent>
                                             {absent.map((item) => (
                                                 <SelectItem key={item.id} value={item.id.toString()}>
@@ -278,28 +282,34 @@ const ShowAttendance: FC<Props> = ({ attendance, absent }) => {
                                         </SelectContent>
                                     </Select>
                                 </div>
+
+                                {/* Waktu Kehadiran */}
+                                <div className="mt-3">
+                                    <strong>Waktu Absen:</strong>
+                                    {user.attended_at ? (
+                                        <p className="text-sm text-green-600">
+                                            {new Date(user.attended_at).toLocaleString('id-ID', {
+                                                dateStyle: 'medium',
+                                                timeStyle: 'short',
+                                            })}
+                                        </p>
+                                    ) : (
+                                        <p className="text-sm text-gray-500">Belum absen</p>
+                                    )}
+                                </div>
                             </CardContent>
                         </Card>
                     ))}
                 </div>
-                {/* Tombol Join Absensi */}
-                {!isClosed && authUser && (
-                    <div className="mt-4 flex justify-end gap-2">
-                        {!isJoined ? (
-                            <Button
-                                className="bg-green-600 text-white hover:bg-green-700"
-                                onClick={() => router.post(route('attendance.join', attendance.id))}
-                            >
-                                Hadir
-                            </Button>
-                        ) : (
-                            <Button
-                                className="bg-yellow-500 text-white hover:bg-yellow-600"
-                                onClick={() => router.delete(route('attendance.cancel', attendance.id))}
-                            >
-                                Batalkan Kehadiran
-                            </Button>
-                        )}
+                {/* Tombol Cancel Absensi */}
+                {!isClosed && authUser && isJoined && (
+                    <div className="mt-4 flex justify-end">
+                        <Button
+                            className="bg-yellow-500 text-white hover:bg-yellow-600"
+                            onClick={() => router.delete(route('attendance.cancel', attendance.id))}
+                        >
+                            Batalkan Kehadiran
+                        </Button>
                     </div>
                 )}
             </div>
