@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\EventType;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Event>
@@ -32,6 +33,9 @@ class EventFactory extends Factory
             },
             'lokasi_kegiatan' => $this->faker->address(),
             'event_types_id' => EventType::pluck('id')->random(),
+
+            'qr_token' => Str::random(32),
+            'is_active' => false,
         ];
     }
 }

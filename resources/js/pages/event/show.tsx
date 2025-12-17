@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import AppLayout from '@/layouts/app-layout';
 import { Event } from '@/types';
 import { Link } from '@inertiajs/react';
+import { QRCodeCanvas } from 'qrcode.react';
 import { FC } from 'react';
 
 type Props = {
@@ -41,20 +42,33 @@ const ShowEvent: FC<Props> = ({ event }) => {
                     <CardTitle>{event.name}</CardTitle>
                     <CardDescription>{event.waktu_kegiatan}</CardDescription>
                 </CardHeader>
-                <CardContent>
+
+                <CardContent className="space-y-4">
                     <p className="text-sm">
                         Lokasi: <span className="font-medium">{event.lokasi_kegiatan}</span>
                     </p>
 
-                    <p className={`mt-2 text-sm font-semibold ${statusColor}`}>Status: {statusText}</p>
+                    <p className={`text-sm font-semibold ${statusColor}`}>Status: {statusText}</p>
+
+                    {/* ================= QR CODE ================= */}
+                    <div className="mt-8 flex flex-col items-center gap-2">
+                        <p className="text-sm font-medium">QR Code Absensi</p>
+
+                        {event.is_active && event.qr_token ? (
+                            <>
+                                <QRCodeCanvas value={route('attendance.scan', event.qr_token)} size={180} />
+                                <p className="text-xs text-gray-500">Scan untuk melakukan absensi</p>
+                            </>
+                        ) : (
+                            <p className="text-sm text-red-500">Event belum diaktifkan</p>
+                        )}
+                    </div>
                 </CardContent>
             </Card>
 
             <div className="flex justify-end">
                 <Button className="mt-4 rounded-md bg-blue-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-blue-700" asChild>
-                    <Link href={route('event.index')} method="get">
-                        Kembali
-                    </Link>
+                    <Link href={route('event.index')}>Kembali</Link>
                 </Button>
             </div>
         </AppLayout>

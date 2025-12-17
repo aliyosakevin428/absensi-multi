@@ -16,6 +16,8 @@ class Event extends Model
         'waktu_kegiatan',
         'lokasi_kegiatan',
         'event_types_id',
+        'qr_token',
+        'is_active',
     ];
 
     protected $casts = [

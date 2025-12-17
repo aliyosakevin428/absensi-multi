@@ -26,7 +26,7 @@ class Attendance extends Model implements HasMedia
     public function users()
     {
         return $this->belongsToMany(User::class, 'attendance_user', 'attendance_id', 'user_id')
-            ->withPivot(['absent_reason_id'])
+            ->withPivot(['absent_reason_id', 'attended_at'])
             ->withTimestamps();
     }
 

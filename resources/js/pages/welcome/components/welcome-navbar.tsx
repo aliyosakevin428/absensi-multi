@@ -1,11 +1,11 @@
 import ThemeToggler from '@/components/theme-toggler';
 import { Button } from '@/components/ui/button';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { LogIn } from 'lucide-react';
 import { welcomeMenuList } from '../datas/welcome-menu-lists';
+import { CustomSidebarTrigger } from '@/components/custom-sidebar-trigger';
 
 const WelcomeNavbar = () => {
     const { auth } = usePage<SharedData>().props;
@@ -14,7 +14,7 @@ const WelcomeNavbar = () => {
     return (
         <div className="flex h-fit items-center justify-between py-6">
             {isMobile ? (
-                <SidebarTrigger />
+                <CustomSidebarTrigger />
             ) : (
                 <nav className="flex w-full items-center justify-between gap-5">
                     <div className="flex items-center gap-6">

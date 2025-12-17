@@ -45,7 +45,7 @@ const WelcomeFooter = () => {
                     <p>
                         © {new Date().getFullYear()}{' '}
                         <span className="font-semibold">
-                            Multimedia Lahai Roi Balikpapan | Created by: <i>Aliyosa Kevin</i>
+                            Multimedia Lahai Roi Balikpapan | Created by: <i>Aliyosa Kevin</i>, <i>Riyan Ricardo</i>
                         </span>
                     </p>
                     <div className="flex gap-6">
