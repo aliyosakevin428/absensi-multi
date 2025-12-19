@@ -1,7 +1,7 @@
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
@@ -22,6 +22,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 type ProfileForm = {
     name: string;
     email: string;
+    kontak: string;
 };
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
@@ -30,7 +31,14 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
         name: auth.user.name,
         email: auth.user.email,
+        kontak: auth.user.kontak,
     });
+
+    const photoForm = useForm<{ photo: File | null }>({
+        photo: null,
+    });
+
+    const [preview, setPreview] = useState<string | null>(null);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -82,6 +90,23 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             <InputError className="mt-2" message={errors.email} />
                         </div>
 
+                        <div>
+                            <Label htmlFor="kontak">Kontak / Nomor Telepon</Label>
+
+                            <Input
+                                id="kontak"
+                                type="tel"
+                                className="mt-1 block w-full"
+                                value={data.kontak}
+                                maxLength={20}
+                                inputMode="numeric"
+                                onChange={(e) => setData('kontak', e.target.value)}
+                                placeholder="Kontak"
+                            />
+
+                            <InputError className="mt-2" message={errors.kontak} />
+                        </div>
+
                         {mustVerifyEmail && auth.user.email_verified_at === null && (
                             <div>
                                 <p className="-mt-4 text-sm text-muted-foreground">
@@ -118,6 +143,65 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             </Transition>
                         </div>
                     </form>
+                </div>
+
+                <div className="space-y-6">
+                    <HeadingSmall title="Profile photo" description="Upload or change your profile photo" />
+
+                    <div className="flex items-center gap-6">
+                        <img src={preview ?? auth.user.avatar} alt="Profile photo" className="h-24 w-24 rounded-full border object-cover" />
+
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                photoForm.post(route('profile.photo.update'), {
+                                    forceFormData: true,
+                                    preserveScroll: true,
+                                    onSuccess: () => {
+                                        setPreview(null);
+                                        photoForm.reset();
+                                    },
+                                });
+                            }}
+                            className="space-y-3"
+                        >
+                            <Input
+                                type="file"
+                                accept="image/jpeg,image/png"
+                                disabled={photoForm.processing}
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0] ?? null;
+                                    photoForm.setData('photo', file);
+
+                                    if (file) {
+                                        setPreview(URL.createObjectURL(file));
+                                    }
+                                }}
+                            />
+
+                            <InputError message={photoForm.errors.photo} />
+
+                            <div className="flex gap-3">
+                                <Button disabled={photoForm.processing}>{photoForm.processing ? 'Uploading...' : 'Upload / Change'}</Button>
+
+                                <Button
+                                    type="button"
+                                    variant="destructive"
+                                    disabled={photoForm.processing}
+                                    onClick={() => {
+                                        if (confirm('Hapus foto profil?')) {
+                                            photoForm.delete(route('profile.photo.delete'), {
+                                                preserveScroll: true,
+                                                onSuccess: () => setPreview(null),
+                                            });
+                                        }
+                                    }}
+                                >
+                                    Remove
+                                </Button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
                 <DeleteUser />

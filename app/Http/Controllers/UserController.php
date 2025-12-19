@@ -35,6 +35,7 @@ class UserController extends Controller
                 'team' => $user->team,
                 'positions' => $user->positions,
                 'roles' => $user->getRoleNames()->toArray(),
+                'avatar' => $user->avatar,
             ]);
 
         return Inertia::render('user/index', [
