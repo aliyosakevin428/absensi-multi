@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Settings\ProfilePhotoUpdateRequest;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -38,6 +39,38 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return to_route('profile.edit');
+    }
+
+    /**
+     * Update the user's profile photo.
+    */
+    public function updatePhoto(ProfilePhotoUpdateRequest $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        // hapus foto lama
+        $user->clearMediaCollection('profile_photo');
+
+        // upload foto baru
+        $user
+            ->addMediaFromRequest('photo')
+            ->toMediaCollection('profile_photo');
+
+        return back()->with('success', 'Foto profil berhasil diperbarui');
+    }
+
+    /**
+     * Delete the user's profile photo.
+     */
+    public function deletePhoto(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        if ($user->hasMedia('profile_photo')) {
+            $user->clearMediaCollection('profile_photo');
+        }
+
+        return back()->with('success', 'Foto profil berhasil dihapus');
     }
 
     /**

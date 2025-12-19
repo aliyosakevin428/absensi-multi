@@ -12,11 +12,6 @@ import { toast } from 'sonner';
 import UserDeleteDialog from './components/user-delete-dialog';
 import UserFormSheet from './components/user-form-sheet';
 
-// type Props = {
-//     users: User[];
-//     teams: Team[];
-//     positions: Position[];
-// }
 const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; positions: Position[] }) => {
     const [cari, setCari] = useState('');
 
@@ -41,6 +36,7 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
     };
 
     console.log(users);
+
     return (
         <AppLayout
             title="Daftar Anggota"
@@ -80,7 +76,17 @@ const ListUser = ({ users, positions, teams }: { users: User[]; teams: Team[]; p
                         .map((user, index) => (
                             <TableRow key={user.id}>
                                 <TableHead>{index + 1}</TableHead>
-                                <TableHead>{user.name || 'N/A'}</TableHead>
+                                <TableHead>
+                                    <div className="flex items-center gap-3 py-2">
+                                        <img
+                                            src={user.avatar}
+                                            alt={user.name}
+                                            className="h-10 w-10 rounded-full border object-cover transition hover:scale-105"
+                                        />
+                                        <span className="font-medium">{user.name}</span>
+                                    </div>
+                                </TableHead>
+                                {/* <TableHead>{user.name || 'N/A'}</TableHead> */}
                                 <TableHead>{user.email || 'N/A'}</TableHead>
                                 <TableHead>{user.kontak ? formatPhone(user.kontak) : 'N/A'}</TableHead>
                                 <TableHead>{user.team?.name || 'N/A'}</TableHead>
