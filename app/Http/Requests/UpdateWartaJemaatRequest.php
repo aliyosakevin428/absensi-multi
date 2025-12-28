@@ -22,7 +22,7 @@ class UpdateWartaJemaatRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
+            'title' => 'sometimes|string|max:255',
             'file' => 'sometimes|file|mimes:pdf|max:5120',
             'is_active' => 'sometimes|boolean',
         ];

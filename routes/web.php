@@ -70,11 +70,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/attendance/{attendance}/my-position', [AttendanceController::class, 'updateMyPosition'])
         ->name('attendance.updateMyPosition');
 
-    Route::resource('warta-jemaat', WartaJemaatController::class);
-    Route::post('warta-jemaat/{wartaJemaat}/uploadMedia', [WartaJemaatController::class, 'uploadMedia'])->name('warta-jemaat.upload-media');
-    Route::put('warta-jemaat/bulk', [WartaJemaatController::class, 'bulkUpdate'])->name('warta-jemaat.bulk.update');
-    Route::delete('warta-jemaat/bulk', [WartaJemaatController::class, 'bulkDelete'])->name('warta-jemaat.bulk.destroy');
-    Route::post('warta-jemaat/{wartaJemaat}/activated', [WartaJemaatController::class, 'activated'])->name('warta-jemaat.activated');
+    Route::resource('warta-jemaat', WartaJemaatController::class)
+        ->except(['update']);
+    Route::post('warta-jemaat/{wartaJemaat}', [WartaJemaatController::class, 'update'])
+        ->name('warta-jemaat.update');
+    Route::post('warta-jemaat/{wartaJemaat}/uploadMedia', [WartaJemaatController::class, 'uploadMedia'])
+        ->name('warta-jemaat.upload-media');
+    Route::put('warta-jemaat/bulk', [WartaJemaatController::class, 'bulkUpdate'])
+        ->name('warta-jemaat.bulk.update');
+    Route::delete('warta-jemaat/bulk', [WartaJemaatController::class, 'bulkDelete'])
+        ->name('warta-jemaat.bulk.destroy');
+    Route::post('warta-jemaat/{wartaJemaat}/activated', [WartaJemaatController::class, 'activated'])
+        ->name('warta-jemaat.activated');
 
     Route::post('news/{news}/uploadMedia', [NewsController::class, 'uploadMedia'])->name('news.upload-media');
     Route::put('news/bulk', [NewsController::class, 'bulkUpdate'])->name('news.bulk.update');

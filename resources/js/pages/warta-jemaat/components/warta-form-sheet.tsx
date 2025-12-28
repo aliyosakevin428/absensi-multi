@@ -8,7 +8,7 @@ import { capitalizeWords, em } from '@/lib/utils';
 import { FormPurpose } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { X } from 'lucide-react';
-import { FC, PropsWithChildren, useState } from 'react';
+import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 type Warta = {
@@ -23,35 +23,57 @@ type Props = PropsWithChildren & {
 };
 
 const WartaFormSheet: FC<Props> = ({ children, warta, purpose }) => {
-    const [open, setOpen] = useState(false);
+    const [open, setSheetOpen] = useState(false);
 
-    const { data, setData, post, put, reset, processing } = useForm<{
+    const { data, setData, post, reset, processing } = useForm<{
         title: string;
         file: File | null;
+        _method?: 'PUT';
     }>({
-        title: warta?.title ?? '',
+        title: '',
         file: null,
     });
 
+    useEffect(() => {
+        if (!open) return;
+
+        if (purpose === 'edit' && warta) {
+            setData({
+                title: warta.title,
+                file: null,
+            });
+        }
+
+        if (purpose === 'create') {
+            reset();
+        }
+    }, [open, purpose, warta, reset, setData]);
+
     const handleSubmit = () => {
+        // CREATE
         if (purpose === 'create') {
             post(route('warta-jemaat.store'), {
                 forceFormData: true,
-                preserveScroll: true,
                 onSuccess: () => {
-                    toast.success('Warta jemaat berhasil diunggah');
+                    toast.success('Warta jemaat berhasil ditambahkan');
                     reset();
-                    setOpen(false);
+                    setSheetOpen(false);
                 },
                 onError: (e) => toast.error(em(e)),
             });
-        } else if (purpose === 'edit' && warta) {
-            put(route('warta-jemaat.update', warta.id), {
-                forceFormData: true, // penting untuk upload file
-                preserveScroll: true,
+            return;
+        }
+
+        if (purpose === 'edit' && warta) {
+            setData('_method', 'PUT');
+
+            post(route('warta-jemaat.update', warta.id), {
+                forceFormData: true,
                 onSuccess: () => {
                     toast.success('Warta jemaat berhasil diperbarui');
-                    setOpen(false);
+                },
+                onFinish: () => {
+                    setSheetOpen(false);
                 },
                 onError: (e) => toast.error(em(e)),
             });
@@ -59,7 +81,7 @@ const WartaFormSheet: FC<Props> = ({ children, warta, purpose }) => {
     };
 
     return (
-        <Sheet open={open} onOpenChange={setOpen}>
+        <Sheet open={open} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>{children}</SheetTrigger>
 
             <SheetContent>
@@ -86,12 +108,10 @@ const WartaFormSheet: FC<Props> = ({ children, warta, purpose }) => {
                             />
                         </FormControl>
 
-                        {/* File PDF (create & edit) */}
                         <FormControl label={purpose === 'create' ? 'File Warta (PDF)' : 'Ganti File Warta (PDF)'}>
                             <Input type="file" accept="application/pdf" onChange={(e) => setData('file', e.target.files?.[0] ?? null)} />
                         </FormControl>
 
-                        {/* Link file lama saat edit */}
                         {purpose === 'edit' && warta?.file_url && (
                             <div className="text-sm text-gray-600">
                                 File saat ini:{' '}
