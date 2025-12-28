@@ -12,6 +12,7 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WartaJemaatController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,10 @@ Route::get('/about', [WelcomeController::class, 'about'])->name('about');
 
 Route::get('/berita', [WelcomeController::class, 'berita'])->name('berita');
 Route::get('/berita/{slug}', [WelcomeController::class, 'baca'])->name('baca');
+
+Route::get('/warta', [WelcomeController::class, 'wartaIndex'])->name('warta.index');
+Route::get('/warta/{warta}/download', [WelcomeController::class, 'download'])->name('warta.download');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Join attendance by event
@@ -64,6 +69,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('attendance.cancel');
     Route::post('/attendance/{attendance}/my-position', [AttendanceController::class, 'updateMyPosition'])
         ->name('attendance.updateMyPosition');
+
+    Route::resource('warta-jemaat', WartaJemaatController::class);
+    Route::post('warta-jemaat/{wartaJemaat}/uploadMedia', [WartaJemaatController::class, 'uploadMedia'])->name('warta-jemaat.upload-media');
+    Route::put('warta-jemaat/bulk', [WartaJemaatController::class, 'bulkUpdate'])->name('warta-jemaat.bulk.update');
+    Route::delete('warta-jemaat/bulk', [WartaJemaatController::class, 'bulkDelete'])->name('warta-jemaat.bulk.destroy');
+    Route::post('warta-jemaat/{wartaJemaat}/activated', [WartaJemaatController::class, 'activated'])->name('warta-jemaat.activated');
 
     Route::post('news/{news}/uploadMedia', [NewsController::class, 'uploadMedia'])->name('news.upload-media');
     Route::put('news/bulk', [NewsController::class, 'bulkUpdate'])->name('news.bulk.update');

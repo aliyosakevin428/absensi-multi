@@ -141,6 +141,16 @@ export type News = {
     updated_at?: string;
 };
 
+export type WartaJemaat = {
+    id: number;
+    title: string;
+    file_url: string;
+    is_active: boolean;
+    creator: User | null;
+    created_at: string;
+    updated_at: string;
+};
+
 export type Media = {
     id: number;
     collection_name: string;

@@ -214,14 +214,12 @@ class AttendanceController extends Controller
             'absent_reason_id' => ['nullable', 'exists:absent_reasons,id'],
         ]);
 
-        // Ambil data posisi dari request
         $positions = $request->input('positions', []);
 
         if (!is_array($positions)) {
             abort(422, 'Format data tidak valid');
         }
 
-        // Ambil hanya posisi milik user yang login
         $myPositions = $positions[$user->id] ?? null;
 
         // Cegah user kirim data milik user lain
@@ -250,12 +248,10 @@ class AttendanceController extends Controller
             ]);
         }
 
-        // Hapus posisi lama
         AttendanceUserPosition::where('attendance_id', $attendance->id)
             ->where('user_id', $user->id)
             ->delete();
 
-        // Simpan posisi baru
         if (!empty($myPositions)) {
             $insertData = array_map(fn($posId) => [
                 'attendance_id' => $attendance->id,
@@ -268,7 +264,6 @@ class AttendanceController extends Controller
             AttendanceUserPosition::insert($insertData);
         }
 
-        // Simpan status kehadiran ke pivot attendance_user
         if ($request->filled('absent_reason_id')) {
             $hadirId = AbsentReason::where('name', 'Hadir')->value('id');
 

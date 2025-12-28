@@ -61,6 +61,7 @@ class HandleInertiaRequests extends Middleware
                 'absentReason' => $user?->can('menu absent reason'),
                 // news menu
                 'news' => $user?->can('menu news'),
+                'wartaJemaat' => $user?->can('menu warta jemaat'),
             ],
 
             'ziggy' => fn (): array => [
