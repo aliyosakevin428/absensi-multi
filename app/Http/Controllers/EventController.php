@@ -118,6 +118,15 @@ class EventController extends Controller
             $event->qr_token = Str::random(32);
         }
 
+        // 🔁 Jika event dinonaktifkan
+        if (! $validated['is_active']) {
+            $event->qr_token = null;
+
+            $event->attendances()->update([
+                'status' => 'Sudah Terlaksana'
+            ]);
+        }
+
         $event->is_active = $validated['is_active'];
         $event->save();
 

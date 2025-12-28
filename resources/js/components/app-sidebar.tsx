@@ -4,7 +4,19 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Book, BookCheckIcon, BookCopy, BookOpen, BookOpenCheck, KeySquare, LayoutDashboardIcon, Newspaper, SwitchCamera, Users } from 'lucide-react';
+import {
+    Book,
+    BookCheckIcon,
+    BookOpenCheck,
+    CalendarCheck2,
+    ClipboardPen,
+    FolderOpen,
+    KeySquare,
+    LayoutDashboardIcon,
+    Newspaper,
+    SwitchCamera,
+    Users,
+} from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -50,20 +62,20 @@ export function AppSidebar() {
                             available: menus.user,
                         },
                     ]}
-                    label="Dashboard"
+                    label="Dashboard Zone"
                 />
                 <NavMain
                     items={[
                         {
                             title: 'Acara/Kegiatan',
                             href: route('event.index'),
-                            icon: BookOpen,
+                            icon: CalendarCheck2,
                             available: menus.event,
                         },
                         {
                             title: 'Jenis Acara',
                             href: route('event-type.index'),
-                            icon: Book,
+                            icon: ClipboardPen,
                             available: menus.eventType,
                         },
                         {
@@ -75,11 +87,11 @@ export function AppSidebar() {
                         {
                             title: 'Keterangan Kehadiran',
                             href: route('absent-reason.index'),
-                            icon: BookCopy,
+                            icon: FolderOpen,
                             available: menus.absentReason,
                         },
                     ]}
-                    label="Acara"
+                    label="Events Management Zone"
                 />
                 <NavMain
                     items={[
@@ -96,10 +108,16 @@ export function AppSidebar() {
                             available: menus.team,
                         },
                         {
-                            title: 'Artikel / Warta Jemaat',
+                            title: 'Artikel',
                             href: route('news.index'),
                             icon: Newspaper,
                             available: menus.news,
+                        },
+                        {
+                            title: 'Warta Jemaat',
+                            href: route('warta-jemaat.index'),
+                            icon: Book,
+                            available: menus.wartaJemaat,
                         },
                         {
                             title: 'Role & Permission',
@@ -108,7 +126,7 @@ export function AppSidebar() {
                             available: menus.role,
                         },
                     ]}
-                    label="Settings"
+                    label="Admin/Creator Zone"
                 />
             </SidebarContent>
 
