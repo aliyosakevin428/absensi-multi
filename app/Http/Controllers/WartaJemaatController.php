@@ -107,7 +107,7 @@ class WartaJemaatController extends Controller
     {
         $wartaJemaat->delete(); // Spatie otomatis hapus file
 
-        return redirect()->route('warta-jemaat.index')->with('success', 'Warta Jemaat deleted successfully.');
+        return redirect()->route('warta-jemaat.index');
     }
 
     /**

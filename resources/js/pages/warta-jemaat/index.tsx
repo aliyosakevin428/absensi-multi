@@ -11,6 +11,7 @@ import { Link, router, usePage } from '@inertiajs/react';
 import { CheckCircle, Edit, FileText, PlusCircle, Trash2 } from 'lucide-react';
 import { FC, useState } from 'react';
 import WartaFormSheet from './components/warta-form-sheet';
+import WartaDeleteDialog from './components/warta-delete-dialog';
 
 type Warta = {
     id: number;
@@ -147,13 +148,11 @@ const WartaIndex: FC<Props> = ({ wartas }) => {
                                     </Button>
 
                                     {/* Delete */}
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={() => confirm('Hapus warta ini?') && router.delete(route('warta-jemaat.destroy', warta.id))}
-                                    >
-                                        <Trash2 />
-                                    </Button>
+                                    <WartaDeleteDialog warta={warta}>
+                                        <Button variant="ghost" size="icon">
+                                            <Trash2 />
+                                        </Button>
+                                    </WartaDeleteDialog>
                                 </TableCell>
                             </TableRow>
                         ))}
