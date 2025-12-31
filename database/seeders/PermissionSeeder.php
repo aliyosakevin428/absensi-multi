@@ -114,6 +114,9 @@ class PermissionSeeder extends Seeder
                 'update news' => ['Admin', 'Superadmin'],
                 'delete news' => ['Admin', 'Superadmin'],
             ],
+            'warta_jemaat' => [
+                'menu warta jemaat' => ['Admin', 'Superadmin'],
+            ],
         ];
 
         foreach ($permissionGroups as $group => $permissions) {

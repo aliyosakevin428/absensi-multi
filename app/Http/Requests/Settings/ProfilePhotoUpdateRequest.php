@@ -22,7 +22,7 @@ class ProfilePhotoUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'photo' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'photo' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:5012'],
         ];
     }
 
@@ -37,7 +37,7 @@ class ProfilePhotoUpdateRequest extends FormRequest
             'photo.required' => 'Foto profil wajib diunggah',
             'photo.image' => 'File harus berupa gambar',
             'photo.mimes' => 'Format foto harus JPG, JPEG, atau PNG',
-            'photo.max' => 'Ukuran foto maksimal 2MB',
+            'photo.max' => 'Ukuran foto maksimal 5MB',
         ];
     }
 }
