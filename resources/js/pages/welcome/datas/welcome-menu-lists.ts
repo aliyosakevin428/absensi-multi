@@ -8,11 +8,6 @@ export const welcomeMenuList: NavItem[] = [
         icon: Home,
     },
     {
-        title: 'About Us',
-        href: route('about'),
-        icon: Info,
-    },
-    {
         title: 'Artikel',
         href: route('berita'),
         icon: Newspaper,
@@ -21,5 +16,10 @@ export const welcomeMenuList: NavItem[] = [
         title: 'Warta Jemaat',
         href: route('warta.index'),
         icon: ScrollText,
+    },
+    {
+        title: 'About Us',
+        href: route('about'),
+        icon: Info,
     },
 ];

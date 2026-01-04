@@ -21,7 +21,7 @@ const WelcomeLayout: FC<Props> = ({ children }) => {
                 <link rel="icon" type="image/x-icon" href="/images/logo-channel.png" />
             </Head>
             <SidebarInset>
-                <div className="mx-auto grid w-full max-w-7xl space-y-6 px-6">
+                <div className="mx-auto grid w-full max-w-7xl space-y-1 px-2">
                     <WelcomeNavbar />
                     {children}
                     <WelcomeFooter />

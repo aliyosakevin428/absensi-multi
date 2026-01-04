@@ -1,3 +1,4 @@
+import Illustration from '@/components/illustration';
 import { Phone } from 'lucide-react';
 import { FC } from 'react';
 import SectionContainer from './layouts/section-container';
@@ -12,7 +13,6 @@ const AboutPage: FC<Props> = ({ content }) => {
         <WelcomeLayout>
             <SectionContainer>
                 <div className="mx-auto max-w-6xl space-y-20">
-                    {/* Header */}
                     <header className="space-y-4 text-center">
                         <h1 className="text-3xl font-bold text-foreground md:text-4xl">Multimedia Lahai Roi Balikpapan</h1>
                         <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted-foreground">
@@ -21,9 +21,7 @@ const AboutPage: FC<Props> = ({ content }) => {
                         </p>
                     </header>
 
-                    {/* Visi & Misi */}
                     <section className="grid items-center gap-12 md:grid-cols-2 md:gap-20">
-                        {/* Teks */}
                         <div className="space-y-10">
                             <div className="space-y-4">
                                 <h2 className="text-2xl font-semibold text-foreground">Visi Kami</h2>
@@ -44,7 +42,6 @@ const AboutPage: FC<Props> = ({ content }) => {
                             </div>
                         </div>
 
-                        {/* Gambar ilustrasi */}
                         <div className="flex justify-center">
                             <img
                                 src="/images/tim-multi.jpg"
@@ -56,29 +53,37 @@ const AboutPage: FC<Props> = ({ content }) => {
                         </div>
                     </section>
 
-                    {/* Optional: Konten tambahan dari props */}
                     {content && (
                         <section className="prose max-w-none prose-neutral dark:prose-invert">
                             <div dangerouslySetInnerHTML={{ __html: content }} />
                         </section>
                     )}
 
-                    <footer className="space-y-4 text-center">
-                        <p className="text-lg text-muted-foreground">Tertarik untuk melayani bersama kami?</p>
-                        <ul className="inline-block space-y-2 text-left text-base font-medium">
-                            <li className="flex items-center gap-2">
-                                <Phone className="h-4 w-4 text-primary" />
-                                <span className="font-semibold">Gilbert Novalentino</span> – 0895-3418-25616
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <Phone className="h-4 w-4 text-primary" />
-                                <span className="font-semibold">Sandison S. Tandiri Lambun</span> – 0852-4165-9828
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <Phone className="h-4 w-4 text-primary" />
-                                <span className="font-semibold">Joni Salenda</span> – 0812-5058-2223
-                            </li>
-                        </ul>
+                    <footer className="grid items-center gap-12 md:grid-cols-2">
+                        <div className="space-y-6 text-center md:text-left">
+                            <p className="text-lg text-muted-foreground">Tertarik untuk melayani bersama kami?</p>
+
+                            <ul className="inline-block space-y-3 text-left text-base font-medium md:inline">
+                                <li className="flex items-center gap-2">
+                                    <Phone className="h-4 w-4 text-primary" />
+                                    <span className="font-semibold">Gilbert Novalentino</span>: 0895-3418-25616
+                                </li>
+                                <li className="flex items-center gap-2">
+                                    <Phone className="h-4 w-4 text-primary" />
+                                    <span className="font-semibold">Sandison S. Tandiri Lambun</span>: 0852-4165-9828
+                                </li>
+                                <li className="flex items-center gap-2">
+                                    <Phone className="h-4 w-4 text-primary" />
+                                    <span className="font-semibold">Joni Salenda</span>: 0812-5058-2223
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="flex justify-center md:justify-end">
+                            <div className="w-full max-w-xs md:max-w-sm lg:max-w-md">
+                                <Illustration src="/images/undraw/undraw_mobile_fxri.svg" variant="primary" className="opacity-90" />
+                            </div>
+                        </div>
                     </footer>
                 </div>
             </SectionContainer>

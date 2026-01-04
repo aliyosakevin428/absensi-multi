@@ -1,10 +1,11 @@
+import Illustration from '@/components/illustration';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { dateDFY } from '@/lib/utils';
 import { WartaJemaat } from '@/types';
 import { Download, FileText } from 'lucide-react';
-import WelcomeLayout from './layouts/welcome-layout';
 import SectionContainer from './layouts/section-container';
+import WelcomeLayout from './layouts/welcome-layout';
 
 type Props = {
     warta: WartaJemaat;
@@ -26,17 +27,30 @@ export default function Warta({ warta }: Props) {
 
     return (
         <WelcomeLayout>
-            <SectionContainer title="Detail Warta Jemaat" description="Informasi lengkap warta jemaat gereja">
-                <div className="mb-6 space-y-2">
-                    <h1 className="text-2xl leading-tight font-bold">{warta.title}</h1>
-                    <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                        <Badge variant={warta.is_active ? 'default' : 'secondary'}>{warta.is_active ? 'Aktif' : 'Tidak Aktif'}</Badge>
-                        <span>•</span>
-                        <span>Dibuat {dateDFY(warta.created_at)}</span>
+            <SectionContainer description="Informasi lengkap warta jemaat gereja">
+                {/* HERO MINI */}
+                <div className="mb-15 grid items-center gap-10 md:grid-cols-2">
+                    {/* LEFT — TITLE */}
+                    <div className="mx-auto max-w-xl space-y-4 md:text-left">
+                        <h1 className="text-3xl leading-tight font-bold">{warta.title}</h1>
+
+                        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                            <Badge variant={warta.is_active ? 'default' : 'secondary'}>{warta.is_active ? 'Aktif' : 'Tidak Aktif'}</Badge>
+                            <span>By {warta.creator?.name}</span>
+                            <span>•</span>
+                            <span>Dibuat {dateDFY(warta.created_at)}</span>
+                        </div>
+                    </div>
+
+                    {/* RIGHT — ILLUSTRATION */}
+                    <div className="flex justify-center md:justify-end">
+                        <div className="w-full max-w-xs md:max-w-sm lg:max-w-md">
+                            <Illustration src="/images/undraw/undraw_thoughts_wy7s.svg" variant="primary" className="opacity-90" />
+                        </div>
                     </div>
                 </div>
 
-                {/* Content */}
+                {/* CONTENT */}
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                     {/* LEFT */}
                     <div className="space-y-6 lg:col-span-1">
