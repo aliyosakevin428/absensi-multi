@@ -45,8 +45,8 @@ export default function ForgotPassword({ status }: { status?: string }) {
                         <InputError message={errors.email} />
                     </div>
 
-                    <div className="my-6 flex items-center justify-start">
-                        <Button className="w-full" disabled={processing}>
+                    <div className="my-4 flex items-center justify-start">
+                        <Button className="w-fit" disabled={processing}>
                             {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                             Email password reset link
                         </Button>

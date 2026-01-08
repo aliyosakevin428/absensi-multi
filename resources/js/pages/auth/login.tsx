@@ -6,8 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthSplitLayout from '@/layouts/auth/auth-split-layout';
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import { Eye, EyeClosed, LoaderCircle, LogIn } from 'lucide-react';
+import { FormEventHandler, useState } from 'react';
 
 type LoginForm = {
     email: string;
@@ -34,8 +34,10 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         });
     };
 
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+
     return (
-        <AuthSplitLayout title="Log in to your account" description="Enter your email and password below to log in">
+        <AuthSplitLayout title="Log in to your account" description="Masukan email dan password di bawah untuk mengakses Aplikasi Manajemen">
             <Head title="Log in" />
 
             <form className="flex flex-col gap-6" onSubmit={submit}>
@@ -65,16 +67,33 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                 </TextLink>
                             )}
                         </div>
-                        <Input
-                            id="password"
-                            type="password"
-                            required
-                            tabIndex={2}
-                            autoComplete="current-password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Password"
-                        />
+
+                        <div className="relative">
+                            <Input
+                                id="password"
+                                type={showPassword ? 'text' : 'password'}
+                                required
+                                tabIndex={2}
+                                autoComplete="current-password"
+                                value={data.password}
+                                onChange={(e) => setData('password', e.target.value)}
+                                placeholder="Password"
+                                className="pr-10"
+                            />
+
+                            {/* Eye Icon */}
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword((p) => !p)}
+                                className="absolute top-1/2 right-3 z-20 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                                tabIndex={-1}
+                            >
+                                <span key={showPassword ? 'open' : 'closed'} className="animate-eye block">
+                                    {showPassword ? <Eye className="h-4 w-4" /> : <EyeClosed className="h-4 w-4" />}
+                                </span>
+                            </button>
+                        </div>
+
                         <InputError message={errors.password} />
                     </div>
 
@@ -89,14 +108,15 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         <Label htmlFor="remember">Remember me</Label>
                     </div>
 
-                    <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
+                    <Button type="submit" className="mt-2 w-fit" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Log in
+                        <LogIn className="h-4 w-4" />
+                        Login
                     </Button>
                 </div>
 
                 <div className="text-center text-sm text-muted-foreground">
-                    Don't have an account?{' '}
+                    Belum Punya Akun?{' '}
                     <TextLink href={route('register')} tabIndex={5}>
                         Sign up
                     </TextLink>

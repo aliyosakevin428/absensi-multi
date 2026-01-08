@@ -52,7 +52,9 @@ export default function ScanAttendance({ event, attendance, alreadyJoined }: Pro
                             </Button>
                         )}
                     </CardContent>
-                    {attendance && <p className="text-sm text-gray-500">Status Event: {attendance.status}</p>}
+                    <div className="flex-col flex object-center text-center">
+                        {attendance && <p className="text-mute-forground text-sm">Status Event: {attendance.status}</p>}
+                    </div>
                 </Card>
             </div>
         </AppLayout>

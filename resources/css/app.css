@@ -231,4 +231,20 @@
     body {
         @apply bg-background text-foreground;
     }
+
+    @keyframes eye-blink {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    }
+
+    .animate-eye {
+    animation: eye-blink 0.2s ease-out;
+    }
+
 }
