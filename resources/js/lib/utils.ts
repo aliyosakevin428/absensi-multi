@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import dayjs from 'dayjs';
+import { Area } from 'react-easy-crop';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 
@@ -79,4 +80,38 @@ export function handlePasteScreenshot(callback: (file: File) => void) {
 
     window.addEventListener('paste', onPaste);
     return () => window.removeEventListener('paste', onPaste); // biar bisa cleanup
+}
+
+export default function getCroppedImage(imageSrc: string, crop: Area): Promise<Blob> {
+    return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.src = imageSrc;
+
+        image.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = crop.width;
+            canvas.height = crop.height;
+
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                reject(new Error('Canvas context not available'));
+                return;
+            }
+
+            ctx.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, crop.width, crop.height);
+
+            canvas.toBlob(
+                (blob) => {
+                    if (blob) resolve(blob);
+                    else reject(new Error('Failed to create blob'));
+                },
+                'image/jpeg',
+                0.9,
+            );
+        };
+
+        image.onerror = () => {
+            reject(new Error('Failed to load image'));
+        };
+    });
 }
