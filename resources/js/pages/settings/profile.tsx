@@ -75,8 +75,17 @@ export default function Profile({ mustVerifyEmail }: { mustVerifyEmail: boolean;
                         </div>
 
                         <div className="grid gap-2">
-                            <Label>Kontak</Label>
-                            <Input value={data.kontak} onChange={(e) => setData('kontak', e.target.value)} />
+                            <Label>Kontak / Nomor Whatsapp</Label>
+                            <Input
+                                type="text"
+                                inputMode="numeric"
+                                maxLength={20}
+                                value={data.kontak}
+                                onChange={(e) => {
+                                    const value = e.target.value.replace(/[^0-9]/g, '');
+                                    setData('kontak', value);
+                                }}
+                            />
                             <InputError message={errors.kontak} />
                         </div>
 
