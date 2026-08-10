@@ -14,9 +14,9 @@ export default function NotFound() {
                 </div>
                 {/* TEXT */}
                 <div className="space-y-6 text-center md:text-left">
-                    <p className="text-sm font-medium tracking-wide text-muted-foreground">Error 404</p>
+                    <p className="text-md font-medium tracking-wide text-muted-foreground">404 Not Found</p>
 
-                    <h1 className="text-4xl leading-tight font-bold md:text-5xl">Halaman tidak ditemukan</h1>
+                    <h1 className="text-2xl leading-tight font-bold md:text-5xl">Halaman tidak ditemukan</h1>
 
                     <p className="text-lg leading-relaxed text-muted-foreground">
                         Maaf, halaman yang kamu cari tidak tersedia atau sudah dipindahkan. Silakan kembali ke halaman utama atau jelajahi menu
