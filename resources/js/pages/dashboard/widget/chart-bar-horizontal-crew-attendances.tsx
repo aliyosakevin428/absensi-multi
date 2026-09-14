@@ -40,7 +40,6 @@ const AnimatedBar: React.FC<RectangleProps & { index?: number }> = (props) => {
     );
 };
 
-// fungsi renderer bar (harus function biasa, bukan React.FC)
 const renderAnimatedBar = (props: RectangleProps & { payload?: { index?: number } }) => {
     const { fill, x, y, width, height, payload } = props;
     const index = payload?.index ?? 0;
