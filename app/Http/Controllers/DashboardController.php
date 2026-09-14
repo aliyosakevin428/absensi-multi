@@ -2,47 +2,65 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Event;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil data event yang sudah terlaksana (status di attendances, tanggal di events)
-        $events = DB::table('attendances')
+        Carbon::setLocale('id');
+
+        $years = DB::table('events')
+            ->join('attendances', 'attendances.events_id', '=', 'events.id')
+            ->where('attendances.status', 'Sudah Terlaksana')
+            ->selectRaw('DISTINCT YEAR(events.waktu_kegiatan) as year')
+            ->orderBy('year', 'desc')
+            ->pluck('year')
+            ->toArray();
+
+        $fallbackYear = count($years) ? max($years) : (int) now()->year;
+        $year = (int) $request->query('year', $fallbackYear);
+        if (!in_array($year, $years)) {
+            $years[] = $year;
+        }
+        sort($years);
+
+        $eventsAgg = DB::table('attendances')
             ->join('events', 'attendances.events_id', '=', 'events.id')
             ->selectRaw('MONTH(events.waktu_kegiatan) as month, COUNT(*) as total')
             ->where('attendances.status', 'Sudah Terlaksana')
+            ->whereYear('events.waktu_kegiatan', $year)
             ->groupBy('month')
             ->orderBy('month')
             ->get()
-            ->keyBy('month'); // supaya mudah diakses berdasarkan angka bulan
+            ->keyBy('month');
 
-        // Generate data 12 bulan (agar bulan kosong tetap muncul dengan total 0)
-        $data = collect(range(1, 12))->map(function ($month) use ($events) {
+        $chartData = collect(range(1, 12))->map(function ($m) use ($eventsAgg, $year) {
             return [
-                'month' => Carbon::create()->month($month)->translatedFormat('M'),
-                'total' => $events[$month]->total ?? 0,
+                'month' => Carbon::createFromDate($year, $m, 1)->translatedFormat('M'),
+                'total' => (int) optional($eventsAgg->get($m))->total ?? 0,
             ];
         });
 
-        // Chart kedua: jumlah kehadiran per user
         $attendancePerUser = DB::table('attendance_user')
             ->join('users', 'attendance_user.user_id', '=', 'users.id')
             ->join('attendances', 'attendance_user.attendance_id', '=', 'attendances.id')
-            ->where('attendances.status', 'Sudah Terlaksana') // hanya attendances yang sudah selesai
-            ->whereNull('attendance_user.absent_reason_id')  // hanya yang hadir
+            ->join('events', 'attendances.events_id', '=', 'events.id')
+            ->where('attendances.status', 'Sudah Terlaksana')
+            ->whereYear('events.waktu_kegiatan', $year)
+            ->whereNull('attendance_user.absent_reason_id') 
             ->select('users.name', DB::raw('COUNT(attendance_user.user_id) as total'))
             ->groupBy('users.id', 'users.name')
+            ->orderByDesc('total')
             ->get();
 
-
-        // Kirim ke inertia
         return Inertia::render('dashboard/index', [
-            'chartData' => $data->toArray(),
+            'year' => $year,
+            'years' => $years,
+            'chartData' => $chartData->toArray(),
             'attendancePerUser' => $attendancePerUser->toArray(),
         ]);
     }
