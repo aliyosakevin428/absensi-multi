@@ -125,9 +125,11 @@ const ListEvent = ({ eventses }: Props) => {
                     ))}
                 </TableBody>
             </Table>
-            <div className="mt-2 flex justify-end">
-                <Pagination currentPage={eventses.current_page} lastPage={eventses.last_page} onPageChange={(page) => handlePageChange(page)} />
-            </div>
+            {eventses.total > 10 && (
+                <div className="mt-2 flex justify-end">
+                    <Pagination currentPage={eventses.current_page} lastPage={eventses.last_page} onPageChange={(page) => handlePageChange(page)} />
+                </div>
+            )}
         </AppLayout>
     );
 };

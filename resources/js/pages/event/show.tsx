@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
@@ -11,6 +12,8 @@ type Props = {
 };
 
 const ShowEvent: FC<Props> = ({ event }) => {
+    const qrUrl = event.is_active && event.qr_token ? route('attendance.scan', { qr_token: event.qr_token }) : null;
+
     const status = event.attendances?.[0]?.status || null;
 
     let statusText = 'Belum ada data';
@@ -48,21 +51,32 @@ const ShowEvent: FC<Props> = ({ event }) => {
                         Lokasi: <span className="font-medium">{event.lokasi_kegiatan}</span>
                     </p>
 
-                    <p className={`text-sm font-semibold ${statusColor}`}>Status: {statusText}</p>
+                    <Badge variant="outline" className={statusColor}>
+                        {statusText}
+                    </Badge>
+                </CardContent>
+            </Card>
 
-                    {/* ================= QR CODE ================= */}
+            <Card className="mt-4">
+                <CardHeader className="flex flex-col items-center">
+                    <CardTitle>Absensi Kegiatan</CardTitle>
+                    <CardDescription>Scan QR Code untuk melakukan absensi</CardDescription>
+                </CardHeader>
+
+                <CardContent className="flex justify-center">
                     <div className="mt-8 flex flex-col items-center gap-2">
                         <p className="text-sm font-medium">QR Code Absensi</p>
 
-                        {event.is_active && event.qr_token ? (
+                        {qrUrl ? (
                             <>
-                                <QRCodeCanvas value={route('attendance.scan', event.qr_token)} size={180} />
+                                <QRCodeCanvas value={qrUrl} size={180} />
+
                                 <p className="text-xs text-gray-500">Scan untuk melakukan absensi</p>
                             </>
                         ) : (
                             <p className="text-sm text-red-500">Event belum diaktifkan</p>
                         )}
-                    </div>
+                    </div>{' '}
                 </CardContent>
             </Card>
 

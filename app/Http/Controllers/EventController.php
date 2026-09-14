@@ -20,8 +20,14 @@ class EventController extends Controller
         // dd(Event::get()->toArray());
         $this->pass('index event');
 
+        $query = Event::with('event_types');
+
+        if (!$this->user->hasAnyRole(['Admin', 'Superadmin'])) {
+            $query->where('is_active', 1);
+        }
+
         return Inertia::render('event/index', [
-            'eventses' => Event::with('event_types')->paginate(10),
+            'eventses' => $query->paginate(10),
             'event_types' => EventType::get(),
             'permissions' => [
                 'canAdd' => $this->user->can('create event'),
