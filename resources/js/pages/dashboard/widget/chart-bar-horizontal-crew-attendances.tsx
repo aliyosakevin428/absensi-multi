@@ -103,7 +103,7 @@ export function ChartBarHorizontalUser({ data, title, description, barHeight = 4
 
                 <CardFooter className="flex flex-col items-start gap-2 pt-2 text-sm">
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 2 }} transition={{ delay: 1, duration: 1 }}>
-                        Total Kehadiran Semua Anggota: {totalAttendance} Kehadiran
+                        Total Kehadiran Anggota : {totalAttendance} Kehadiran
                     </motion.div>
                 </CardFooter>
             </Card>

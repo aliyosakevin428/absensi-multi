@@ -10,6 +10,7 @@ use App\Models\AttendanceUserPosition;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -18,16 +19,46 @@ class AttendanceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // dd(Attendance::with('users', 'events', 'absent_reasons')->get()->toArray());
+
         $this->pass('index attendance');
 
+        $query = Attendance::query()
+            ->with(['users', 'event', 'absent_reason']);
+
+
+        if ($request->filled('search')) {
+            $s = $request->string('search')->toString();
+
+            $query->whereHas('event', function ($q) use ($s) {
+                $q->where('name', 'like', "%{$s}%");
+            });
+        }
+
+        if ($request->filled('month')){
+            [$year, $month] = explode('-', $request->month);
+
+            $start = Carbon::create((int)$year, (int)$month, 1)->startOfMonth();
+            $end = (clone $start)->endOfMonth();
+
+            $query->whereHas('event', function ($q) use ($start, $end) {
+                $q->whereBetween('waktu_kegiatan', [$start, $end]);
+            });
+        }
+
+        $attendances = $query
+            ->latest('id')
+            ->paginate(10)
+            ->withQueryString();
+
         return Inertia::render('attendance/index', [
-            'attendances' => Attendance::with('users', 'event', 'absent_reason')->paginate(10),
+            'attendances' => $attendances,
             'users' => User::get(),
             'events' => Event::get(),
             'absent' => AbsentReason::get(),
+            'filters' => $request->only(['search', 'month']),
             'permissions' => [
                 'canAdd' => $this->user->can('create attendance'),
                 'canShow' => $this->user->can('show attendance'),
@@ -84,9 +115,7 @@ class AttendanceController extends Controller
             },
         ]);
 
-        // rapikan data tambahan untuk frontend
         $attendance->users->each(function ($user) {
-            // posisi per user per attendance
             $user->attendancePositions = $user->attendancePositions
                 ->map(function ($pivot) {
                     return [
@@ -95,7 +124,6 @@ class AttendanceController extends Controller
                 })
                 ->values();
 
-            // keterangan kehadiran milik user ini
             $user->my_absent_reason_id = $user->pivot->absent_reason_id ?? null;
 
             $user->attended_at = $user->pivot->attended_at ?? null;

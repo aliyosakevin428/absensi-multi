@@ -8,24 +8,31 @@ import AppLayout from '@/layouts/app-layout';
 import { AbsentReason, Attendance, Event, SharedData, User } from '@/types';
 import { Link, router, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
-import { Edit, Folder, PlusCircle, Trash2 } from 'lucide-react';
+import { ChevronDown, Edit, Folder, PlusCircle, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import AttendanceDeleteDialog from './components/attendance-delete-dialog';
 import AttendanceFormSheet from './components/attendance-form-sheet';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 const ListAttendance = ({
     attendances,
     users,
     events,
     absent,
-}: {
-    attendances: any; // ini paginated data
-    users: User[];
-    events: Event[];
-    absent: AbsentReason[];
-}) => {
+    }: {
+        attendances: any; // ini paginated data
+        users: User[];
+        events: Event[];
+        absent: AbsentReason[];
+    }) => {
     const [cari, setCari] = useState('');
     const { permissions } = usePage<SharedData>().props;
+
+    const [month, setMonth] = useState('');
+
+    const applyFilter = (page = 1) => {
+        router.get(route('attendance.index'), { month, search: cari }, { preserveState: true, replace: true });
+    };
 
     const handlePageChange = (page: number) => {
         router.get(route('attendance.index'), { page, search: cari }, { preserveState: true, replace: true });
@@ -48,6 +55,34 @@ const ListAttendance = ({
         >
             <div className="flex gap-4">
                 <Input placeholder="Cari Kegiatan" value={cari} onChange={(e) => setCari(e.target.value)} className="w-full" />
+
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="flex items-center gap-2">
+                            <span>Filter Bulan</span>
+                            <ChevronDown className="h-4 w-4 opacity-50" />
+                        </Button>
+                    </DropdownMenuTrigger>
+
+                    <DropdownMenuContent className="p-4">
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="month" className="text-sm font-medium">
+                                Pilih Bulan:
+                            </label>
+                            <Input type="month" id="month" value={month} onChange={(e) => setMonth(e.target.value)} />
+                        </div>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+
+                <Button onClick={() => applyFilter(1)}>Terapkan</Button>
+
+                <Button variant="secondary" asChild>
+                    <a href={route('attendance.export', { search: cari, month, format: 'xlsx' })}>Export Excel</a>
+                </Button>
+
+                <Button variant="secondary" asChild>
+                    <a href={route('attendance.export', { search: cari, month, format: 'pdf' })}>Export PDF</a>
+                </Button>
             </div>
 
             <Table>
@@ -105,9 +140,15 @@ const ListAttendance = ({
                         ))}
                 </TableBody>
             </Table>
-            <div className="mt-2 flex justify-end">
-                <Pagination currentPage={attendances.current_page} lastPage={attendances.last_page} onPageChange={handlePageChange} />
-            </div>
+            {attendances.total > 10 && (
+                <div className="mt-2 flex justify-end">
+                    <Pagination
+                        currentPage={attendances.current_page}
+                        lastPage={attendances.last_page}
+                        onPageChange={(page) => handlePageChange(page)}
+                    />
+                </div>
+            )}
         </AppLayout>
     );
 };
