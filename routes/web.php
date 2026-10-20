@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AbsentReasonController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AttendanceReportController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventTypeController;
@@ -69,6 +70,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('attendance.cancel');
     Route::post('/attendance/{attendance}/my-position', [AttendanceController::class, 'updateMyPosition'])
         ->name('attendance.updateMyPosition');
+    Route::get('/reports/attendance', [AttendanceReportController::class, 'index'])
+        ->name('reports.attendance.index');
+    Route::get('/reports/attnednace/export', [AttendanceReportController::class, 'export'])
+        ->name('reports.attendance.export');
 
     Route::resource('warta-jemaat', WartaJemaatController::class)
         ->except(['update']);

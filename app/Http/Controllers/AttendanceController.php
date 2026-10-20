@@ -421,12 +421,10 @@ class AttendanceController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
 
-        // cari attendance aktif untuk event ini
         $attendance = Attendance::where('events_id', $event->id)
             ->whereNotIn('status', ['Sudah Terlaksana', 'Dibatalkan'])
             ->first();
 
-        // kalau belum ada, buat otomatis
         if (!$attendance) {
             $attendance = Attendance::create([
                 'events_id' => $event->id,

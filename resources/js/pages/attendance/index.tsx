@@ -76,12 +76,12 @@ const ListAttendance = ({
 
                 <Button onClick={() => applyFilter(1)}>Terapkan</Button>
 
-                <Button variant="secondary" asChild>
+                {/* <Button variant="secondary" asChild>
                     <a href={route('attendance.export', { search: cari, month, format: 'xlsx' })}>Export Excel</a>
-                </Button>
+                </Button> */}
 
                 <Button variant="secondary" asChild>
-                    <a href={route('attendance.export', { search: cari, month, format: 'pdf' })}>Export PDF</a>
+                    <a href={route('reports.attendance.export', { search: cari, month, format: 'pdf' })}>Export PDF</a>
                 </Button>
             </div>
 
