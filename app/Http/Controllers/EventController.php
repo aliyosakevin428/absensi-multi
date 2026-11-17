@@ -26,8 +26,11 @@ class EventController extends Controller
             $query->where('is_active', 1);
         }
 
+        $query->orderByDesc('waktu_kegiatan')
+              ->orderByDesc('id');
+
         return Inertia::render('event/index', [
-            'eventses' => $query->paginate(10),
+            'eventses' => $query->paginate(10)->withQueryString(),
             'event_types' => EventType::get(),
             'permissions' => [
                 'canAdd' => $this->user->can('create event'),
@@ -54,6 +57,8 @@ class EventController extends Controller
         // dd($request->all());
         $this->pass('create event');
         $data = $request->validated();
+
+        $data['radius_m'] = $data['radius_m'] ?? 100;
 
         $data['qr_token'] = Str::random(32);
         $data['is_active'] = false;
@@ -92,8 +97,13 @@ class EventController extends Controller
     {
         $this->pass('update event');
 
-        $event->update($request->validated());
+        $data = $request->validated();
+        $data['radius_m'] = $data['radius_m'] ?? 100;
 
+        $event->update($data);
+
+        return redirect()->route('event.index')
+            ->with('success', 'Event updated successfully');
     }
 
     /**
@@ -104,6 +114,9 @@ class EventController extends Controller
         $this->pass('delete event');
 
         $event->delete();
+
+        return redirect()->route('event.index')
+            ->with('success', 'Event deleted successfully');
     }
 
     public function toggle(Request $request, Event $event)
