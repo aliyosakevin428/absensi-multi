@@ -61,6 +61,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('attendances/{attendance}/media', [AttendanceController::class, 'uploadMedia'])->name('attendances.media.upload');
     Route::delete('attendances/{attendance}/media/bulk', [AttendanceController::class, 'destroyMediaBulk'])
         ->name('attendances.media.destroyBulk');
+
     Route::resource('attendance', AttendanceController::class);
     Route::post('/attendances/{attendance}/positions/all', [AttendanceController::class, 'updatePositionsAll'])
         ->name('attendances.updatePositionsAll');

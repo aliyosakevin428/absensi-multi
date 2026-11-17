@@ -415,87 +415,180 @@ class AttendanceController extends Controller
         return back()->with('success', 'Berhasil membatalkan absensi');
     }
 
-    public function scan(string $qr_token)
+    public function scan(Request $request, string $qr_token)
     {
+        $user = auth()->user();
+
         $event = Event::where('qr_token', $qr_token)
             ->where('is_active', true)
             ->firstOrFail();
 
-        $attendance = Attendance::where('events_id', $event->id)
-            ->whereNotIn('status', ['Sudah Terlaksana', 'Dibatalkan'])
-            ->first();
+        $attendance = Attendance::where('events_id', $event->id)->first();
 
-        if (!$attendance) {
+        if ($attendance && in_array($attendance->status, ['Sudah Terlaksana', 'Dibatalkan'])) {
+            return Inertia::render('attendance/scan', [
+                'event' => $event,
+                'attendance' => $attendance,
+                'alreadyJoined' => false,
+                'alreadyPresent' => false,
+                'attendedAt' => null,
+                'closed' => true,
+            ]);
+        }
+
+        if (! $attendance) {
             $attendance = Attendance::create([
                 'events_id' => $event->id,
                 'status' => 'Sedang Berlangsung',
             ]);
         }
 
+        $alreadyJoined = $user
+            ? $attendance->users()->where('users.id', $user->id)->exists()
+            : false;
+
+        $alreadyPresent = false;
+        $attendedAt = null;
+
+        if ($user) {
+            $u = $attendance->users()->where('users.id', $user->id)->first();
+            $alreadyPresent = $u?->pivot?->attended_at !== null;
+            $attendedAt = $u?->pivot?->attended_at;
+        }
+
         return Inertia::render('attendance/scan', [
             'event' => $event,
             'attendance' => $attendance,
-            'alreadyJoined' => auth()->check()
-                ? $attendance->users()->where('users.id', auth()->id())->exists()
-                : false,
+            'alreadyJoined' => $alreadyJoined,
+            'alreadyPresent' => $alreadyPresent,
+            'attendedAt' => $attendedAt,
+            'closed' => false,
         ]);
+
     }
 
-    public function joinByEvent(Event $event)
+    public function joinByEvent(Request $request, Event $event)
     {
-        $user = auth()->user();
-
-        if (!$user) {
-            abort(403, 'Harus login');
-        }
+        $user = $request->user();
+        if (! $user) abort(403, 'Harus login');
 
         $attendance = Attendance::where('events_id', $event->id)
             ->whereNotIn('status', ['Sudah Terlaksana', 'Dibatalkan'])
             ->firstOrFail();
 
-        $already = $attendance->users()
-            ->where('users.id', $user->id)
-            ->exists();
+        $joinedUser = $attendance->users()->whereKey($user->id)->first();
 
-        if ($already) {
-            return back()->with('info', 'Kamu sudah absen');
+        if ($joinedUser) {
+            $alreadyPresent = $joinedUser->pivot?->attended_at !== null;
+
+            return back()->with(
+                $alreadyPresent ? 'info' : 'info',
+                $alreadyPresent ? 'Kamu sudah hadir (check-in sudah tercatat)' : 'Kamu sudah join daftar hadir. Silahkan check-in (Hadir)',
+            );
         }
 
-        $attendance->users()->attach($user->id);
+        $attendance->users()->attach($user->id, [
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
-        return back()->with('success', 'Absensi berhasil');
-
+        return back()->with('success', 'Berhasil join daftar hadir. Silahkan check-in (Hadir)');
     }
 
-    public function markPresent(Attendance $attendance)
+    public function markPresent(Request $request, Attendance $attendance)
     {
-        $user = auth()->user();
+        $user = $request->user();
+        if (! $user) abort(403, 'Harus login');
 
-        if (! $user) {
-            abort(403, 'Harus login');
-        }
-
-        if (in_array($attendance->status, ['Sudah Terlaksana', 'Dibatalkan'])) {
+        if (in_array($attendance->status, ['Sudah Terlaksana', 'Dibatalkan'], true)) {
             return back()->with('error', 'Absensi sudah ditutup');
         }
 
-        $hadirId = AbsentReason::where('name', 'Hadir')->value('id');
+        $pivotRow = $attendance->users()
+            ->where('users.id', $user->id)
+            ->first()?->pivot;
 
-        if (! $hadirId) {
-            abort(500, 'Absent reason Hadir belum ada');
+        if (! $pivotRow) {
+            return back()->with('error', 'Kamu belum terdaftar di absensi ini');
         }
 
-        $attendance->users()->syncWithoutDetaching([
-            $user->id => [
-                'absent_reason_id' => $hadirId,
-                'attended_at'      => now(),
-            ],
-        ]);
+        if ($pivotRow->attended_at) {
+            return back()->with('info', 'Kamu sudah tercatat hadir');
+        }
+
+        $event = $attendance->event;
+        if (! $event) {
+            return back()->with('error', 'Event tidak ditemukan');
+        }
+
+        $hadirId = AbsentReason::where('name', 'Hadir')->value('id');
+        if (! $hadirId) abort(500, 'Absent reason "Hadir" belum ada');
+
+        $pivot = [
+            'absent_reason_id' => $hadirId,
+            'attended_at'      => now(),
+        ];
+
+        // ===== GPS Validation =====
+        if ($event->require_gps) {
+            if ($event->latitude === null || $event->longitude === null) {
+                return back()->with('error', 'Koordinat lokasi belum diatur oleh admin');
+            }
+
+            $data = $request->validate([
+                'lat'      => ['required', 'numeric', 'between:-90,90'],
+                'lng'      => ['required', 'numeric', 'between:-180,180'],
+                'accuracy' => ['required', 'numeric', 'min:0', 'max:5000'],
+            ]);
+
+            if ($data['accuracy'] > 250) {
+                return back()->with('error', 'Akurasi lokasi terlalu rendah (±' . round($data['accuracy']) . ' m). Coba di tempat terbuka atau pakai HP atau coba mendekat ke lokasi yang lebih dekat.');
+            }
+
+            $distance = $this->haversineMeters(
+                (float) $data['lat'],
+                (float) $data['lng'],
+                (float) $event->latitude,
+                (float) $event->longitude,
+            );
+
+            \Log::info('absen gps', [
+                'user'     => $user->id,
+                'event'    => $event->id,
+                'distance' => round($distance),
+                'radius'   => $event->radius_m,
+                'accuracy' => $data['accuracy'],
+            ]);
+
+            // Tanpa toleransi: murni jarak vs radius
+            if ($distance > (int) $event->radius_m) {
+                return back()->with('error', 'Kamu di luar area. Jarak: ' . round($distance) . ' m, batas: ' . $event->radius_m . ' m');
+            }
+
+            $pivot += [
+                'checkin_lat'        => $data['lat'],
+                'checkin_lng'        => $data['lng'],
+                'checkin_accuracy_m' => (int) round($data['accuracy']),
+                'checkin_distance_m' => (int) round($distance),
+            ];
+        }
+
+        $attendance->users()->syncWithoutDetaching([$user->id => $pivot]);
 
         return redirect()
-            ->route('attendance.show', $attendance->id)
+            ->route('attendance.index', $attendance->id)
             ->with('success', 'Kehadiran berhasil dicatat (Hadir)');
     }
 
+    private function haversineMeters(float $lat1, float $lng1, float $lat2, float $lng2): float
+    {
+        $earth = 6371000;
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLng = deg2rad($lng2 - $lng1);
+
+        $a = sin($dLat/2)**2 + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * sin($dLng/2)**2;
+
+        return 2 * $earth * asin((min(1, $a)));
+    }
 
 }

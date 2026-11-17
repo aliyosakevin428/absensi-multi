@@ -95,6 +95,10 @@ export type Event = {
     attendances: Attendance[];
     qr_token: string;
     is_active: boolean;
+    latitude: number | null;
+    longitude: number | null;
+    radius_m: number;
+    require_gps: boolean;
     created_at: string;
     updated_at: string;
 };

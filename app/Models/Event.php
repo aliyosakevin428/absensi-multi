@@ -18,10 +18,18 @@ class Event extends Model
         'event_types_id',
         'qr_token',
         'is_active',
+        'latitude',
+        'longitude',
+        'radius_m',
+        'require_gps',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'require_gps' => 'boolean',
+        'radius_m' => 'integer',
+        'latitude' => 'float',
+        'longitude' => 'float',
         'waktu_kegiatan' => 'datetime:Y-m-d H:i:s',
     ];
 
