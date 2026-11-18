@@ -576,7 +576,7 @@ class AttendanceController extends Controller
         $attendance->users()->syncWithoutDetaching([$user->id => $pivot]);
 
         return redirect()
-            ->route('attendance.index', $attendance->id)
+            ->route('attendance.show', $attendance->id)
             ->with('success', 'Kehadiran berhasil dicatat (Hadir)');
     }
 
