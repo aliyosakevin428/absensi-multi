@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventTypeController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\MyAttendanceController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PositionController;
@@ -75,6 +76,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('reports.attendance.index');
     Route::get('/reports/attnednace/export', [AttendanceReportController::class, 'export'])
         ->name('reports.attendance.export');
+    Route::get('/kehadiran-saya', [MyAttendanceController::class, 'index'])
+        ->name('my-attendance.index');
 
     Route::resource('warta-jemaat', WartaJemaatController::class)
         ->except(['update']);

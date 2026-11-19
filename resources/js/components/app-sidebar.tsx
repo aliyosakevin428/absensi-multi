@@ -8,6 +8,7 @@ import {
     Book,
     BookCheckIcon,
     BookOpenCheck,
+    CalendarCheck,
     CalendarCheck2,
     ClipboardPen,
     FolderOpen,
@@ -60,6 +61,12 @@ export function AppSidebar() {
                             href: route('users.index'),
                             icon: Users,
                             available: menus.user,
+                        },
+                        {
+                            title: 'Kehadiran Saya',
+                            href: route('my-attendance.index'),
+                            icon: CalendarCheck,
+                            available: menus.myAttendance,
                         },
                     ]}
                     label="Dashboard Zone"
